@@ -1,0 +1,1415 @@
+# MySQL
+
+个人数据使用说明
+
+```sql
+使用一个端口3306数据库新版本8.0
+	user ： Typecoh password：123456
+	user ： peng    password：123456
+使用一个端口4000数据库旧版本5.0、
+	user ： root    password： root
+	
+	
+打开cmd窗口，输入以下命令
+
+命令1：netstat -aon|findstr 8080 查询占用的端口号对应进程
+
+命令2：tasklist|findstr  10268 显示进程
+
+命令3：taskkill  /f  /pid 10268 通过进程pid删除进程，释放端口	
+```
+
+
+
+## 数据库基础操作
+
+### DDL操作数据库
+
+#### 查询数据库
+
+```sql
+SHOW DATABASES;
+```
+
+#### 查询当前出数据
+
+```sql
+SELECT DATABASE();
+```
+
+#### 创建数据库
+
+```sql
+create database [ if not exists ] 数据库名 [ default charset 字符集 ] [ collate 排序
+规则 ] ;
+```
+
+#### 删除数据库
+
+```sql
+drop database [ if exists ] 数据库名 ;
+```
+
+### 表的操作
+
+#### 创建表
+
+```sql
+CREATE TABLE 表名(
+字段1 字段1类型 [ COMMENT 字段1注释 ],
+字段2 字段2类型 [COMMENT 字段2注释 ],
+字段3 字段3类型 [COMMENT 字段3注释 ],
+......
+字段n 字段n类型 [COMMENT 字段n注释 ]
+) [ COMMENT 表注释 ] ;
+
+create table tb_user(
+id int comment '编号',
+name varchar(50) comment '姓名',
+age int comment '年龄',
+gender varchar(1) comment '性别'
+) comment '用户表';
+```
+
+#### 表添加字段
+
+```sql
+ALTER TABLE 表名 ADD 字段名 类型 (长度) [ COMMENT 注释 ] [ 约束 ];
+ALTER TABLE emp ADD nickname varchar(20) COMMENT '昵称'; 
+```
+
+#### 表修改数据类型
+
+```sql
+ALTER TABLE 表名 MODIFY 字段名 新数据类型 (长度);
+```
+
+#### 表修改字段名和类型
+
+```sql
+ALTER TABLE 表名 CHANGE 旧字段名 新字段名 类型 (长度) [ COMMENT 注释 ] [ 约束 ];
+ALTER TABLE emp CHANGE nickname username varchar(30) COMMENT '昵称';
+```
+
+#### 表删除字段名
+
+```sql
+ALTER TABLE 表名 DROP 字段名;
+ALTER TABLE emp DROP username;
+```
+
+#### 表名修改
+
+```sql
+ALTER TABLE 表名 RENAME TO 新表名;
+ALTER TABLE emp RENAME TO employee;
+```
+
+#### 表的删除
+
+```sql
+DROP TABLE [ IF EXISTS ] 表名;
+```
+
+### DML
+
+#### 增加数据
+
+##### 指定字段添加
+
+```sql
+INSERT INTO 表名 (字段名1, 字段名2, ...) VALUES (值1, 值2, ...); 
+
+insert into employee(id,workno,name,gender,age,idcard,entrydate)
+values(1,'1','Itcast','男',10,'123456789012345678','2000-01-01');
+```
+
+##### 添加全部
+
+可以省略字段名
+
+```sql
+INSERT INTO 表名 VALUES (值1, 值2, ...); 
+
+insert into employee values(1,'1','Itcast','男',10,'123456789012345678','2000-01-01');
+```
+
+##### 批量添加数据
+
+```sql
+insert into employee values
+(3,'3','韦一笑','男',38,'123456789012345670','2005-01-01'),
+(4,'4','赵敏','女',18,'123456789012345670','2005-01-01');
+```
+
+#### 修改数据
+
+```sql
+UPDATE 表名 SET 字段名1 = 值1 , 字段名2 = 值2 , .... [ WHERE 条件 ] ;
+update employee set name = 'itheima' where id = 1;
+```
+
+#### 删除数据
+
+```sql
+DELETE FROM 表名 [ WHERE 条件 ] ;
+delete from employee where gender = '女';
+delete from employee;
+```
+
+### DQL
+
+#### 去重查询
+
+```sql
+SELECT DISTINCT 字段列表 FROM 表名;
+// 查询公司员工的上班地址有哪些(不要重复)
+select distinct workaddress '工作地址' from emp;
+```
+
+#### 条件查询
+
+| **比较运算符** | **功能**                                 |
+| -------------- | :--------------------------------------- |
+| IN(...)        | 在in之后的列表中的值，多选一             |
+| LIKE 占位符    | 模糊匹配(_匹配单个字符, %匹配任意个字符) |
+| IS NULL        | 是NULL                                   |
+
+ 查询年龄等于18 或 20 或 40 的员工信息
+
+```sql
+select * from emp where age in(18,20,40);
+```
+
+查询字段是n个字符
+
+```sql
+select * from emp where name like '__'（_ * n）;
+```
+
+ 查询身份证号最后一位是X的员工信息
+
+```sql
+select * from emp where idcard like '%X';
+```
+
+查询字段中包含某个字
+
+```sql
+SELECT * FROM t_book WHERE NAME LIKE "%神%";
+```
+
+#### 聚合函数
+
+| function | target   |
+| -------- | -------- |
+| count    | 统计数量 |
+| max      | 最大值   |
+| min      | 最小值   |
+| sum      | 求和     |
+| avg      | 平均值   |
+
+使用聚合函数的具体实现
+
+```sql
+SELECT * FROM t_book;
+SELECT id,NAME,price,author,MAX(sales) FROM t_book;
+SELECT MAX(sales) FROM t_book;
+```
+
+#### 分组查询
+
+where与having区别
+
+* 执行时机不同：where是分组之前进行过滤，不满足where条件，不参与分组；而having是分组之后对结果进行过滤。
+
+* 判断条件不同：where不能对聚合函数进行判断，而having可以。
+
+查询年龄小于45的员工 , 并根据工作地址分组 , 获取员工数量大于等于3的工作地址
+
+* 查询年龄小于45的员工
+* 根据工作地址分组
+* 员工数量大于等于3
+
+```sql
+select workaddress, count(*) address_count from emp where age < 45 group by
+workaddress having address_count >= 3;
+```
+
+
+
+#### 排序查询
+
+```sql
+SELECT 字段列表 FROM 表名 ORDER BY 字段1 排序方式1 , 字段2 排序方式2 ;
+```
+
+根据年龄对公司的员工进行升序排序 , 年龄相同 , 再按照入职时间进行降序排序
+
+```sql
+select * from emp order by age asc , entrydate desc;
+```
+
+
+
+#### 分页查询
+
+```sql
+SELECT 字段列表 FROM 表名 LIMIT 起始索引, 查询记录数 ;
+```
+
+• 起始索引从0开始，起始索引 = （查询页码 - 1）* 每页显示记录数。
+
+• 分页查询是数据库的方言，不同的数据库有不同的实现，MySQL中是LIMIT。
+
+• 如果查询的是第一页数据，起始索引可以省略，直接简写为 limit 10。
+
+
+
+ 查询第2页员工数据, 每页展示10条记录 --------> (页码-1)*页展示记录数
+
+```sql
+SELECT * FROM t_book LIMIT 10,10;	
+```
+
+<img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20231006165800679.png" alt="image-20231006165800679" style="zoom: 67%;" />
+
+#### 执行顺序
+
+在讲解DQL语句的具体语法之前，我们已经讲解了DQL语句的完整语法，及编写顺序，接下来，我们要来说明的是DQL语句在执行时的执行顺序，也就是先执行那一部分，后执行那一部分
+
+<img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20231006170023659.png" alt="image-20231006170023659" style="zoom:67%;" />
+
+### DCL
+
+创建用户
+
+```sql
+CREATE USER '用户名'@'主机名' IDENTIFIED BY '密码';
+```
+
+删除用户
+
+```sql
+DROP USER '用户名'@'主机名' ;
+```
+
+#### 权限控制
+
+|      **权限**       |      **说明**      |
+| :-----------------: | :----------------: |
+| ALL, ALL PRIVILEGES |      所有权限      |
+|       SELECT        |      查询数据      |
+|       INSERT        |      插入数据      |
+|       UPDATE        |      修改数据      |
+|       DELETE        |      删除数据      |
+|        ALTER        |       修改表       |
+|        DROP         | 删除数据库/表/视图 |
+|       CREATE        |   创建数据库/表    |
+
+查看权限
+
+```sql
+SHOW GRANTS FOR '用户名'@'主机名' ;
+```
+
+授予权限
+
+```sql
+GRANT 权限列表 ON 数据库名.表名 TO '用户名'@'主机名';
+```
+
+撤销权限
+
+```sql
+REVOKE 权限列表 ON 数据库名.表名 FROM '用户名'@'主机名';
+```
+
+## 函数
+
+### 字符串函数
+
+| **函数**                 | **功能**                                                  |
+| ------------------------ | --------------------------------------------------------- |
+| CONCAT(S1,S2,...Sn)      | 字符串拼接，将S1，S2，... Sn拼接成一个字符串              |
+| LOWER(str)               | 将字符串str全部转为小写                                   |
+| UPPER(str)               | 将字符串str全部转为大写                                   |
+| LPAD(str,n,pad)          | 左填充，用字符串pad对str的左边进行填充，达到n个字符串长度 |
+| RPAD(str,n,pad)          | 右填充，用字符串pad对str的右边进行填充，达到n个字符串长度 |
+| TRIM(str)                | 去掉字符串头部和尾部的空格                                |
+| SUBSTRING(str,start,len) | 返回从字符串str从start位置起的len个长度的字符串           |
+
+使用流程
+
+select + 函数名
+
+```sql
+select concat('Hello' , ' MySQL');
+```
+
+```sql
+update emp set workno = lpad(workno, 5, '0');
+```
+
+
+
+### 数值函数
+
+| **函数**   | **功能**                           |
+| ---------- | ---------------------------------- |
+| CEIL(x)    | 向上取整                           |
+| FLOOR(x)   | 向下取整                           |
+| MOD(x,y)   | 返回x/y的模                        |
+| RAND()     | 返回0~1内的随机数                  |
+| ROUND(x,y) | 求参数x的四舍五入的值，保留y位小数 |
+
+### 日期函数
+
+| **函数**                          | **功能**                                     |
+| --------------------------------- | -------------------------------------------- |
+| CURDATE()                         | 返回当前日期                                 |
+| CURTIME()                         | 返回当前时间                                 |
+| NOW()                             | 返回当前日期和时间                           |
+| YEAR(date)                        | 获取指定date的年份                           |
+| MONTH(date)                       | 获取指定date的月份                           |
+| DAY(date)                         | 获取指定date的日期                           |
+| DATE_ADD(date, INTERVAL exprtype) | 返回一个日期/时间值加上一个时间间隔expr后的  |
+| DATEDIFF(date1,date2)             | 返回起始时间date1 和 结束时间date2之间的天数 |
+
+### 流程函数
+
+| **函数**                                                     | **功能**                                                  |
+| ------------------------------------------------------------ | --------------------------------------------------------- |
+| IF(value , t , f)                                            | 如果value为true，则返回t，否则返回f                       |
+| IFNULL(value1 , value2)                                      | 如果value1不为空，返回value1，否则返回value2              |
+| CASE WHEN [ val1 ] THEN [res1] ...ELSE [ default ] END       | 如果val1为true，返回res1，... 否则返回default默认值       |
+| CASE [ expr ] WHEN [ val1 ] THEN[res1] ... ELSE [ default ] END | 如果expr的值等于val1，返回res1，... 否则返回default默认值 |
+
+
+
+## 约束
+
+| **约束**                 | **描述**                                                 | **关键字**  |
+| ------------------------ | -------------------------------------------------------- | ----------- |
+| 非空约束                 | 限制该字段的数据不能为null                               | NOT NULL    |
+| 唯一约束                 | 保证该字段的所有数据都是唯一、不重复的                   | UNIQUE      |
+| 主键约束                 | 主键是一行数据的唯一标识，要求非空且唯一                 | PRIMARY KEY |
+| 默认约束                 | 保存数据时，如果未指定该字段的值，则采用默认值           | DEFAULT     |
+| 检查约束(8.0.16版本之后) | 保证字段值满足某一个条件                                 | CHECK       |
+| 外键约束                 | 用来让两张表的数据之间建立连接，保证数据的一致性和完整性 | FOREIGN KEY |
+
+```sql
+CREATE TABLE tb_user(
+    id int AUTO_INCREMENT PRIMARY KEY COMMENT 'ID唯一标识',
+    name varchar(10) NOT NULL UNIQUE COMMENT '姓名' ,
+    age int check (age > 0 && age <= 120) COMMENT '年龄' ,
+    status char(1) default '1' COMMENT '状态',
+    gender char(1) COMMENT '性别'
+);
+```
+
+### 外键约束
+
+外键：用来让两张表的数据之间建立连接，从而保证数据的一致性和完整性。
+
+![image-20231006191643912](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20231006191643912.png)
+
+#### 添加外键
+
+```sql
+ALTER TABLE 表名 ADD CONSTRAINT 外键名称 FOREIGN KEY (外键字段名)
+REFERENCES 主表 (主表列名) ;
+
+alter table emp add constraint fk_emp_dept_id foreign key (dept_id) references
+dept(id);
+```
+
+#### 删除外键
+
+```sql
+ALTER TABLE 表名 DROP FOREIGN KEY 外键名称;
+alter table emp drop foreign key fk_emp_dept_id;
+```
+
+#### 删除/更新行为
+
+添加了外键之后，再删除父表数据时产生的约束行为，我们就称为删除/更新行为。
+
+| **行为**    | **说明**                                                     |
+| ----------- | ------------------------------------------------------------ |
+| NO ACTION   | 当在父表中删除/更新对应记录时，首先检查该记录是否有对应外键，如果有则不允许删除/更新。 (与 RESTRICT 一致) 默认行为 |
+| RESTRICT    | 当在父表中删除/更新对应记录时，首先检查该记录是否有对应外键，如果有则不允许删除/更新。 (与 NO ACTION 一致) 默认行为 |
+| CASCADE     | 当在父表中删除/更新对应记录时，首先检查该记录是否有对应外键，如果有，则也删除/更新外键在子表中的记录。 |
+| SET NULL    | 当在父表中删除对应记录时，首先检查该记录是否有对应外键，如果有则设置子表中该外键值为null（这就要求该外键允许取null）。 |
+| SET DEFAULT | 父表有变更时，子表将外键列设置成一个默认的值 (Innodb不支持)  |
+
+
+
+## 多表查询
+
+### 多表关系
+
+#### 一对多
+
+实现: 在多的一方建立外键，指向一的一方的主键
+
+<img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20231006194004116.png" alt="image-20231006194004116" style="zoom:67%;" />
+
+#### 多对多
+
+建立第三张中间表，中间表至少包含两个外键，分别关联两方主键
+
+<img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20231006193953649.png" alt="image-20231006193953649" style="zoom:67%;" />
+
+#### 一对一
+
+ 在任意一方加入外键，关联另外一方的主键，并且设置外键为唯一的(UNIQUE)
+
+![image-20231006194037548](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20231006194037548.png)
+
+### 分类
+
+#### 连接查询
+
+* 内连接：相当于查询A、B交集部分数据
+
+  * 隐式内连接
+
+    * ```sql
+      SELECT 字段列表 FROM 表1 , 表2 WHERE 条件 ... ;
+      ```
+
+      
+
+  * 显示内连接
+
+    * ```sql
+      SELECT 字段列表 FROM 表1 [ INNER ] JOIN 表2 ON 连接条件 ... ;
+      ```
+
+      
+
+* 外连接：
+
+  * 左外连接：查询左表所有数据，以及两张表交集部分数据
+
+    * ```sql
+      SELECT 字段列表 FROM 表1 LEFT [ OUTER ] JOIN 表2 ON 条件 ... ;
+      ```
+
+      
+
+  * 右外连接：查询右表所有数据，以及两张表交集部分数据
+
+    * ```sql
+      SELECT 字段列表 FROM 表1 RIGHT [ OUTER ] JOIN 表2 ON 条件 ... ;
+      ```
+
+      
+
+* 自连接：当前表与自身的连接查询，自连接必须使用表别名
+
+#### 自查询
+
+![image-20231006194201699](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20231006194201699.png)
+
+自连接查询，但是只能查询都不为空的
+
+```sql
+--- 查询员工 及其 所属领导的名字表结构: emp
+select a.name , b.name from emp a , emp b where a.managerid = b.id;
+```
+
+
+
+自连接查询，右边为空也可以查询出来
+
+```sql
+ --- 查询所有员工 emp 及其领导的名字 emp , 如果员工没有领导, 也需要查询出来表结构: emp a , emp b
+select a.name '员工', b.name '领导' from emp a left join emp b on a.managerid = b.id;
+```
+
+##### 联合查询
+
+对于union查询，就是把多次查询的结果合并起来，形成一个新的查询结果集。
+
+* union all
+
+  会将全部的数据直接合并在一起
+
+  ```sql
+  select * from emp where salary < 5000
+  union all
+  select * from emp where age > 50;
+  ```
+
+* union
+
+   会对合并之后的数据去重
+
+  ```sql
+  select * from emp where salary < 5000
+  union
+  select * from emp where age > 50;
+  ```
+
+  如果多条查询语句查询出来的结果，字段数量不一致，在进行union/union all联合查询时，将会报
+
+  错。	
+
+#### 子查询
+
+SQL语句中嵌套SELECT语句，称为嵌套查询，又称子查询
+
+```sql
+SELECT * FROM t1 WHERE column1 = ( SELECT column1 FROM t2 ); 1
+```
+
+* 标量子查询
+  常用的操作符：= <> > >= < <= 
+
+* 列子查询
+
+  子查询返回的结果是一列（可以是多行），这种子查询称为列子查询
+
+* 行子查询
+
+  子查询返回的结果是一行（可以是多列），这种子查询称为行子查询。
+
+  常用的操作符：= 、<> 、IN 、NOT IN
+
+* 表子查询
+
+  子查询返回的结果是多行多列，这种子查询称为表子查询。
+
+  常用的操作符：IN
+
+
+
+## 事务
+
+事务 是一组操作的集合，它是一个不可分割的工作单位，事务会把所有的操作作为一个整体一起向系
+
+统提交或撤销操作请求，即这些操作要么同时成功，要么同时失败。
+
+**最经典的例子是转账案例**
+
+操作：
+
+* 查看/设置事务提价方式
+
+  ```sql
+  SELECT @@autocommit ;
+  SET @@autocommit = 0 ;
+  ```
+
+* 开启事务
+
+  ```sql
+  START TRANSACTION 或 BEGIN ;
+  ```
+
+* 提交事务
+
+  ```sql
+  COMMIT;
+  ```
+
+* 回滚事务
+
+  ```sql
+  ROLLBACK
+  ```
+
+事务四大特性
+
+* 原子性：事务是不可分割的最小操作单元，要么全部成功，要么全部失败
+* 一致性：事务完成时，必须使所有的数据都保持一致状态（转账前后总金额不变）
+* 隔离性：数据库系统提供的隔离机制，保证事务在不受外部并发操作影响的独立环境下运行。
+* 持久性：事务一旦提交或回滚，它对数据库中的数据的改变就是永久的
+
+并发事务的问题
+
+* 读脏数据：一个事务读到另外一个事务还没有提交的数据。
+
+  <img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20231007124328489.png" alt="image-20231007124328489" style="zoom:67%;" />
+
+* 不可重复读：一个事务先后读取同一条记录，但两次读取的数据不同，称之为不可重复读。
+
+  <img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20231007124356089.png" alt="image-20231007124356089" style="zoom:67%;" />
+
+* 幻读：一个事务按照条件查询数据时，没有对应的数据行，但是在插入数据时，又发现这行数据已经存在，好像出现了 "幻影"
+
+<img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20231007124502674.png" alt="image-20231007124502674" style="zoom:67%;" />
+
+### 事务隔离
+
+| **隔离级别**              | **脏读** | **不可重复读** | **幻读** |
+| ------------------------- | -------- | -------------- | -------- |
+| **Read uncommitted**      | √        | √              | √        |
+| **Read committed**        | ×        | √              | √        |
+| **Repeatable Read(默认**) | ×        | ×              | √        |
+| **Serializable**          | ×        | ×              | ×        |
+
+查看事务隔离级别
+
+```sql
+SELECT @@TRANSACTION_ISOLATION;
+```
+
+设置事务隔离级别
+
+```sql
+SET [ SESSION | GLOBAL ] TRANSACTION ISOLATION LEVEL { READ UNCOMMITTED |
+READ COMMITTED | REPEATABLE READ | SERIALIZABLE }
+```
+
+## 存储引擎
+
+存储引擎就是存储数据、建立索引、更新/查询数据等技术的实现方式 
+
+### InnoDB、MyISAM、Memory
+
+#### InnoDB
+
+* DML操作遵循ACID模型，支持事务；
+
+* **行级锁**，提高并发访问性能；
+
+* 支持外键FOREIGN KEY约束，保证数据的完整性和正确性；
+
+#### MyISAM
+
+* **不支持事务，不支持外键**
+
+* 支持**表锁**，不支持**行锁**
+
+* 访问速度快
+
+#### Memory
+
+Memory引擎的表数据时存储在**内存**中的，由于受到硬件问题、或断电问题的影响，只能将这些表作为
+
+**临时表或缓存使用**。
+
+#### InnoDB引擎与MyISAM引擎的区别 ?
+
+①. InnoDB引擎, 支持事务, 而MyISAM不支持。
+
+②. InnoDB引擎, 支持行锁和表锁, 而MyISAM仅支持表锁, 不支持行锁。
+
+③. InnoDB引擎, 支持外键, 而MyISAM是不支持的。
+
+## 索引
+
+索引（index）是帮助MySQL**高效获取数据**的**数据结构**(有序)
+
+无索引情况
+
+<img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20231007141233945.png" alt="image-20231007141233945" style="zoom:67%;" />
+
+有索引情况
+
+<img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20231007141256533.png" alt="image-20231007141256533" style="zoom:67%;" />
+
+| **优势**                                                     | **劣势**                                                     |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| 提高数据检索的效率，降低数据库的IO成本                       | 索引列也是要占用空间的。                                     |
+| 通过索引列对数据进行排序，降低数据排序的成本，降低CPU的消耗。 | 索引大大提高了查询效率，同时却也降低更新表的速度，如对表进行INSERT、UPDATE、DELETE时，效率降低。 |
+
+### 索引结构
+
+* **B+Tree**索引：最常见的索引类型，大部分引擎都支持 B+ 树索引
+
+* Hash索引：底层数据结构是用**哈希表**实现的, 只有精确匹配索引列的查询才有效, 不支持范围查询
+
+  哈希索引就是采用一定的hash算法，将键值换算成新的hash值，映射到对应的槽位上，然后存储在hash表中。
+
+  <img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20231007145428909.png" alt="image-20231007145428909" style="zoom: 80%;" />
+
+  如果两个(或多个)键值，映射到一个相同的槽位上，他们就产生了hash冲突（也称为hash碰撞），可以通过链表来解决。
+
+  <img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20231007145626917.png" alt="image-20231007145626917" style="zoom:67%;" />
+
+  A. Hash索引只能用于对等比较(=，in)，不支持范围查询（between，>，< ，...）
+
+  B. 无法利用索引完成排序操作
+
+  C. 查询效率高，通常(不存在hash冲突的情况)只需要一次检索就可以了，效率通常要高于B+tree索
+
+  引
+
+* R-tree（空间索引）：空间索引是MyISAM引擎的一个特殊索引类型，主要用于地理空间数据类型，通常使用较少
+
+* Full-text（全文索引）：是一种通过建立倒排索引,快速匹配文档的方式。类似于Lucene,Solr,ES
+
+**为什么InnoDB存储引擎选择使用B+tree索引结构?**
+
+A. 相对于二叉树，层级更少，搜索效率高；
+
+B. 对于B-tree，无论是叶子节点还是非叶子节点，都会保存数据，这样导致一页中存储
+
+的键值减少，指针跟着减少，要同样保存大量数据，只能增加树的高度，导致性能降低；
+
+C. 相对Hash索引，B+tree支持范围匹配及排序操作；
+
+### 索引分类
+
+在MySQL数据库，将索引的具体类型主要分为以下几类：主键索引、唯一索引、常规索引、全文索引。
+
+| **分类** | **含义**                                             | **特点**                 | **关键字** |
+| -------- | ---------------------------------------------------- | ------------------------ | ---------- |
+| 主键索引 | 针对于表中主键创建的索引                             | 默认自动创建, 只能有一个 | PRIMARY    |
+| 唯一索引 | 避免同一个表中某数据列中的值重复                     | 可以有多个               | UNIQUE     |
+| 常规索引 | 快速定位特定数据                                     | 可以有多个               |            |
+| 全文索引 | 全文索引查找的是文本中的关键词，而不是比较索引中的值 | 可以有多个               | FULLTEXT   |
+
+ 
+
+### **聚集索引**&**二级索引**
+
+而在在InnoDB存储引擎中，根据索引的存储形式，又可以分为以下两种：
+
+| **分类**                  | **含义**                                                   | **特点**            |
+| ------------------------- | ---------------------------------------------------------- | ------------------- |
+| 聚集索引(Clustered Index) | 将数据存储与索引放到了一块，索引结构的叶子节点保存了行数据 | 必须有,而且只有一个 |
+| 二级索引(Secondary Index) | 将数据与索引分开存储，索引结构的叶子节点关联的是对应的主键 | 可以存在多个        |
+
+聚集索引选取规则:
+
+* 如果存在主键，主键索引就是聚集索引。如果不存在主键，将使用第一个唯一（UNIQUE）索引作为聚集索引。
+
+* 如果表没有主键，或没有合适的唯一索引，
+
+* InnoDB会自动生成一个rowid作为隐藏的聚集索引。
+
+聚集索引和二级索引的具体结构如下：
+
+<img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20231007153230267.png" alt="image-20231007153230267" style="zoom: 67%;" />
+
+聚集索引的叶子节点下挂的是这一行的数据 
+
+二级索引的叶子节点下挂的是该字段值对应的主键值
+
+**InnoDB主键索引的B+tree高度为多高呢?.........**
+
+
+
+创建索引
+
+```sql
+CREATE [ UNIQUE | FULLTEXT ] INDEX index_name ON table_name (
+index_col_name,... ) ;
+```
+
+查看索引
+
+```sql
+SHOW INDEX FROM table_name ;
+```
+
+删除索引
+
+```sql
+DROP INDEX index_name ON table_name ;
+```
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+​							                                               SQL性能分析
+
+
+
+​									有空余时间在学习。。。。。。。。。。。。。。。。。。。。。。
+
+
+
+
+
+​																		     索引使用
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+## SQL优化
+
+### 插入数据
+
+#### 批量插入数据
+
+```sql
+Insert into tb_test values(1,'Tom'),(2,'Cat'),(3,'Jerry');
+```
+
+#### 手动控制事务
+
+```sql
+start transaction;
+insert into tb_test values(1,'Tom'),(2,'Cat'),(3,'Jerry');
+insert into tb_test values(4,'Tom'),(5,'Cat'),(6,'Jerry');
+insert into tb_test values(7,'Tom'),(8,'Cat'),(9,'Jerry');
+commit;
+```
+
+#### 主键顺序插入，性能要高于乱序插入
+
+```sql
+主键乱序插入 : 8 1 9 21 88 2 4 15 89 5 7 3
+主键顺序插入 : 1 2 3 4 5 7 8 9 15 21 88 89
+```
+
+#### 大批量插入数据
+
+如果一次性需要插入大批量数据(比如: 几百万的记录)，使用insert语句插入性能较低，此时可以使
+
+用MySQL数据库提供的load指令进行插入。
+
+```sql
+-- 客户端连接服务端时，加上参数 -–local-infile
+mysql –-local-infile -u root -p
+-- 设置全局参数local_infile为1，开启从本地加载文件导入数据的开关
+set global local_infile = 1;
+-- 执行load指令将准备好的数据，加载到表结构中
+load data local infile '/root/sql1.log' into table tb_user fields
+terminated by ',' lines terminated by '\n' ;
+```
+
+### 待续、、、、、、、、、、、、
+
+## 视图
+
+
+
+创建视图的语法
+
+```sql
+CREATE [OR REPLACE] VIEW 视图名称[(列名列表)] AS SELECT语句 [ WITH [
+CASCADED | LOCAL ] CHECK OPTION ]
+```
+
+查询
+
+```sql
+查看创建视图语句：SHOW CREATE VIEW 视图名称;
+查看视图数据：SELECT * FROM 视图名称 ...... ;
+```
+
+修改
+
+```sql
+方式一：CREATE [OR REPLACE] VIEW 视图名称[(列名列表)] AS SELECT语句 [ WITH [ CASCADED | LOCAL ] CHECK OPTION ]
+方式二：ALTER VIEW 视图名称[(列名列表)] AS SELECT语句 [ WITH [ CASCADED | LOCAL ] CHECK OPTION ]
+```
+
+删除
+
+```sql
+DROP VIEW [IF EXISTS] 视图名称 [,视图名称] ...
+```
+
+
+
+检查选项
+
+当使用WITH CHECK OPTION子句创建视图时，MySQL会通过视图检查正在更改的每个行，例如 插入，更新，删除，以使其符合视图的定义。 MySQL允许基于另一个视图创建视图，它还会检查依赖视图中的规则以保持一致性。为了确定检查的范围，mysql提供了两个选项： **CASCADED** 和 **LOCAL**，默认值为 CASCADED 。
+
+**CASCADED** 会影响上下文
+
+**LOCAL**不会影响上下文
+
+视图作用
+
+* 简单
+
+  视图不仅可以简化用户对数据的理解，也可以简化他们的操作。那些被经常使用的查询可以被定义为视图，从而使得用户不必为以后的操作每次指定全部的条件
+
+* 安全
+
+  数据库可以授权，但不能授权到数据库特定行和特定的列上。通过视图用户只能查询和修改他们所能见到的数据
+
+* 数据独立
+
+  视图可帮助用户屏蔽真实表结构变化带来的影响。
+
+
+
+## 存储过程
+
+存储过程是事先经过编译并存储在数据库中的一段 SQL 语句的集合，调用存储过程可以简化应用开发
+
+人员的很多工作，减少数据在数据库和应用服务器之间的传输，对于提高数据处理的效率是有好处的。
+
+
+
+* 封装，复用 -----------------------> 可以把某一业务SQL封装在存储过程中，需要用到
+
+  的时候直接调用即可。
+
+* 可以接收参数，也可以返回数据 --------> 再存储过程中，可以传递参数，也可以接收返回值。
+
+* 减少网络交互，效率提升 -------------> 如果涉及到多条SQL，每执行一次都是一次网络传
+
+  输。 而如果封装在存储过程中，我们只需要网络交互一次可能就可以了。
+
+创建
+
+```sql
+CREATE PROCEDURE 存储过程名称 ([ 参数列表 ])
+BEGIN
+-- SQL语句
+END ;
+```
+
+调用
+
+```sql
+CALL 名称 ([ 参数 ]);
+```
+
+查看
+
+```sql
+SELECT * FROM INFORMATION_SCHEMA.ROUTINES WHERE ROUTINE_SCHEMA = 'xxx'; -- 查询指定数据库的存储过程及状态信息
+SHOW CREATE PROCEDURE 存储过程名称 ; -- 查询某个存储过程的定义
+```
+
+**在命令行中，执行创建存储过程的SQL时，需要通过关键字 delimiter 指定SQL语句的结束符。**
+
+使用delimiter设置结束符
+
+```sql
+delimiter $$
+create procedure p1()
+begin
+select count(*) from student;
+end$$
+```
+
+### 变量
+
+在MySQL中变量分为三种类型: 系统变量、用户定义变量、局部变量。
+
+#### 系统变量
+
+```sql
+SHOW [ SESSION | GLOBAL ] VARIABLES ; -- 查看所有系统变量
+SHOW [ SESSION | GLOBAL ] VARIABLES LIKE '......'; -- 可以通过LIKE模糊匹配方
+式查找变量
+SELECT @@[SESSION | GLOBAL] 系统变量名; -- 查看指定变量的值
+
+SET [ SESSION | GLOBAL ] 系统变量名 = 值 ;
+SET @@[SESSION | GLOBAL]系统变量名 = 值 ;
+```
+
+
+
+#### 用户定义变量
+
+赋值
+
+```sql
+SET @var_name = expr [, @var_name = expr] ... ;
+SET @var_name := expr [, @var_name := expr] ... ;
+```
+
+```sql
+SELECT @var_name := expr [, @var_name := expr] ... ;
+SELECT 字段名 INTO @var_name FROM 表名;
+```
+
+查询
+
+```sql
+SELECT @var_name ;
+```
+
+
+
+#### 局部变量
+
+局部变量 是根据需要定义的在局部生效的变量，访问之前，需要DECLARE声明。可用作存储过程内的局部变量和输入参数，局部变量的范围是在其内声明的BEGIN ... END块。
+
+* 声明
+
+  ```sql
+  DECLARE 变量名 变量类型 [DEFAULT ... ] ;
+  ```
+
+* 赋值
+
+  ```sql
+  SET 变量名 = 值 ;
+  SET 变量名 := 值 ;
+  SELECT 字段名 INTO 变量名 FROM 表名 ... ;
+  ```
+
+  
+
+### IF条件
+
+```sql
+IF 条件1 THEN
+.....
+ELSEIF 条件2 THEN -- 可选
+.....
+ELSE -- 可选
+.....
+END IF;
+```
+
+```sql
+create procedure p3()
+
+begin
+	declare score int default 58;
+	declare result varchar(10);
+	if score >= 85 then
+		set result := '优秀';
+	elseif score >= 60 then
+		set result := '及格';
+	else
+		set result := '不及格';
+	end if;
+
+	select result;
+
+end;
+
+call p3();
+```
+
+### 参数
+
+参数的类型，主要分为以下三种：IN、OUT、INOUT。 具体的含义如下：
+
+| **类型** |                   **含义**                   | **备注** |
+| :------: | :------------------------------------------: | :------: |
+|    IN    |   该类参数作为输入，也就是需要调用时传入值   |   默认   |
+|   OUT    | 该类参数作为输出，也就是该参数可以作为返回值 |          |
+|  INOUT   |    既可以作为输入参数，也可以作为输出参数    |          |
+
+```sql
+create procedure p4(in score int, out result varchar(10))
+begin
+    if score >= 85 then
+        set result := '优秀';
+    elseif score >= 60 then
+        set result := '及格';
+    else
+        set result := '不及格';
+    end if;
+end;
+# -- 定义用户变量 @result来接收返回的数据, 用户变量可以不用声明
+call p4(18, @result);
+
+# @result 表示自定义变量
+select @result;
+```
+
+### CASE
+
+case结构及作用，和我们在基础篇中所讲解的流程控制函数很类似。
+
+```sql
+-- 含义： 当case_value的值为 when_value1时，执行statement_list1，当值为 when_value2时，执行statement_list2， 否则就执行 statement_list
+CASE case_value
+    WHEN when_value1 THEN statement_list1
+    [ WHEN when_value2 THEN statement_list2] ...
+    [ ELSE statement_list ]
+END CASE;
+```
+
+
+
+### 循环
+
+#### while
+
+while 循环是有条件的循环控制语句。满足条件后，再执行循环体中的SQL语句。
+
+```sql
+-- 先判定条件，如果条件为true，则执行逻辑，否则，不执行逻辑
+WHILE 条件 DO
+	SQL逻辑...
+END WHILE;
+```
+
+#### repeat
+
+repeat是有条件的循环控制语句, 当满足until声明的条件的时候，则退出循环 。具体语法为：
+
+```sql
+-- 先执行一次逻辑，然后判定UNTIL条件是否满足，如果满足，则退出。如果不满足，则继续下一次循环
+REPEAT
+	SQL逻辑...
+	UNTIL 条件
+END REPEAT;
+```
+
+#### loop
+
+LOOP 实现简单的循环，如果不在SQL逻辑中增加退出循环的条件，可以用其来实现简单的死循环。
+
+LOOP可以配合一下两个语句使用：
+
+* LEAVE ：配合循环使用，退出循环。
+
+* ITERATE：必须用在循环中，作用是跳过当前循环剩下的语句，直接进入下一次循环。
+
+```sql
+[begin_label:] LOOP
+		SQL逻辑...
+END LOOP [end_label];
+```
+
+```sql
+LEAVE label; -- 退出指定标记的循环体
+ITERATE label; -- 直接进入下一次循环
+```
+
+### **游标**
+
+游标（CURSOR）是用来**存储查询结果集**的数据类型 , 在存储过程和函数中可以使用游标对结果集进
+
+行循环的处理。游标的使用包括游标的声明、OPEN、FETCH 和 CLOSE，其语法分别如下。
+
+游标主要是为了解决**存储**一个**数据集合**
+
+声明游标
+
+```sql
+DECLARE 游标名称 CURSOR FOR 查询语句 ;
+```
+
+打开游标
+
+```sql
+OPEN 游标名称 ;
+```
+
+获取游标记录
+
+```sql
+FETCH 游标名称 INTO 变量 [, 变量 ] ;
+```
+
+关闭游标
+
+```sql
+CLOSE 游标名称 ;
+```
+
+案例
+
+```sql
+create procedure p11(in uage int)
+begin
+    declare uname varchar(100);
+    declare upro varchar(100);
+    declare u_cursor cursor for select name,profession from tb_user where age <=uage;
+    drop table if exists tb_user_pro;
+    create table if not exists tb_user_pro(
+        id int primary key auto_increment,
+        name varchar(100),
+        profession varchar(100)
+    );
+    open u_cursor;
+        while true do
+            fetch u_cursor into uname,upro;
+            insert into tb_user_pro values (null, uname, upro);
+        end while;
+    close u_cursor;
+end;
+```
+
+上述的存储过程，最终我们在调用的过程中，**会报错**，之所以报错是因为上面的**while循环**中，**并没有**
+
+**退出条件**。当游标的**数据集获取完毕**之后，再次**获取数据**，就会**报错**，从而终止了程序的执行
+
+为了解决这个问题，我们就引出**Handler**解决
+
+
+
+### **条件处理程序**
+
+条件处理程序（Handler）可以用来定义在流程控制结构执行过程中遇到问题时相应的处理步骤。具体
+
+语法为：
+
+```sql
+DECLARE handler_action HANDLER FOR condition_value [, condition_value]
+... statement ;
+handler_action 的取值：
+    CONTINUE: 继续执行当前程序
+    EXIT: 终止执行当前程序
+condition_value 的取值：
+    SQLSTATE sqlstate_value: 状态码，如 02000
+    
+    SQLWARNING: 所有以01开头的SQLSTATE代码的简写
+    NOT FOUND: 所有以02开头的SQLSTATE代码的简写
+    SQLEXCEPTION: 所有没有被SQLWARNING 或 NOT FOUND捕获的SQLSTATE代码的简写
+```
+
+
+
+```sql
+create procedure p11(in uage int)
+begin
+    declare uname varchar(100);
+    declare upro varchar(100);
+    declare u_cursor cursor for select name,profession from tb_user where age <=uage;
+    -- 声明条件处理程序 ： 当SQL语句执行抛出的状态码为02000时，将关闭游标u_cursor，并退出
+    declare exit handler for SQLSTATE '02000' close u_cursor;
+    drop table if exists tb_user_pro;
+    create table if not exists tb_user_pro(
+        id int primary key auto_increment,
+        name varchar(100),
+        profession varchar(100)
+    );
+    open u_cursor;
+        while true do
+            fetch u_cursor into uname,upro;
+            insert into tb_user_pro values (null, uname, upro);
+        end while;
+    close u_cursor;
+end;
+```
+
+
+
+## 存储函数
+
+**存储函数**是**有返回值**的**存储过程**，存储函数的**参数**只能是**IN类型**的。
+
+```sql
+CREATE FUNCTION 存储函数名称 ([ 参数列表 ])
+RETURNS type [characteristic ...]
+BEGIN
+	-- SQL语句
+	RETURN ...;
+END ;
+```
+
+characteristic说明：
+
+* DETERMINISTIC：相同的输入参数总是产生相同的结果
+* NO SQL ：不包含 SQL 语句。
+* READS SQL DATA：包含读取数据的语句，但不包含写入数据的语句。
+
+```sql
+create function fun1(n int)
+returns int deterministic
+begin
+    declare total int default 0;
+    while n>0 do
+        set total := total + n;
+        set n := n - 1;
+    end while;
+    return total;
+end;
+select fun1(50);
+```
+
+
+
+## 触发器
+
+触发器是与**表**有关的**数据库对象**，指在**insert/update/delete**之前(**BEFORE**)或之后(AFTER)，触
+
+发并执行触发器中定义的SQL语句集合。触发器的这种特性可以协助应用在数据库端确保数据的完整性
+
+, 日志记录 , 数据校验等操作 。
+
+使用别名**OLD**和**NEW**来引用触发器中发生变化的记录内容，这与其他的数据库是相似的。**现在触发器还**
+
+**只支持行级触发**，不支持**语句级触发**。
+
+
+
+| **触发器类型**  | **NEW** **和** **OLD**                                  |
+| --------------- | ------------------------------------------------------- |
+| INSERT 型触发器 | NEW 表示将要或者已经新增的数据                          |
+| UPDATE 型触发器 | OLD 表示修改之前的数据 , NEW 表示将要或已经修改后的数据 |
+| DELETE 型触发器 | OLD 表示将要或者已经删除的数据                          |
+
+
+
+创建触发器
+
+```sql
+CREATE TRIGGER trigger_name
+BEFORE/AFTER INSERT/UPDATE/DELETE
+ON tbl_name FOR EACH ROW -- 行级触发器
+BEGIN
+	trigger_stmt ;
+END;
+```
+
+查看
+
+```sql
+SHOW TRIGGERS ;
+```
+
+删除
+
+```sql
+DROP TRIGGER [schema_name.]trigger_name ; -- 如果没有指定 schema_name，默认为当前数据库 。
+```
+
+通过触发器记录 tb_user 表的数据变更日志，将变更日志插入到日志表user_logs中, 包含增加,修改 , 删除
+
+```sql
+-- 准备工作 : 日志表 user_logs
+create table user_logs(
+    id int(11) not null auto_increment,
+    operation varchar(20) not null comment '操作类型, insert/update/delete',
+    operate_time datetime not null comment '操作时间',
+    operate_id int(11) not null comment '操作的ID',
+    operate_params varchar(500) comment '操作参数',
+    primary key(`id`)
+)engine=innodb default charset=utf8;
+```
+
+插入数据触发器
+
+```sql
+create trigger tb_user_insert_trigger
+	after insert on tb_user for each row
+begin
+	insert into user_logs(id, operation, operate_time, operate_id, operate_params)
+VALUES
+	(null, 'insert', now(), new.id, concat('插入的数据内容为:
+id=',new.id,',name=',new.name, ', phone=', NEW.phone, ', email=', NEW.email, ',
+profession=', NEW.profession));
+end;
+```
+
+删除数据触发器
+
+```sql
+create trigger tb_user_delete_trigger
+after delete on tb_user for each row
+begin
+    insert into user_logs(id, operation, operate_time, operate_id, operate_params)
+    VALUES
+    (null, 'delete', now(), old.id,
+    concat('删除之前的数据: id=',old.id,',name=',old.name, ', phone=',
+    old.phone, ', email=', old.email, ', profession=', old.profession));
+end;
+```
+
+## 锁
+
+。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。
+
+锁是计算机协调多个**进程**或**线程**并发访问某一资源的机制。在数据库中，除传统的计算资源（**CPU、RAM、I/O**）的争用以外，**数据**也是一种供许多用户共享的资源。如何保证数据并发访问的**一致性**、**有效性**是所有数据库必须解决的一个问题，锁冲突也是影响数据库并发访问性能的一个重要因素。从这个角度来说，锁对数据库而言显得尤其重要，也更加复杂。
+
+MySQL锁也是分为三类：
+
+* 全局锁：锁定数据库中的所有表。
+* 表级锁：每次操作锁住整张表。
+* 行级锁：每次操作锁住对应的行数据。
+
+### 全局锁

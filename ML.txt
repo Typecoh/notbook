@@ -1,0 +1,281 @@
+
+
+
+
+# 机器学习
+
+机器学习一般流程
+
+* 数据收集
+* 数据清洗
+* 特征工程
+* 数据建模
+* 将样本进行验证
+
+## 线性回归
+
+
+
+
+
+## 监督学习方法
+
+### 回归（regression）
+
+线性回归
+
+先给一定数据集，将这些数据以进行分析（数据集中有x-y对应）
+
+```python
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt # matplotlib.pyplot是一些命令行风格函数的集合，使matplotlib以类似于MATLAB的方式工作。
+import seaborn as sns
+
+# 设置乱码
+rc = {'font.sans-serif': 'SimHei',
+      'axes.unicode_minus': False}
+# rc 设置乱码
+sns.set(context="notebook", style="whitegrid", palette="deep",rc=rc)
+
+A=np.eye(5)    #单位对角矩阵
+print(A)
+
+df = pd.read_csv('ex1data1.txt',names=['人口','利润'])
+
+# 括号内可填写要读取的前n行，如果不填，默认为n=5
+#读前5行
+print(df.head())
+
+#查看索引、数据类型和内存信息
+print((df.info()))
+# 设置回归线性方程
+'''
+fit_reg = True 设置表示 设置为 线性回归
+fit_reg = False 设置表示 单独显示 散点 不显示线性回归
+'''
+sns.lmplot(x='人口',y='利润',data=df,fit_reg = True)
+
+plt.show()
+```
+
+### 代价函数
+
+![image-20231011205045829](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20231011205045829.png)
+
+
+
+平方误差代价函数
+
+为了衡量W和B的选择是否符合训练数据，代价函数J是为了衡量模型预测和实际真实值之间的差异
+
+![image-20231011205249068](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20231011205249068.png)
+
+goal：minimizeJ(w,b) 将这个J代价函数的最小值作为目标
+
+从这种图中很清晰的看出来，当**代价函数**最小的时候，**fw(x) 效果是最好的**，随着向**中心的偏离**，**线性回归**效果不好
+
+<img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20231011210639946.png" alt="image-20231011210639946" style="zoom: 67%;" />
+
+
+
+
+
+### 梯度下降
+
+**梯度下降**是一个用来求**函数最小值**的算法，我们将使用梯度下降算法来求出代价函数 **J(a1,a2) 的最小值**。 梯度下降背后的思想是：开始时我们随机选择一个参数的组合 (a1,a2,a3,......,an) ，计算代价函数，然后我们寻找下一个能让代价函数值下降最多的参数组合。我们持续这么做直到到到一个**局部最小值**（**local minimum**），因为我们并**没有尝试完所有的参数**组合，所以不能确定我们得到的**局部最小值**是否便是**全局最小值**（**global minimum**），选择不同的初始参数组合，可能会找到不同的局部最小值。
+
+![image-20231021163616630](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20231021163616630.png)
+
+<img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20231021192307238.png" alt="image-20231021192307238" style="zoom: 67%;" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+### 分类（classification）
+
+精确的预测类型，比如给一张图片给他，让他预测是猫还是狗
+
+
+
+## 无监督学习方法
+
+## 聚类
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

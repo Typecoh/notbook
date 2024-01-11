@@ -1,0 +1,48 @@
+# IDEA破解
+
+获取code网站
+
+[免费提供最新IDEA注册码, IDEA专属激活码, IDEA注册码在线生成 (javatiku.cn)](https://idea.javatiku.cn/)
+
+找到电脑上JetBrains地址
+
+C:\Users\lenovo\AppData\Roaming\JetBrains
+
+<img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20240106140711931.png" alt="image-20240106140711931" style="zoom:80%;" />
+
+## Idea破解 2021.3.3
+
+<img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20240106150417552.png" alt="image-20240106150417552" style="zoom:67%;" />
+
+<img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20240106150623194.png" alt="image-20240106150623194" style="zoom:67%;" />
+
+<img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20240106150655396.png" alt="image-20240106150655396" style="zoom:67%;" />
+
+## Pycharm破解 2021.3.3
+
+<img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20240106150417552.png" alt="image-20240106150417552" style="zoom:67%;" />
+
+找到对应的文件
+
+<img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20240106150501953.png" alt="image-20240106150501953" style="zoom:67%;" />
+
+<img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20240106150523190.png" alt="image-20240106150523190" style="zoom:67%;" />
+
+<img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20240106150538782.png" alt="image-20240106150538782" style="zoom:67%;" />
+
+## Rider破解 2021.3.3
+
+![image-20240109093853597](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20240109093853597.png)
+
+生成对应的vmoptions文件
+
+添加代码
+
+```C#
+# custom JetBrains Rider VM options (expand/override 'bin\rider64.exe.vmoptions')
+-javaagent:C:/Windows/configfile/micool/micool.jar
+```
+
+C:/Windows/configfile/micool/micool.jar 是文件
+
+<img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20240109094043584.png" alt="image-20240109094043584" style="zoom:67%;" />

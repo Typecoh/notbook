@@ -1,0 +1,278 @@
+# git
+
+gitee账号密码
+
+typecoh@163.com
+
+pqy123456
+
+github账号
+
+<img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20231111120404850.png" alt="image-20231111120404850" style="zoom:67%;" />
+
+## git常用命令
+
+创建文件夹 mkdir name
+
+进入某个文件 cd git-test
+
+创建git文件 git init
+
+查看文件 ll （配置之后）
+
+git remote // 查看分支
+
+**git remote add origin** adress
+
+git push origin master
+
+```powershell
+git remote // 查看分支
+
+**git remote add origin** adress
+2
+git push origin master
+git branch [name] 
+#然后push 
+git push -u origin [name]
+```
+
+![image-20231013210502101](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20231013210502101.png)
+
+## git上传小文件
+
+```
+git init
+git add *
+git commit -m "first commit"
+git remote add origin adress
+git push origin master
+```
+
+
+
+## git上传大文件
+
+```git
+git init
+git lfs install
+git lfs track *
+git add .gitattributes
+git commit -m "first commit"
+git remote add origin adress
+git push origin master
+-- 上传大文件
+git add *
+git commit -m "first commit"
+git push origin master
+
+-- 切换分支版本
+git init
+// 创建新的并切换分支
+git checkout -b [branchname]
+git lfs install
+git lfs track *
+git add .gitattributes
+git commit -m "first commit"
+git remote add origin adress
+git push origin branchname
+-- 上传大文件
+git add *
+git commit -m "first commit"
+git push origin branchname
+```
+
+## git常用场景
+
+* 备份
+* 代码还原
+* 协同开发
+* 追溯代码编写人以及编写时间
+
+## git使用
+
+第一步下载git
+
+https://git-scm.com/download
+
+### 下载完成之后，对git进行配置身份信息
+
+在桌面右键打开Git Bash
+
+* 用户名 
+  * git config --global user.name “Typecoh”
+  * git config --global user.name
+* 邮箱
+  * git config --global user.email “typecoh@163.com”
+  * git config --global user.email
+
+### 对主机用户进行配置
+
+在C:\Users\lenovo中创建了一个.bashrc文件
+
+```c
+#用于输出git提交日志
+alias git-log='git log --pretty=oneline --all --graph --abbrev-commit'
+#用于输出当前目录所有文件及基本信息
+alias ll='ls -al'
+```
+
+配置完成之后可以使用 ll 命令查看文件中的隐藏目录
+
+## 获取本地仓库
+
+要使用Git对我们的代码进行版本控制，首先需要获得本地仓库
+
+1）在电脑的任意位置创建一个空目录（例如test）作为我们的本地Git仓库
+
+2）进入这个目录中，点击右键打开Git bash窗口
+
+3）执行命令git init
+
+4）如果创建成功后可在文件夹下看到隐藏的.git目录。
+
+
+
+## 基础操作指令
+
+Git工作目录下对于文件的**修改**(增加、删除、更新)会存在几个状态，这些**修改**的状态会随着我们执行Git
+
+的命令而发生变化
+
+![image-20231003150312425](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20231003150312425.png)
+
+如何使用命令来控制这些状态之间的转换：
+
+* git add (工作区 --> 暂存区)
+* git commit (暂存区 --> 本地仓库)
+
+极为常用指令：
+
+* **查看修改的状态（**status）
+
+  * 作用：查看的修改的状态（暂存区、工作区）
+  * 命令形式：git status
+
+* **添加工作区到暂存区**(add)
+
+  * 添加工作区一个或多个文件的修改到暂存区
+  * 命令形式：git add 单个文件名|通配符
+  * 将所有修改加入暂存区：git add .
+
+* **提交暂存区到本地仓库**（commit）
+
+  * 作用：提交暂存区内容到本地仓库的当前分支
+  * 命令形式：git commit -m '注释内容'
+
+* **查看提交日志**
+
+  * 作用:查看提交记录
+
+  * 命令形式：git log [option]
+
+    options
+
+    * --all 显示所有分支
+
+    * --pretty=oneline 将提交信息显示为一行
+
+    * --abbrev-commit 使得输出的commitId更简短
+
+    * --grap
+
+* 版本回退
+
+  * 作用：版本切换
+  * 命令形式：git reset --hard commitID
+    * commitID 可以使用 git-log 或 git log 指令查看
+  * 如何查看已经删除的记录？
+    * git reflog
+    * 这个指令可以看到已经删除的提交记录
+
+* 将文件添加到忽略列表
+
+  我们可以在工作目录中创建一个名为 .gitignore 的文件（文件名称固定），列出要忽略的文件模式。下面是一个示例：
+  
+  ```c
+  # no .a files
+  *.a
+  # but do track lib.a, even though you're ignoring .a files above
+!lib.a
+  # only ignore the TODO file in the current directory, not subdir/TODO
+/TODO
+  # ignore all files in the build/ directory
+build/
+  # ignore doc/notes.txt, but not doc/server/arch.txt
+doc/*.txt
+  # ignore all .pdf files in the doc/ directory
+  doc/**/*.pdf
+  ```
+
+## 分支
+
+
+
+
+
+## git远程仓库
+
+创建gitee仓库
+
+![image-20231004130001059](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20231004130001059.png)
+
+描述信息
+
+![image-20231004130241102](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20231004130241102.png)
+
+使用idea打开文件，加入.gitignore文件
+
+![image-20231004130437225](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20231004130437225.png)
+
+创建本地仓库
+
+![image-20231004130635203](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20231004130635203.png)
+
+![image-20231004130707191](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20231004130707191.png)
+
+数据初始化进行提交数据
+
+![image-20231004132452873](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20231004132452873.png)
+
+将数据push到远程仓库中去
+
+![image-20231004132521283](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20231004132521283.png)
+
+连接远程仓库
+
+![image-20231004132546827](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20231004132546827.png)
+
+上传成功
+
+![image-20231004133900776](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20231004133900776.png)
+
+从远程仓库种克隆到本地
+
+![image-20231004134111716](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20231004134111716.png)
+
+解决冲突
+
+![image-20231004135113340](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20231004135113340.png)
+
+第二次修改
+
+![image-20231004135406333](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20231004135406333.png)
+
+右键 -》git -》add
+
+修改成功之后，重新push
+
+远程仓库效果
+
+![image-20231004135921857](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20231004135921857.png)
+
+本地记录
+
+![image-20231004135905520](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20231004135905520.png)
+
+使用pull更新数据
+

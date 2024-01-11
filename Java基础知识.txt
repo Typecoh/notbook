@@ -1,0 +1,1435 @@
+# Java基础知识
+
+## 面向对象和面向过程的区别
+
+### 面向过程
+
+面向过程吸性能比面向对象高，**但是面向过程没有面向对象容易维护、复用以及扩展等**
+
+### 面向对象
+
+面向对象容易控制，复用以及扩展，**因为面向对象是有封装、继承、多态特性，但是相对于面向过程而言，他的性能较差**
+
+## Java特点
+
+* 面向对象，三大特性（封装、继承、多态）
+
+* 支持多线程
+
+* **⽀持⽹络编程并且很⽅便**
+
+* 可靠性、安全性
+
+## JVM
+
+jvm（虚拟机），j**vm的功能是运行Java字节码**，Java字节码就是将java的源代码通过javac编译成.class文件，在jvm中将,class文件生成二进制文件
+
+![image-20231004162334973](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20231004162334973.png)
+
+## JDK
+
+JDK（Java development kit）**是java开发工具**，**包含了jre在内**，并且**编译器javac**以及和**Java基础的类库**
+
+## JRE
+
+JRE（java runtime environment）是java运行环境，包含了java虚拟机（jvm），也有java基础类库
+
+## Java和C++
+
+### 相同点
+
+java和c++都是面向对象的语言，都是可以进行封装、继承、多态
+
+### 不同点
+
+* java不提供指针操作，更加安全
+
+* java是单继承（关键字是extend），c++支持多继承，但是java为了解决这个问题就提出了接口，可以继承多个接口（implement）
+
+* **Java 有⾃动内存管理机制，不需要程序员⼿动释放⽆⽤内存**
+
+## 字符常量和字符串常量
+
+* 字符常量是单个字符引起来，字符串常量是用双引号引起来的多个字符
+* 字符常量相当于是一个整型值， **字符串常量代表⼀个地址值(该字符串在内存中存放位置)**
+* 字符通常是2个字节，字符串是多个字节
+
+
+
+## 构造器Constructor 是否可被override
+
+Constructor 不能被 override（重写）,但是可以 overload（重载）,所以你可以看到⼀个类中有多个构造函数的情况
+
+```java
+public class test {
+
+    public static void main(String[] args) {
+
+        System.out.println("hello world");
+
+        // 创建一个对象实例
+        T t = new T("zhangsan");
+
+        System.out.println(t);
+    }
+}
+
+class T{
+
+
+    /**
+     * overload(重载)
+     * @param name
+     */
+    public T(String name) {
+    }
+
+    /**
+     * 重写方法
+     * @return
+     */
+    @Override
+    public String toString() {
+        return "orverride method";
+    }
+}
+```
+
+## 重载和重写的区别
+
+### 重载
+
+重载就是同样的⼀个⽅法能够根据输⼊数据的不同，做出不同的处理，
+
+* ⽅法名必须相同，参数类型不同、个数不同、顺序不同
+
+  
+
+### 重写
+
+重写就是当⼦类继承⾃⽗类的相同⽅法，输⼊数据⼀样，**但要做出有别于⽗类的响应时**，**你就要覆盖⽗类⽅法**
+
+* 返回值类型、⽅法名、参数列表必须相同
+* 如果⽗类⽅法访问修饰符为 **private/final/static** 则⼦类就不能重写该⽅法
+* **构造⽅法⽆法被重写**
+
+
+
+## 面向对象的三大特性
+
+### 封装
+
+封装把⼀个对象的属性私有化，同时提供⼀些可以被外界访问的属性的⽅法，如果属性不想被外界访问，我们⼤可不必提供⽅法给外界访问。但是如果⼀个类没有提供给外界访问的⽅法，那么这个类也没有什么意义了
+
+### 继承
+
+继承是使⽤已存在的类的定义作为基础建⽴新类的技术，新类的定义可以增加新的数据或新的功能，也可以⽤⽗类的功能，但不能选择性地继承⽗类。通过使⽤继承我们能够⾮常⽅便地复⽤以前的代码
+
+### 多态
+
+所谓多态就是指程序中**定义的引⽤变量**所指向的具体类型和通过该**引⽤变量发出的⽅法**调⽤在**编程时并不确定**，⽽是在**程序运⾏期间才确定**，即⼀个引⽤变量到底会指向哪个类的实例对象，该引⽤变量发出的⽅法调⽤到底是哪个类中实现的⽅法，必须在由程序运⾏期间才能决定
+
+**总结：**具体点就是去**完成某个行为**，**当不同的对象去完成时会产生出不同的状态**
+
+实现多态的方式：
+
+* 继承（extend）
+* 接口（implement）
+
+代码实例
+
+```java
+public class demo02_实现多态 {
+
+    public static void main(String[] args) {
+
+        Father son1 = new Son1();
+
+        Father son2 = new Son2();
+
+        son1.say();
+        son2.say();
+
+    }
+}
+
+class Father{
+    public void say(){
+        System.out.println("我是Father");
+    }
+}
+
+class Son1 extends Father{
+
+    public void say(){
+        System.out.println("我是son1");
+    }
+}
+
+class Son2 extends Father{
+
+    public void say(){
+        System.out.println("我是son2");
+    }
+}
+```
+
+## String、StringBuffer、StringBuilder
+
+[【java常问面试题】java基础题你会吗？String、StringBuffer、StringBuilder的区别？_哔哩哔哩_bilibili](https://www.bilibili.com/video/BV1vM4y1v7Yy/?spm_id_from=333.337.search-card.all.click&vd_source=a7270da89bd12ac0bf20b1d08e183fec)
+
+String是final修饰的所以String是不可修改的，每次修改String都是改变地址的
+
+StringBuffer加锁修饰了，所以StringBuffer线程是安全的
+
+StringBuilder没有加锁修饰，所以StringBuilder线程不是安全的
+
+区别：
+
+* String不可修改，StringBuffer、StringBuilder可以修改
+* String不可变，因此是线程安全的，Stringbuffer加了锁所以也是线程安全的，但是StringBuilder没有加锁，是线程不安全的
+* String性能最低，因为每次修改都需要修改地址，Stringbuffer加锁的原因导致新能降低，因此StringBuilder性能最高
+* String存储在字符串常量池里面，StringBuffer、StringBuilder存储在堆内存空间里面
+
+## 在静态方法中调用非静态成员
+
+先加载main这个静态方法，然后执行main中的代码，执行的时候对象还没有创建-->对象的成员还没出现，此时直接调用对象的成员就会出错
+
+```java
+public class demo03_静态方法 {
+
+    public void NonStaticMethod(){
+        System.out.println("这个是非静态方法");
+    }
+
+    
+    public static void main(String[] args) {
+
+        NonStaticMethod();
+    }
+}
+```
+
+
+
+## 定义一个没有参数的构造方法
+
+在父类中定义了一个有参数的构造方法，如果说没有**显示定义无参数的构造方法**，那么这个**有参的构造方法就是会覆盖无参构造方法**，
+
+当子类继承父类之后，**默认的是调用无参构造函数**，所有需要显示声明一个**无参构造方法**
+
+```java
+public class demo04_定义没有参数的构造方法 {
+
+    public static void main(String[] args) {
+
+        Demo04Son demo04Son = new Demo04Son();
+    }
+}
+
+
+class Demo04{
+
+    Demo04(){
+        System.out.println("没有参数");
+    }
+
+    Demo04(String name){
+        System.out.println("定义了有参数的构造方法");
+    }
+}
+
+class Demo04Son extends Demo04{
+
+}
+```
+
+
+
+抽象类和接口
+
+抽象类是带有抽象方法的类
+
+接口是比抽象类更为抽象的类
+
+**两者区别**：
+
+* 抽象类的类可以是普通方法，但是必须含有抽象方法，也就是public abstract修饰的，接口只能是public abstract修饰的
+* 抽象类的成员变量可以是各种类型，但是接口的变量只能是public static abstract
+* 抽象类是单继承的，接口是可以多个继承
+
+```java
+public class demo05_接口和抽象类 {
+
+
+}
+
+/**
+ * 定义一个抽象类
+ * 抽象类是只能被单继承的
+ */
+abstract class ABStract{
+   abstract void method();
+
+    /**
+     * 定义一个普通方法
+     */
+   void normalMethod(){
+
+   }
+
+    /***
+     * 定义的成员变量可以是各种类型
+     */
+    String name = "name";
+}
+
+/**
+ * 接口是可以被多继承
+ */
+interface Interface{
+
+    /**
+     * 只能定义public abstract的方法
+     */
+    public abstract void method();
+
+    /**
+     * 定义的变量只能是public static finnal
+     */
+
+    public static final String name = null;
+}
+```
+
+## 成员变量和局部变量区别
+
+* 从语法上
+
+  * 成员变量是属于类的，有public、private、static等修饰词修饰
+  * 局部变量：是方法中定义的变量
+
+* 从存储方式
+
+  * 成员变量如果是使用了static修饰，那么是属于类的，如果没有，则这个是属于实例的
+
+  * 局部变量
+
+    * 如果是普通类型：直接存储在栈
+    * 如果是引用类型：对象存储在堆，对象的引用（指针）存储在栈
+
+    ```java
+    // s2是对象，s1引用
+    String s1 = new String(“william”);
+    String s2 = s1;
+    ```
+
+    
+
+* 从生存时间
+
+  * 成员变量是对象的一部分，随着对象创建而存在
+  * 局部变量随着方法调用而自动消失
+
+* 从初始赋值
+
+  * 成员变量会自动默认赋值
+  * 局部变量则不会自动赋值
+
+**对象的创建使用new操作符实现，对象实体存放在栈区，对象引用存放在堆区**
+
+## 构造方法
+
+主要作⽤是完成对类对象的初始化⼯作，类会默认带一个无参的构造方法
+
+特性：
+
+* 名字与类名相同
+* 没有返回值，但不能⽤ void 声明构造函数
+* ⽣成类的对象时⾃动执⾏，⽆需调⽤
+
+## 静态方法和实例方法
+
+使用上：
+
+* 静态方法可以在main中直接使用或者使用类名.进行调用，但是实例方法必须使用对象.进行调用
+* 静态方法访问成员变量只能是静态变量，实例方法无限制
+
+```java
+public class demo06_静态方法和实例方法 {
+
+    public static void Staticmethod(){
+        System.out.println("这个是静态方法");
+    }
+
+    public void method(){
+        System.out.println("这个是实例方法");
+    }
+
+    public static void main(String[] args) {
+
+        Staticmethod();
+
+        demo06_静态方法和实例方法.Staticmethod();
+
+        new demo06_静态方法和实例方法().method();
+    }
+}
+```
+
+## 对象和引用的相等区别
+
+对象相等在于比较**内容是否相等**，引用相等在于比较**地址是否相等**
+
+## 子类调用父类构造器
+
+子类通过默认自动调用父类构造器，可以对子类进行数据初始化
+
+```java
+public class demo07_子列调用父类构造器 {
+
+    public static void main(String[] args) {
+
+        Demo07Son son = new Demo07Son();
+
+        System.out.println(son.name);
+    }
+}
+
+class Demo07{
+
+    public String name = "zhangsna";
+
+    Demo07(){
+        System.out.println("hello world");
+    }
+}
+
+class Demo07Son extends Demo07{
+
+}
+```
+
+## == 和 equals
+
+==：
+
+简单类型，判断这两个值是不是相等，对引用类型判断是不是同一个地址
+
+equals：
+
+* 未覆盖前：根据对象的地址判断是否相等
+* 覆盖后：根据覆盖的内容判断是否相等
+
+```java
+public class demo08_等号和equals {
+
+
+    public static void main(String[] args) {
+
+        String a= "aa";
+        String b= "aa";
+
+        System.out.println(a==b);
+        System.out.println(a.equals(b));
+
+        String aa = new String("aa");
+        String bb = new String("aa");
+
+        System.out.println(aa==bb);
+        System.out.println(aa.equals(bb));
+    }
+}
+```
+
+```java
+public class demo08_等号和equals {
+
+
+    public static void main(String[] args) {
+        // 新建2个相同内容的Person对象，
+        // 再用equals比较它们是否相等
+        Person p1 = new Person("eee", 100);
+        Person p2 = new Person("eee", 100);
+        System.out.println(p1.equals(p2));
+        System.out.println(p1 == p2);
+    }
+
+    /**
+     * @desc Person类。
+     */
+    private static class Person {
+        int age;
+        String name;
+
+        public Person(String name, int age) {
+            this.name = name;
+            this.age = age;
+        }
+
+        public String toString() {
+            return name + " - " +age;
+        }
+    }
+}
+```
+
+## hashcode和equals
+
+### hashcode
+
+* **介绍**
+
+  hashCode() 的作⽤是**获取哈希码**，也称为**散列码**；它实际上是返回⼀个 **int 整数**。这个哈希码的
+
+作⽤是确定该对象在**哈希表中的索引位置**
+
+* **为什么要hashcode**
+
+  以hashset为例子，HashSet 会先计算对象的 hashcode 值来判断对象加⼊的位置
+
+  * 如果不存在
+    * 如果没有相符的 hashcode， HashSet会假设对象没有重复出现
+  * 如果存在
+    * 会调⽤ equals() ⽅法来检查 hashcode 相等的对象是否真的相同
+
+* **hashcode相等对象一定相等吗**
+
+  不一定，在少数情况下，即使不同地址得出来的hashcode是不一样的
+
+* **为什么重写了equals一定需要重写hashcode**
+
+  **简单来说就是为了提高性能**
+
+  * **hashMap** 判断一个对象是否相等，首先通过比较对象的**hashcode值是否相同**，若是相同，再比较**equals是否相同**，若是不同，则可判定两个对象为不同的对象。
+  * 当我们重写一个对象的equals方法时，必须同时重写对象的hashCode方法，这是为了避免出现两个对象相同，但是hashCode值却不同的情况
+
+不会创建类对应的散列表
+
+```java
+public class demo09_hashcode和equals {
+
+    public static void main(String[] args) {
+
+        Person p1 = new Person(11,"zhangsan");
+        Person p2 = new Person(11,"zhangsan");
+        System.out.println(p1.equals(p2));
+    }
+}
+
+class Person{
+
+    int age;
+    String name;
+
+    Person(int age,String name){
+        this.age = age;
+        this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return "Person{" +
+                "age=" + age +
+                ", name='" + name + '\'' +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+
+        Person p = (Person) obj;
+
+        return this.age == p.age && this.name == p.name;
+    }
+
+```
+
+会创建类对应的散列表
+
+```java
+import java.util.HashSet;
+
+public class demo09_hashcode和equals {
+
+    public static void main(String[] args) {
+
+        Person p1 = new Person(11,"zhangsan");
+        Person p2 = new Person(11,"zhangsan");
+
+        HashSet<Person> hashSet = new HashSet<>();
+
+        hashSet.add(p1);
+        hashSet.add(p2);
+        
+        System.out.println(p1.hashCode() + " " + p2.hashCode());
+        System.out.println(hashSet);
+    }
+}
+
+class Person{
+
+    int age;
+    String name;
+
+    Person(int age,String name){
+        this.age = age;
+        this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return "Person{" +
+                "age=" + age +
+                ", name='" + name + '\'' +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+
+        Person p = (Person) obj;
+
+        return this.age == p.age && this.name == p.name;
+    }
+
+    @Override
+    public int hashCode() {
+        return this.age ^ this.name.hashCode();
+    }
+}
+```
+
+## finnal
+
+* 修饰常量，finnal修饰常量，这个常量是不能被修改的
+* 修饰类，finnal修饰类名，这个类是不能被继承的
+* 修饰方法，说明这种方法提供的功能已经满足当前要求，不需要进行扩展
+
+## 异常处理
+
+![image-20231005164227102](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20231005164227102.png)
+
+**Throwable** **类常⽤⽅法**
+
+* **public string getMessage()** :返回异常发⽣时的简要描述
+
+* **public string toString()** :返回异常发⽣时的详细信息
+
+* **public string getLocalizedMessage()** :返回异常对象的本地化信息。使⽤ Throwable 的⼦类覆盖这个⽅法，可以⽣成本地化信息。如果⼦类没有覆盖该⽅法，则该⽅法返回的信息与getMessage() 返回的结果相同
+
+* **public void printStackTrace()** :在控制台上打印 Throwable 对象封装的异常信息
+
+## 拷贝
+
+* 赋值：直接赋值的方式没有生产新的对象，只是生新增了一个对象引用
+
+![image-20231005165124642](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20231005165124642.png)
+
+```java
+public class demo11_拷贝 {
+
+    public static void main(String[] args) {
+        Demo11 demo11 = new Demo11();
+
+        demo11.setAge(11);
+
+        System.out.println(demo11.getAge());
+
+        Demo11 demo111 = demo11;
+
+        demo111.setAge(12);
+
+        System.out.println(demo11.getAge());
+    }
+}
+
+class Demo11{
+
+    int age;
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+}
+```
+
+* 浅拷贝
+
+  如果原型对象的成员变量是值类型，将复制一份给克隆对象，也就是说在堆中拥有独立的空间；如果原型对象的成员变量是引用类型，则将引用对象的地址复制一份给克隆对象，也就是说原型对象和克隆对象的成员变量指向相同的内存地址。换句话说，在浅克隆中，当对象被复制时只复制它本身和其中包含的值类型的成员变量，而引用类型的成员对象并没有复制
+  
+
+  <img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20231005165440215.png" alt="image-20231005165440215" style="zoom:67%;" />
+
+* 深拷贝
+
+  相对于浅拷贝，深拷贝是一种完全拷贝，无论是值类型还是引用类型都会完完全全的拷贝一份，在内存中生成一个新的对象。拷贝对象和被拷贝对象没有任何关系，互不影响。
+
+<img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20231005165452423.png" alt="image-20231005165452423" style="zoom:67%;" />
+
+## IO流
+
+### 分类
+
+* 流向：输入流和输出流
+* 单元划分：字节流和字符流
+
+![image-20231005170719683](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20231005170719683.png)
+
+![image-20221219111042201](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20221219111042201.png)
+
+**字节流、字符流的使用场景总结？**
+**字节流适合做一切文件数据的拷贝（音视频，文本）**
+**字节流不适合读取中文内容输出**
+**字符流适合做文本文件的操作（读，写）**
+
+
+
+### 缓冲流
+
+**作用：缓冲流自带缓冲区、可以提高原始字节流、字符流读写数据的性能**
+
+**字节缓冲输入流自带了8KB缓冲池，以后我们直接从缓冲池读取数据，所以性能较好。**
+**字节缓冲输出流自带了8KB缓冲池，数据就直接写入到缓冲池中去，写数据性能极高了。**
+
+#### 字节缓冲输入流
+
+##### BufferedInputStream
+
+```java
+String path = "E:\\智能车回忆及个人资料\\17届智能车 天翊\\8月26日\\Typecoh智能车生涯.mp4";
+        
+File file = new File(path);
+
+InputStream inputStream = new FileInputStream(file);
+
+BufferedInputStream in = new BufferedInputStream(inputStream);
+```
+
+
+
+#### 字节缓冲输出流
+
+##### BufferedOutputStream
+
+```java
+String path1 = "E:\\智能车回忆及个人资料\\17届智能车 天翊\\8月26日\\Typecoh智能车生涯12.mp4";
+    
+ File file1 = new File(path1);
+
+OutputStream outputStream = new FileOutputStream(file1);
+
+BufferedOutputStream out = new BufferedOutputStream(outputStream); 
+```
+
+```java
+package 缓冲流;
+
+import java.io.*;
+import java.nio.Buffer;
+import java.nio.charset.StandardCharsets;
+import java.util.Date;
+import java.util.Timer;
+
+/**
+ * @ClassName 字节缓冲输入流
+ * @Description TODO
+ * @Author Typecoh
+ * @Date 2022/12/19 15:30
+ * @Version 1.0
+ */
+
+public class 字节缓冲输入流 {
+    
+    public static void main(String[] args) throws Exception {
+        
+        // 开始时间
+        long starTime = System.currentTimeMillis();
+        
+        String path = "E:\\智能车回忆及个人资料\\17届智能车 天翊\\8月26日\\Typecoh智能车生涯.mp4";
+        
+        File file = new File(path);
+    
+        InputStream inputStream = new FileInputStream(file);
+    
+        BufferedInputStream in = new BufferedInputStream(inputStream);
+    
+        String path1 = "E:\\智能车回忆及个人资料\\17届智能车 天翊\\8月26日\\Typecoh智能车生涯12.mp4";
+    
+        File file1 = new File(path1);
+        
+        OutputStream outputStream = new FileOutputStream(file1);
+    
+        BufferedOutputStream out = new BufferedOutputStream(outputStream); 
+        
+        int len; 
+        
+        byte []buffer = new byte[1024];
+        
+        while((len = in.read(buffer)) != -1){
+            
+            out.write(buffer,0,len);
+    
+        }
+        // 如果 不调用 close() 就会导致 缓冲区中部分 内容可能没用输入完成
+        // 就会导致 文件残缺 视频播放不了
+        
+        out.close();
+        
+        // 结束时间
+        long endTime = System.currentTimeMillis();
+    
+        System.out.println((endTime - starTime) / 1000.0 + "s");
+        
+        System.out.println("复制完成~~~");
+        
+    }
+}
+
+```
+
+
+
+#### 字符缓冲输入流
+
+##### BufferedReader
+
+```java
+String path = "E:\\大学两年的比赛和项目\\JavaSE\\JavaFile\\src\\文件拷贝\\copy.txt";
+
+File file = new File(path);
+
+Reader reader = new FileReader(file);
+
+BufferedReader br = new BufferedReader(reader);
+```
+
+#### 字符缓冲输出流
+
+##### BufferedWriter
+
+```java
+String path1 = "E:\\大学两年的比赛和项目\\JavaSE\\JavaFile\\src\\文件拷贝\\copy1.txt";
+
+File file1 = new File(path1);
+
+Writer writer = new FileWriter(file1);
+
+BufferedWriter bw = new BufferedWriter(writer);
+```
+
+```java
+package 缓冲流;
+
+import java.io.*;
+
+/**
+ * @ClassName 字符缓冲输入输出流
+ * @Description TODO
+ * @Author Typecoh
+ * @Date 2022/12/19 16:50
+ * @Version 1.0
+ */
+
+public class 字符缓冲输入输出流 {
+    
+    public static void main(String[] args) throws Exception {
+        
+        String path = "E:\\大学两年的比赛和项目\\JavaSE\\JavaFile\\src\\文件拷贝\\copy.txt";
+    
+        File file = new File(path);
+    
+        Reader reader = new FileReader(file);
+        
+        BufferedReader br = new BufferedReader(reader);
+        
+        String path1 = "E:\\大学两年的比赛和项目\\JavaSE\\JavaFile\\src\\文件拷贝\\copy1.txt";
+        
+        File file1 = new File(path1);
+        
+        Writer writer = new FileWriter(file1);
+        
+        BufferedWriter bw = new BufferedWriter(writer);
+        
+        String string;
+        
+        while((string = br.readLine()) != null){
+    
+            bw.write(string,0,string.length());
+            // 换行
+            bw.newLine();
+        }
+        
+        bw.flush();
+        br.close();
+        
+        System.out.println("输出完成");
+    }
+}
+
+```
+
+# Java集合
+
+## List、Set、Map
+
+* List (对付顺序的好帮⼿)： 存储的元素是有序的、可重复的。
+
+* Set (注重独⼀⽆⼆的性质): 存储的元素是⽆序的、不可重复的。
+
+* Map (⽤ Key 来搜索的专家): 使⽤键值对（kye-value）存储，类似于数学上的函数
+
+  y=f(x)，“x”代表 key，"y"代表 value，Key 是⽆序的、不可重复的，value 是⽆序的、可重复
+
+  的，每个键最多映射到⼀个值。
+
+## ArrayList和Linklist
+
+* 线程安全
+
+  arraylist和linklist都是不同步的，都不能保证线程安全
+
+* 数据结构
+
+  * ArrayList：
+
+    数组实现完成的，因此添加元素、按位置查找较快，删除指定元素时间复杂度O（n）
+
+  * LinkList：
+
+    链表实现完成的，因此查找元素时间复杂度O（n），但是插入元素，删除元素快
+
+## HashMap和HashSet
+
+**HashSet 底层就是基于 HashMap 实现的**
+
+* hashMap：数据结构是由数组+链表组成的
+  * 存储键值对，
+  * 添加元素是使用put方法，
+  * HashMap 使⽤键（Key）计算hashcode
+* hashset：
+  * 只是存储对象，
+  * 添加元素是使用add方法
+  * HashSet 使⽤成员对象来计算 hashcode 值，对于两个对象来说hashcode 可能相同，所以 equals() ⽅法⽤来判断对象的相等性
+
+# 多线程
+
+## 进程
+
+进程是程序的⼀次执⾏过程，是系统运⾏程序的基本单位，因此进程是动态的。系统运⾏⼀个程
+
+序即是⼀个进程从创建，运⾏到消亡的过程（如qq、微信等应用程序）
+
+## 线程
+
+线程与进程相似，**但线程是⼀个⽐进程更⼩的执⾏单位**。⼀个**进程**在其执⾏的过程中可以产⽣**多**
+
+**个线程**。如一个进程qq，qq中有很多个功能，这些功能就是一个线程
+
+## 多线程
+
+cpu在同时可以执行多个任务，提高工作效率
+
+## 并发和并行
+
+#### 并发
+
+单核CPU处理器在处理进程中
+
+CPU会轮询为系统的每个线程服务，由于CPU切换的速度很快，给我们的感觉这些线程在同时执行，这就是并发。
+
+<img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20221221165904907.png" alt="image-20221221165904907" style="zoom:67%;" />	
+
+#### 并行
+
+多核处理器CPU
+
+在处理进程时，多个进程可以同时被处理
+
+<img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20221221170034571.png" alt="image-20221221170034571" style="zoom:67%;" />
+
+## 什么是上下⽂切换
+
+**多线程**编程中⼀般**线程的个数**都⼤于 **CPU 核⼼**的个数，⽽⼀个 **CPU 核⼼在任意时刻**只能**被⼀个**
+
+**线程使⽤**，为了让这些线程都能得到有效执⾏，CPU 采取的策略是为每个线程**分配时间⽚**并轮转
+
+的形式。当⼀个线程的时间⽚⽤完的时候就会**重新处于就绪状态**让给其他线程使⽤，**任务从保存到加载的过程就是一次上下文切换**。
+
+## 死锁
+
+**当线程 A 持有独占锁a**，**并尝试去获取独占锁 b 的同时**，**线程 B 持有独占锁 b**，**并尝试获取独占锁 a 的情况下**，就会发生 AB 两个线程由于互相持有对方需要的锁，而发生的阻塞现象，我们称为死锁。
+
+线程死锁描述的是这样⼀种情况：**多个线程同时被阻塞**，它们中的⼀个或者全部都在等待某个资
+
+源被释放。由于线程被⽆限期地阻塞，因此程序不可能正常终⽌。
+
+死锁必要条件：
+
+* 互斥条件：该**资源**任意⼀个时刻只由**⼀个线程**占⽤。
+* 请求与保持条件：⼀个进程因**请求资源⽽阻塞**时，对已获得的**资源保持不放**。
+* 不剥夺条件:线程已获得的**资源在末使⽤完之前**不能被其他线程**强⾏剥夺**，只有⾃⼰使⽤完毕后才释放资源。
+* 循环等待条件:若⼲进程之间形成⼀种**头尾相接**的循环等待资源关系。
+
+## 线程创建方法
+
+### 继承Thread类
+
+```java
+package 线程;
+
+/**
+ * @ClassName demo1
+ * @Description TODO
+ * @Author Typecoh
+ * @Date 2022/12/20 9:47
+ * @Version 1.0
+ */
+
+public class demo1 {
+    
+    public static void main(String[] args) {
+        
+        Thread thread = new MyThread();
+        // 调用 star方法 是 启动线程
+        // 调用 run方法 是 执行方法
+        thread.start();
+    
+        for(int i = 0 ; i < 100; i++)
+        System.out.println("主线程运行");
+        
+    }
+}
+
+class MyThread extends Thread{
+    @Override
+    public void run() {
+        for(int i = 0 ; i < 100; i++)
+        System.out.println("子线程运行");
+    }
+}
+
+```
+
+### 实现Runnable接口
+
+```java
+package 线程;
+
+/**
+ * @ClassName demo2
+ * @Description TODO
+ * @Author Typecoh
+ * @Date 2022/12/20 9:53
+ * @Version 1.0
+ */
+
+public class demo2 {
+    
+    public static void main(String[] args) {
+       
+        // 创建一个Runnable 实现对象
+        Runnable runnable = new MyThread1();
+        //
+        // // 将 Runnable 传给 Thread 类
+        // Thread thread = new Thread(runnable);
+        
+        // 给子线程指定名称
+        Thread thread = new Thread(runnable,"子线程");
+        
+        // 启动类
+        thread.start();
+    
+        for(int i = 0 ; i < 100; i++){
+            System.out.println("主线程运行");
+        }
+    }
+}
+
+class MyThread1 implements Runnable{
+    
+    // 存在的问题是 run 方法是没有返回值
+    // 不利于实现业务程序
+    @Override
+    public void run() {
+        for(int i = 0 ; i < 100; i++){
+            System.out.println("子线程运行");
+        }
+    }
+}
+```
+
+### 实现Callable接口
+
+由于前两实现多线程 没有返回值 于是使用实现Callable接口
+
+```java
+package 线程;
+
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.FutureTask;
+
+/**
+ * @ClassName demo3
+ * @Description TODO
+ * @Author Typecoh
+ * @Date 2022/12/20 10:00
+ * @Version 1.0
+ */
+
+public class demo3 {
+    
+    public static void main(String[] args) {
+    
+        // 创建第一个线程
+        Callable<String> callable = new MyThread3(1000000); 
+        
+        FutureTask<String> futureTask = new FutureTask<>(callable);
+        
+        Thread thread = new Thread(futureTask);
+    
+        // 创建第二个线程
+        Callable<String> callable2 = new MyThread3(50);
+    
+        FutureTask<String> futureTask2 = new FutureTask<>(callable2);
+    
+        Thread thread2 = new Thread(futureTask2);
+    
+        thread2.start();
+        thread.start();
+        
+
+        // 拿到返回值
+        try {
+            String s1 = futureTask.get();
+            System.out.println("第一个结果是" + s1);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        
+        // 拿到返回值
+        try {
+            String s2 = futureTask2.get();
+            System.out.println("第二个结果" + s2);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+class MyThread3 implements Callable<String>{
+    
+    private int num;
+    
+    public MyThread3(int num) {
+        this.num = num;
+    }
+    
+    @Override
+    public String call() throws Exception {
+        
+        for(int i = 0; i < num; i++){
+            System.out.println("子线程执行");
+        }
+        
+        return "执行完成······························" + num;
+    }
+}
+```
+
+| 方式             | 优点                                                         | 缺点                                                   |
+| ---------------- | ------------------------------------------------------------ | ------------------------------------------------------ |
+| 继承Thread类     | 编程比较简单，可以直接使用Thread类中的方法                   | 扩展性较差，不能再继承其他的类，不能返回线程执行的结果 |
+| 实现Runnable接口 | 扩展性强，实现该接口的同时还可以继承其他的类。               | 编程相对复杂，不能返回线程执行的结果                   |
+| 实现Callable接口 | 扩展性强，实现该接口的同时还可以继承其他的类。可以得到线程执行的结果 | 编程相对复杂                                           |
+
+## sleep()和wait()
+
+- **类的不同：sleep() 来自 Thread，wait() 来自 Object**。
+- 释放锁：sleep() 不释放锁；wait() 释放锁。
+- 用法不同：sleep() 时间到会自动恢复；wait() 可以使用 notify()/notifyAll()直接唤醒
+
+## 为什么不直接调用run方法
+
+调⽤ start() ⽅法，会启动⼀个线程并使线程进⼊了就绪状态，当分配到时间⽚后就可以开始运⾏了。 
+
+run方法我们自己写的代码，**直接执⾏** **run()** **⽅法的话不会**以多线程的⽅式执⾏
+
+## synchronized........
+
+## 线程池
+
+线程池就是一个可以复用线程的技术。如果用户每发起一个请求，后台就创建一个新线程来处理，下次新任务来了又要创建新线程，而创建新线程的开销是很大的，这样会严重影响系统的性能。
+
+### 创建线程池
+
+* 通过构造方法
+
+```java
+/**
+     * public ThreadPoolExecutor(
+     *                           int corePoolSize,  // 线程核心数量
+ *                               int maximumPoolSize, // 最多线程数
+ *                               long keepAliveTime, //     临时线程存活时间
+ *                               TimeUnit unit, //  存活时间的单位
+ *                               BlockingQueue<Runnable> workQueue, // 任务队列
+ *                               ThreadFactory threadFactory,  // 指定那个线程工厂创建线程
+ *                               RejectedExecutionHandler handler //当线程忙的时候 任务满的时候 新任务来了 如何处理
+     *                          )
+     */
+
+ExecutorService executorService = new ThreadPoolExecutor(
+    3,5,5, TimeUnit.SECONDS,
+    new ArrayBlockingQueue<>(10),
+    Executors.defaultThreadFactory(),new ThreadPoolExecutor.AbortPolicy()
+);
+```
+
+* 通过 Executor 框架的⼯具类 **Executors** 来实现
+  * **CachedThreadPool**：该⽅法返回⼀个可根据实际情况调整线程数量的线程池
+  * **SingleThreadExecutor**：⽅法返回⼀个只有⼀个线程的线程池
+  * **FixedThreadPool**：该⽅法返回⼀个固定线程数量的线程池
+
+### 执⾏ execute()⽅法和submit()⽅法
+
+| 方法名称                           | 说明                                                  |
+| ---------------------------------- | ----------------------------------------------------- |
+| void execute(Runnable command)     | 执行任务/命令，没有返回值，一般用来执行 Runnable 任务 |
+| Future<T> submit(Callable<T> task) | 执行Callable任务，返回未来任务对象获取线程结果        |
+
+# 计算机网络
+
+## 五层模型
+
+### 应用层
+
+应⽤层(application-layer）的任务是**通过应⽤进程间的交互**来完成特定**⽹络应⽤**
+
+### 运输层
+
+运输层(transport layer)的主要任务就是**负责向两台主机进程**之间的通信提供通⽤的**数据传输服务**
+
+使用的传输协议是**TCP/UDP**
+
+### 网络层
+
+在计算机⽹络中进⾏**通信**的两个计算机之间可能会经过很**多个数据链路**，也可能还要经过很多**通**
+
+**信⼦⽹**。⽹络层的任务就是**选择合适的⽹间路由和交换结点**， 确保数据及时传送。
+
+### 数据链路层
+
+数据链路层(data link layer)通常简称为链路层。**两台主机之间的数据传输**，总是在⼀段⼀段的链
+
+路上传送的，这就需要使⽤专⻔的链路层的协议
+
+### 物理层
+
+物理层(physical layer)的作⽤是实现相邻计算机节点之间**⽐特流**的透明传送，尽可能屏蔽掉具
+
+体传输介质和物理设备的差异
+
+##  TCP 三次握⼿和四次挥⼿(⾯试常客)
+
+<img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20231006094557404.png" alt="image-20231006094557404" style="zoom:67%;" />
+
+* 客户端–发送带有 SYN 标志的数据包–⼀次握⼿–服务端
+
+* 服务端–发送带有 SYN/ACK 标志的数据包–⼆次握⼿–客户端
+
+* 客户端–发送带有带有 ACK 标志的数据包–三次握⼿–服务端
+
+### 为什么要三次握手
+
+**三次握⼿的⽬的是建⽴可靠的通信信道，说到通讯，简单来说就是数据的发送与接收，⽽三次握**
+
+**⼿最主要的⽬的就是双⽅确认⾃⼰与对⽅的发送与接收是正常的。**
+
+第⼀次握⼿：Client 什么都不能确认；Server 确认了对⽅发送正常，⾃⼰接收正常
+
+第⼆次握⼿：Client 确认了：⾃⼰发送、接收正常，对⽅发送、接收正常；Server 确认了：对⽅
+
+发送正常，⾃⼰接收正常
+
+第三次握⼿：Client 确认了：⾃⼰发送、接收正常，对⽅发送、接收正常；Server 确认了：⾃⼰
+
+发送、接收正常，对⽅发送、接收正常
+
+所以三次握⼿就能确认双发收发功能都正常，缺⼀不可。
+
+### 四次挥手
+
+<img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20231006101803071.png" alt="image-20231006101803071" style="zoom:67%;" />
+
+**为什么需要四次挥手**
+
+任何⼀⽅都可以在数据传送结束后发出连接释放的通知，待对⽅确认后进⼊半关闭状态。当另⼀⽅也没有数据再发送的时候，则发出连接释放通知，对⽅确认后就完全关闭了TCP连接。
+
+
+
+
+
+
+
+
+
+##  TCP协议如何保证可靠传输
+
+* 校验和
+* 流量控制：TCP的接收端**只允许**发送端发送接收端缓冲区能接纳的数据。
+* 拥塞控制：**当⽹络拥塞时，减少数据的发送**。
+* ARQ协议：也是为了实现可靠传输的，它的基本原理就是每发完⼀个分组就停⽌发送，等待对⽅确认。**在收到确认后**再发下⼀个分组。
+* 超时重传：当 TCP 发出⼀个段后，它启动⼀个**定时器**，**等待⽬的端确认收到这个报⽂段**。如果不能及时收到⼀个确认，将重发这个报⽂段。
+
+## ARQ协议
+
+### 停止等待ARQ协议
+
+停⽌等待协议是为了实现可靠传输的，它的基本原理就是每发完⼀个分组就停⽌发送，等待
+
+对⽅确认（回复ACK）。如果过了⼀段时间（超时时间后），还是没有收到 ACK 确认，说
+
+明没有发送成功，需要重新发送，直到收到确认后再发下⼀个分组；
+
+### 连续ARQ协议
+
+连续 ARQ 协议可提⾼信道利⽤率。**发送⽅维持⼀个发送窗⼝**，凡位于发送窗⼝内的分组可以连
+
+续发送出去，⽽不需要等待对⽅确认。**接收⽅⼀般采⽤累计确认**，对按序到达的**最后⼀个分组发**
+
+**送确认**，表明到这个分组为⽌的所有分组都已经正确收到了。
+
+## 拥塞控制
+
+拥塞控制就是为了防⽌过多的数据注⼊到⽹络中，这样就可以使⽹络中的路由器或链路不致过载
+
+即 **慢开始** 、 **拥塞避免** 、**快重传** 和 **快恢复**。
+
+## 在浏览器中输⼊url地址
+
+* 检查URL是否合法
+
+* DNS解析：讲输入的url对应的域名解析成ip地址
+* TCP连接：三次挥手进行建立连接
+* 发送HTTP请求：向服务器发送http请求
+* 服务器处理请求并返回HTTP报⽂ ：服务返回response的回复
+* 浏览器解析渲染⻚⾯：进行页面渲染
+* 连接结束：四次挥手结束
+
+## Cookie和Session的区别
+
+Cookie 和 Session都是⽤来跟踪浏览器⽤户身份的会话⽅式，但是两者的应⽤场景不太⼀样。
+
+**Cookie 数据保存在客户端(浏览器端)，Session 数据保存在服务器端**，Cookie 存储在客户端中，⽽Session存储在服务器上，相对来说 **Session 安全性更⾼**。
+
+### Cookie
+
+cookie一般是用来保存用户信息，
+
+* 我们在 Cookie 中保存已经登录过得⽤户信息，下次访问⽹站的时候⻚⾯可以⾃动帮你登录的⼀些基本信息给填了	
+
+### Session
+
+**主要作⽤就是通过服务端记录⽤户的状态**
+
+代码实现
+
+## HTTP和HTTPS区别
+
+* HTTP使用的端口是80端口，HTTPS使用的端口是443端口
+*  HTTP协议运⾏在**TCP**之上，所有**传输**的内容都是**明⽂**，HTTPS是运⾏在**SSL/TLS**之上的HTTP协议，所有传输的内容都**经过加密**，加密采⽤对称加密
+
+
+
+# 操作系统
+
+## 操作系统概念
+
+管理计算机的硬件和软件资源，有效的组织和管理计算机的工作流程，提供有好的界面，方便用户使用
+
+## 进/线程之间同步方式
+
+* 操作系统中，进程是具有不同的地址空间的，两个进程是不能感知到对方的存在的。有时候，需要多个进程来协同完成一些任务。
+
+* 多个线程在并发使用的时候，我们因该避免关键资源使用冲突，因此采用措施进行避免
+
+1. 互斥锁
+
+2. 读写锁
+
+3. 条件变量
+4. 信号量
+
+* 进程和线程同步的区别
+
+  **进程之间地址空间不同，不能感知对方的存在，同步时需要将锁放在多进程共享的空间。而线程之间共**
+
+  **享同一地址空间，同步时把锁放在所属的同一进程空间即可。**
+
+## 进程之间的通信方式
+
+进程间通信主要包括管道、系统IPC（包括消息队列、信号量、信号、共享内存等）、以及套接字socket
+
+## 进程的调度算法
+
+* 先来先服务
+* 时间片轮转
+* 优先级调度
+* 短作业优先
+
+## 进程调度策略的基本设计指标
+
+1. CPU利用率
+
+2. 系统吞吐率，即单位时间内CPU完成的作业的数量。
+
+3. 响应时间。
+
+4. 周转时间。是指作业从提交到完成的时间间隔。从每个作业的角度看，完成每个作业的时间也是很
+
+关键
+
+## 内存管理......
+
+### 内存管理功能
+
+* 主要负责内存的申请和回收
+* 将逻辑地址转换成物理地址
+
+### 内存管理机制
+
+#### 块式管理
+
+#### 段式管理
+
+#### 页式管理
+
+#### 段页式管理
+
+
+
+# 数据库
+
+## MySQL
+
+### 事务
+
+**事务是逻辑上的一组操作，要么全执行，要么全部执行**
+
+经典案例就是**转账记录**
+
+特点：
+
+* 原子性：事务是最小的单位，不能分割，要么全执行，要不执行
+* 一致性：数据在操作前后一致（转账前后总金额保持）
+* 隔离性：事务A在操作的时候，事务B不能操作
+* 持久性：事务修改之后是永久的

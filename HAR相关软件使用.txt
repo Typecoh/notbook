@@ -1,0 +1,22 @@
+# Unity3D
+
+introduction：
+
+The most important quality of Unity is the ease of use. Development in Unity is very fast, especially on mobile platforms. The projects and the build games are small, and the export process is rather simple. The component architecture of the engine is easy to understand. Scripting in C# is fast and efficient. Unity has a big community; there are forums full of answers which make the debugging easier. And lastly, there is an asset store which is relatively cheap and contains a lot of useful assets. Only regarding graphics Unity is a bit worse looking compared to Unreal or Cry Engine, and it does not have good support for foliage and terrains.[[titletitle (core.ac.uk)](https://core.ac.uk/download/pdf/84832291.pdf)]
+
+Unity 最重要的品质是易用性。 Unity 中的开发速度非常快，尤其是在移动平台上。 项目和构建游戏都很小，导出过程也相当简单。 引擎的组件架构很容易理解。 使用 C# 编写脚本快速且高效。 Unity 有一个很大的社区； 有充满答案的论坛，使调试更容易。 最后，还有一个相对便宜且包含大量有用资产的资产商店。
+
+
+
+# Unreal Engine 4
+
+Unreal engine is being developed by the Epic Games company. 
+It is currently the leading engine in realistic visualization, vegetation, and terrain creation.
+Unreal engine is suited for larger projects. It is not suitable for developing small mobile games, although it supports the iOS and Android support.
+Unreal has Blueprint system for visual scripting. Blueprints are graphs made of blocks connected together. The connection creates certain logic instead of the scripts. Unreal has opened source code in C++. Also the coding language is C++ giving the developers great control over the whole system which is great. However, the framework is complicated and difficult to learn.
+ The rendering technology is a big benefit, the post-process effects are fast and support many features. Unreal has an editor for creation of custom materials. Unreal provides great tools for optimization and visual debugging. 
+Lastly, Unreal does not have such a large community as Unity, and the documentation is weak at some points.
+
+
+
+虚幻引擎由 Epic Games 公司开发。 它是目前现实可视化、植被和地形创建领域的领先引擎。 虚幻引擎适合大型项目。虽然它支持iOS和Android，但不适合开发小型手机游戏。 虚幻具有用于可视化脚本的蓝图系统。蓝图是由连接在一起的块组成的图表。连接创建某些逻辑而不是脚本。Unreal 已开放 C++ 源代码。此外，编码语言是 C++，使开发人员能够很好地控制整个系统，这非常棒。但该框架比较复杂，学习起来比较困难。 渲染技术是一个很大的好处，后期处理效果很快并且支持很多功能。Unreal 有一个用于创建自定义材质的编辑器。Unreal 提供了出色的优化和可视化调试工具。 最后，Unreal 没有像 Unity 这样庞大的社区，而且文档在某些方面也很薄弱。

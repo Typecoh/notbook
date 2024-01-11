@@ -1,0 +1,1851 @@
+# Python
+
+## 基础知识
+
+### Split函数使用
+
+python内建的split函数只能使用单个分隔符
+
+```python
+text = '你好！吃早饭了吗？再见。'
+ 
+text.split('！')
+Out[64]: ['你好', '吃早饭了吗？再见。']
+ 
+text.split('。|！|？')
+Out[65]: ['你好！吃早饭了吗？再见。']
+```
+
+re模块的split()函数可以使用多个分隔符对句子进行分割，其中不同的分隔符要用 “|” 隔开。
+
+```python
+import re
+ 
+re.split('。|！|？',text)
+Out[67]: ['你好', '吃早饭了吗', '再见', '']
+```
+
+
+
+### Python编码形式
+
+在 Python 中，默认情况下，字符串使用 Unicode 编码，而不是 ASCII 编码。Unicode 是一种字符编码标准，它支持包括 ASCII 在内的几乎所有字符。
+
+然而，由于 ASCII 编码是 Unicode 的子集，因此 ASCII 字符也可以在 Python 中使用，并且 ASCII 字符的编码值与 Unicode 编码相同。
+
+要在 Python 中使用 ASCII 编码，可以使用 `encode()` 方法将字符串编码为 ASCII 字节序列。例如：
+
+```python
+text = "Hello, ASCII"
+ascii_bytes = text.encode("ascii")
+print(ascii_bytes)
+```
+
+上述代码将字符串 "Hello, ASCII" 编码为 ASCII 字节序列，然后通过打印输出它。输出结果类似于：`b'Hello, ASCII'`。在 ASCII 编码中，每个字符都用一个字节表示。
+
+需要注意的是，如果字符串中包含非 ASCII 字符，尝试使用 ASCII 编码将引发 `UnicodeEncodeError` 错误。如果需要处理非 ASCII 字符，可以使用其他编码，如 UTF-8。
+
+总结起来，虽然 Python 默认使用 Unicode 编码，但 ASCII 字符可以直接使用，并且可以使用 `encode()` 方法将字符串编码为 ASCII 字节序列。
+
+### 表达式返回值
+
+#### 返回True Or False
+
+存在比较的返回True or False
+
+```python
+x = 2
+y = 8
+print(x > y)
+# True
+```
+
+#### 返回数字
+
+存在 and or等关键词返回数字
+
+```python
+x = 2
+y = 8
+print(x and y)
+#8
+```
+
+
+
+### pow
+
+在Python中，在Python中，`pow()`函数用于计算指定数字的幂次方，它的语法如下：
+
+```python
+pow(x, y, z)
+```
+
+其中，`x`是底数，`y`是指数，`z`是可选参数，表示取模运算的模数。
+
+当给定了`z`参数时，`pow()`函数会计算`x`的`y`次幂，然后对结果进行取模运算，最终返回取模后的结果。如果不提供`z`参数，`pow()`函数将返回`x`的`y`次幂的结果，不进行取模运算。
+
+```python
+result1 = pow(2, 3)  # 计算 2 的 3 次幂，结果为 8
+result2 = pow(2, 3, 5)  # 计算 2 的 3 次幂并取模 5，结果为 3
+```
+
+在这个例子中，`result1`的值为`8`，因为`2`的`3`次幂是`8`。而`result2`的值为`3`，因为`2`的`3`次幂是`8`，然后对`5`进行取模运算，结果为`3`。
+
+需要注意的是，`pow()`函数的`z`参数只在Python 2.7及以上版本中可用。在较早的Python版本中，可以使用`x ** y % z`的方式进行等效的操作。
+
+
+
+### eval函数介绍
+
+eval()函数用来执行一个字符串表达式，并返回表达式的值。
+eval是Python的一个内置函数，这个函数的作用是，返回传入字符串的表达式的结果。想象一下变量赋值时，将等号右边的表达式写成字符串的格式，将这个字符串作为eval的参数，eval的返回值就是这个表达式的结果。
+
+```python
+print(eval('2+4/5'))
+```
+
+### 复数
+
+复数由实部（real）和虚部（imag）构成，在 Python 中，复数的虚部以j或者J作为后缀，具体格式为：
+
+可以发现，复数在 Python 内部的类型是 complex，Python 默认支持对复数的简单计算。﻿# Python复数类型（complex）详解 复数（Complex）是 Python 的内置类型，直接书写即可。换句话说，Python 语言本身就支持复数，而不依赖于标准库或者第三方库。
+
+复数由实部（real）和虚部（imag）构成，在 Python 中，复数的虚部以j或者J作为后缀，具体格式为：
+
+a 表示实部，b 表示虚部。
+
+```python
+c1 = 12 + 0.2j
+print("c1Value: ", c1)
+print("c1Type", type(c1))
+c2 = 6 - 1.2j
+print("c2Value: ", c2)
+#对复数进行简单计算
+print("c1+c2: ", c1+c2)
+print("c1*c2: ", c1*c2)
+```
+
+
+
+### Join
+
+这个函数展开来写应该是str.join(item)，join函数是一个字符串操作函数
+
+str表示字符串（字符），item表示一个成员，注意括号里必须只能有一个成员，比如','.join('a','b')这种写法是行不通的
+
+```python
+','.join('abc')
+'a,b,c'
+```
+
+join里放列表、元组、字典也是可以的
+
+其中列表中的元素是字符串或者间接转成字符串
+
+```python
+
+';'.join([a,b,c])
+>>  'a;b;c'
+```
+
+```python
+a = [1,2,3]
+
+num = "".join(list(map(str,a)))
+
+print(int(num))
+```
+
+
+
+### 进制转换
+
+#### 转成十进制
+
+```python
+# 将n从m进制转成10进制
+# print(n,m)
+print(int(n,8))
+```
+
+#### 十进制转成R进制
+
+```python
+n = (input("请输入十六进制整数: ")).upper()
+
+R = int(input("所需要转成的进制: "))
+
+
+# 将十进制转成R进制
+def transf(n,R):
+    ans = []
+    while n > 0:
+        ans.append(str(n % R))
+        n = n // R
+    return "".join(ans[::-1])
+
+ans = transf(n,R)
+print(ans)
+```
+
+### 字符串结束标志
+
+在 Python 中，字符串并不以 `\0` 标识符结束。
+
+在一些编程语言中，例如 C 和 C++，字符串以 `\0`（空字符）作为字符串的结束标志。但是在 Python 中，字符串的结尾并不需要特殊的结束标志。
+
+在 Python 中，字符串是由字符组成的序列，并且可以使用单引号或双引号来表示。例如：
+
+python
+
+复制代码
+
+```python
+s1 = 'Hello'
+s2 = "World"
+```
+
+这里，变量 `s1` 和 `s2` 分别存储了字符串 `'Hello'` 和 `'World'`。在 Python 中，字符串的结束是根据字符串长度来确定的，而不是依赖于特殊的结束标志符。
+
+如果需要在字符串中包含特殊字符，可以使用转义字符来表示，例如：
+
+python
+
+复制代码
+
+```python
+s3 = 'This is a newline character: \n'
+s4 = 'This is a tab character: \t'
+```
+
+在上述示例中，`\n` 表示换行符，`\t` 表示制表符。这些转义字符可以在字符串中表示特殊的字符。
+
+因此，在 Python 中，字符串不是以 `\0` 标识符结束，而是根据字符串的长度来确定结束。
+
+
+
+### 字符串拼接
+
+使用 %s 作为占位符号
+
+```python
+name = "黑马程序员"
+salary = 1000
+message = "学IT就来 %s,%s" % (name,salary)
+
+print(message)
+```
+
+使用%d替代 整数 %f 替代小数
+
+```python
+name = "传智播客"
+setup_year = 2006
+price = 19.9
+
+print("我的名字%s,成立于%d,今天的股价是：%f" % (name,setup_year,price) )
+```
+
+### 输出格式控制
+
+#### 对齐格式
+
+```python
+# 居中对齐格式
+value = "Hello"
+width = 10
+print(f"{value:^{width}}")
+```
+
+
+
+#### 方式一
+
+```python
+name = "传智播客"
+setup_year = 2006
+price = 19.9
+
+# 使用 f"{name}" 进行格式化操作
+string = f"我的名字{name},成立于{setup_year},今天的股价是：{price}"
+
+print(string)
+
+```
+
+#### 方式二
+
+##### 使用format
+
+Python中的format()方法用于格式化字符串,能实现高度个性化的字符串格式。
+
+format()方法的基本语法是:
+
+```python
+"{}".format(xxx)
+```
+
+其中,`{}` 表示格式占位符,`format()`方法将`xxx`填充进去。
+
+例如:
+
+```python
+"Hello {}".format("world")
+# 输出 Hello world
+
+"{0} and {1}".format("abc", 123)
+# 输出 abc and 123
+```
+
+format()方法也允许自定义格式:
+
+```python
+"{name} was born in {year}".format(name="John", year=1990)
+# 输出 John was born in 1990
+
+"{0:d} days".format(7) 
+# 使用'd'格式化整数为12,输出 12 days
+```
+
+此外,format()方法也支持使用关键字参数进行格式化:
+
+```python
+"Name: {name}, Age: {age}".format(name="John", age=30) 
+# 输出 Name: John, Age: 30
+```
+
+输出指定位数
+
+**使用{:.}**
+
+```python
+age= 2.7
+print("hello {:.2f}".format(age))
+# hello 2.70
+```
+
+#### 方式三
+
+使用%符号进行输出
+
+```python
+num = 12.232
+
+print("%.2f" % num)
+```
+
+```python
+name = "zhangsan"
+age = 20
+height = 175.2352
+
+print("name = %s,age = %d,height = %.6f" %(name,age,height))
+```
+
+### 循环
+
+遍历一个字符串	
+
+```python
+name = "itheima"
+
+for it in name:
+    print(it)
+```
+
+### range
+
+```python
+# range 使用方法
+# range(start,end) 从 start 开始 end 结束 步长是默认是1
+for it in range(1,10):
+    print(it,end=" ")
+print()
+# range(start,end,step) 从 start 开始 end 结束 步长是 step
+for it in range(1,10,2):
+    print(it,end=" ")
+```
+
+### 函数
+
+函数的说明文档书写
+
+```python
+def add(x,y):
+
+    """
+    add 功能是实现两个数字相加返回 两个数字的和
+    :param x:
+    :param y:
+    :return:
+    """
+    res = x + y;
+    return res
+
+print(add(1,2))
+```
+
+### 列表常用方法
+
+| 编号 |        使用方法        |                      作用                       |
+| :--: | :--------------------: | :---------------------------------------------: |
+|  1   |   列表.append(元素)    |                 添加元素到末尾                  |
+|  2   |   列表.extend(容器)    |                  添加容器列表                   |
+|  3   | 列表.insert(下标,元素) |               向指定位置插入元素                |
+|  4   |     del 列表[下标]     |                删除指定下标元素                 |
+|  5   |     列表.pop(下标)     |               返回指定元素并删除                |
+|  6   |   列表.remove(元素)    |                 将指定元素清除                  |
+|  7   |      列表.clear()      |                   将列表清空                    |
+|  8   |    列表.count(元素)    |               统计元素出现的次数                |
+|  9   |    列表.index(元素)    | 查找元素在列表中的下标位置，如果没有则出现error |
+|  10  |       len(元素)        |                统计容器内的元素                 |
+
+#### 倒序输出list
+
+```python
+#  将原来的序列进行倒序输出
+res = list[::-1]
+print(f"倒序之后的list是{res}")
+```
+
+使用reverse
+
+list.reverse() 返回值是 None
+
+```python
+x = [1,2,3]
+y = x.reverse()
+print(x)
+
+#[3, 2, 1]
+```
+
+### 集合
+
+#### 定义集合
+
+```python
+# 定义一个有定义的集合
+my_set = {"黑马程序员","itcast","黑马程序员"}
+print(f"集合{my_set}")
+# 定义一个空集合
+my_set = set()
+```
+
+#### 添加元素
+
+```python
+# 添加元素
+# 当添加相同元素会自动去重
+my_set.add("heima")
+my_set.add("heima")
+my_set.add("itcase")
+print(my_set)
+```
+
+#### 移除元素
+
+```python
+# 移除指定元素
+my_set.remove("heima")
+print(my_set)
+```
+
+#### 获取元素
+
+```python
+# 随机获取元素 并将获取到的元素进行删除
+element = my_set.pop()
+print(element)
+print(my_set)
+```
+
+#### 清除集合
+
+```python
+# 清除集合
+my_set.clear()
+print(my_set)
+```
+
+#### 求集合差集
+
+```python
+# 取两个集合的差集
+set1 = {1,2,3}
+set2 = {2,3,4}
+
+res = set1.difference(set2)
+print(f"取出set2中没有set1的元素，{res}")
+```
+
+#### 合并差集
+
+```python
+# 合并差集
+res = set1.union(set2)
+print(f"将集合1和集合2进行合并,{res}")
+```
+
+#### 统计集合个数
+
+```python
+# 集合的数量统计
+print(f"集合res的数量:{len(res)}")
+```
+
+#### for循环遍历
+
+```python
+# 使用for 循环对 集合进行遍历
+for it in res:
+    print(it,end=",")
+```
+
+### pop函数
+
+**删除指定位置的元素默认的时候就是末尾的元素**
+
+```python
+my_list = [1, 2, 3, 4, 5]
+
+# 删除并返回最后一个元素
+last_element = my_list.pop()
+print(last_element)  # 输出: 5
+print(my_list)       # 输出: [1, 2, 3, 4]
+
+# 删除并返回索引为 2 的元素
+element = my_list.pop(2)
+print(element)       # 输出: 3
+print(my_list)       # 输出: [1, 2, 4]
+```
+
+
+
+### 字典
+
+#### 定义字典
+
+```python
+# 定义自定义的字典
+my_dict = {"王力宏":99,"jock":88,"mike":77}
+print(my_dict)
+
+# 定义一个空的字典
+my_dict = dict()
+print(my_dict)
+
+# 定义一个嵌套的字典
+my_dict = {
+    "周杰伦":{
+        "yw":100,
+        "yy":90,
+        "sx":80,
+    },
+    "林俊杰":{
+            "yw":80,
+            "yy":70,
+            "sx":60,
+        },
+    "蔡依林":{
+            "yw":70,
+            "yy":90,
+            "sx":80,
+        }
+}
+
+print(f"嵌套字典是：{my_dict}")
+```
+
+#### 新增元素
+
+```python
+# 新增元素
+my_dict["进监狱"] = 20
+print(f"新增后的元素列表是：{my_dict}")
+```
+
+#### 获取元素并删除
+
+```python
+# 获取某个元素并删除
+name = my_dict.pop("周杰伦")
+print(f"周杰伦的信息是：{name}")
+```
+
+#### 清空字典
+
+```python
+# 将所有的内容进行清空处理
+my_dict.clear()
+print(f"清空之后的：{my_dict}")
+```
+
+#### 获取所有的keys
+
+```python
+# 获取所有的key
+keys = my_dict.keys()
+print(f"获取到的所有的keys：{keys}")
+```
+
+#### 判断Key是否存在
+
+```python
+thisdict = {'Name': 'Runoob', 'Age': 7}
+
+# 检测键 Age 是否存在
+if 'Age' in thisdict:
+    print("键 Age 存在")
+else:
+    print("键 Age 不存在")
+
+# 检测键 Sex 是否存在
+if 'Sex' in thisdict:
+    print("键 Sex 存在")
+else:
+    print("键 Sex 不存在")
+
+# not in
+
+# 检测键 Age 是否存在
+if 'Age' not in thisdict:
+    print("键 Age 不存在")
+else:
+    print("键 Age 存在")
+```
+
+#### 判断key是否存在（返回默认值）
+
+```python
+#dict.get(key,default)
+for i in d:
+    if dict.get(i,0) == 0:
+        dict[i] = 1
+    else:
+        dict[i] = dict.get(i,0) + 1
+```
+
+#### 遍历字典
+
+```python
+# 使用for 循环遍历 列表
+for it in keys:
+    print(my_dict[it])
+    
+keys = dict.keys()
+for i in keys:
+    print(i,dict.get(i))
+
+item = dict.items()
+
+for k,v in item:
+    print(k,v)
+```
+
+#### 统计字典数量
+
+```python
+len = len(my_dict)
+# 统计字典数量
+print(f"字典数量是：{len}")
+```
+
+### Sorted
+
+#### sorted说明
+
+```python
+"""
+sorted(obj,key,reverse)
+参数1 obj ： 需要被操作的对象
+参数2 key ： 按着需要的方式进行排序
+参数3 reverse ： 升序/降序
+"""
+students = [
+    ('join','A',18),
+    ('jane','B',19),
+    ('dave','B',17),
+]
+# 按照 年龄进行排序
+# lambda s : s[2] == > s表示 students的一个值
+stu1 = sorted(students, key=lambda s : s[2])
+# 将上述结果进行倒序
+stu1 = sorted(students, key=lambda s : s[2],reverse=True)
+```
+
+```python
+"""
+sorted(obj,key,reverse)
+参数1 obj ： 需要被操作的对象
+参数2 key ： 按着需要的方式进行排序
+参数3 reverse ： 升序/降序
+"""
+students = [
+    ('join','A',18),
+    ('jane','B',19),
+    ('dave','B',17),
+]
+#按照 等级排序 当等级相同时 按照 年龄排序
+# lambda s : (s[1],s[2]) == > s表示 students的一个值
+stu1 = sorted(students, key=lambda s : (s[1],s[2]))
+# 将上述结果进行倒序
+# stu1 = sorted(students, key=lambda s : s[2],reverse=True)
+
+print(stu1)
+```
+
+```python
+"""
+sorted(obj,key,reverse)
+参数1 obj ： 需要被操作的对象
+参数2 key ： 按着需要的方式进行排序
+参数3 reverse ： 升序/降序
+"""
+from functools import cmp_to_key
+students = [
+    ('join','C',20),
+    ('jane','B',19),
+    ('dave','B',20),
+]
+#按照 等级排序 当等级相同时 按照 年龄排序
+# lambda s : (s[1],s[2]) == > s表示 students的一个值
+# stu1 = sorted(students, key=lambda s : (s[1],s[2]))
+# 将上述结果进行倒序
+
+#按照 等级排序（按照升序） 当等级相同时 按照 年龄排序（按照降序） 使用自定义排序
+def cmp(a):
+    # chr 将 数字转成 字符
+    # ord 将 字符 转成 数字
+    # chr 和 ord 都是根据 ASCII
+    # return (a[2], -ord(a[1]))
+    return (a[1], -a[2])
+
+stu1 = sorted(students, key= cmp)
+
+print(stu1)
+```
+
+
+
+```python
+# 列表进行排序
+list = [1,3,4,2,5]
+#  默认是正序排序
+print(sorted(list))
+# 设置反向排序
+print(sorted(list,reverse=True))
+```
+
+### 返回多个值
+
+```python
+def MoreValue(x,y):
+    """
+    返回多个值 同时返回 x,y
+    :param x:
+    :param y:
+    :return:
+    """
+    return x,y
+
+x,y = MoreValue(1,2)
+
+print(x,y)
+```
+
+### 关键字传参
+
+```python
+# 使用关键字进行传参
+def user_info(name,age,gender):
+    print(f"name：{name}，age：{age}，gender：{gender}")
+
+# 使用关键字进行传输参数 就跟顺序没有关系
+user_info(name="张三",gender="男",age="20")
+```
+
+### 缺省参数
+
+```python
+# 缺省参数
+# 使用关键字进行传参
+def user_info(name,age,gender="男"):
+    print(f"name：{name}，age：{age}，gender：{gender}")
+
+# 如果不传送gender就是默认的是 男
+user_info(name="张三",age="20")
+user_info(name="李四",age="18",gender="女")
+
+```
+
+### 位置传送
+
+#### 使用tutle存储
+
+```python
+# 位置传送
+# 使用元组进行存储
+def user_info(*args):
+    print(args)
+
+# 对不定长进行传送
+user_info(1,2,3)
+```
+
+#### 使用dict存储
+
+```python
+#  使用字典的不定长
+# 使用dict进行存储
+def user_info(**args):
+    print(args)
+
+# 对不定长进行传送
+user_info(name="张三",age=20,gender="男")
+```
+
+### 匿名函数
+
+#### 定义一个函数
+
+```python
+# 将一个函数名作为参数进行传入另外一个函数当中去
+def cal(x,y):
+    return x + y
+
+def fun(cal):
+    res = cal(2,2)
+    print(res)
+```
+
+#### 使用lambda函数
+
+<img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230626210840046.png" alt="image-20230626210840046" style="zoom:67%;" />
+
+```python
+def fun(cal):
+    res = cal(2,2)
+    print(res)
+
+fun(cal)
+
+# 使用lambda函数
+# lambda x,y: x ** y;
+
+fun(lambda x,y: x ** y)
+```
+
+#### 多个lambda参数用法
+
+```python
+f = [lambda x=1:x*2,lambda x:x**2]
+```
+
+第一个lambda函数是`lambda x=1: x*2`，它接受一个参数`x`，默认值为1。该函数返回`x`的两倍。
+
+第二个lambda函数是`lambda x: x**2`，它接受一个参数`x`，计算并返回`x`的平方。
+
+这样，列表`f`中的第一个元素是一个函数，它将提供的参数乘以2；而第二个元素是另一个函数，它将提供的参数平方。可以通过索引来访问这些函数并调用它们。
+
+例如，可以使用以下代码来调用这两个函数：
+
+```python
+result1 = f[0](3)  # 调用第一个函数，参数为3
+result2 = f[1](4)  # 调用第二个函数，参数为4
+print(result1)  # 输出结果为 6
+print(result2)  # 输出结果为 16
+```
+
+这样，`result1`的值为`6`，`result2`的值为`16`。
+
+### 文件操作
+
+#### 读文件
+
+##### 读取文件
+
+```python
+# 读取文件
+# 参数1 指定文件路径
+# 参数2 读取方式 是只读
+# 参数3 编码方式是 UTF-8
+f = open("test.txt","r",encoding="UTF-8")
+```
+
+##### read()
+
+```python
+# read可以传入指定读取字节数量
+# print(f.read())
+```
+
+##### readline()
+
+```python
+# 设置读取行数
+# line = f.readline()
+# print(line)
+```
+
+##### readlines()
+
+```python
+# 读取所有的行数 返回值类型是 list
+# lines = f.readlines()
+# print(lines)
+```
+
+##### 循环遍历文件
+
+```python
+# 循环读取文件
+# for it in f:
+#     print(it)
+```
+
+#### 写文件
+
+##### write
+
+```python
+# 写入文件
+f = open("file.txt","w",encoding="UTF-8")
+
+f.write("hello world")
+
+f.close()
+```
+
+##### 追加
+
+```python
+# 写入文件
+f = open("file.txt","a",encoding="UTF-8")
+
+f.write("\n学习Python")
+
+f.close()
+```
+
+### Excel
+
+读入excel文件
+
+```python
+import pandas as pd
+
+df = pd.read_csv('python工资数据(1).csv',encoding='gbk')
+```
+
+
+
+读取每一列数据
+
+```python
+col_data = []
+
+for col in df.columns:
+
+    col_name = col
+
+    col_data = df[col_name]
+
+```
+
+
+
+对某一列数据进行处理
+
+```python
+for it in col_data:
+
+    ans = it - 5000 - it * 0.08 - it * 0.02 - it * 0.01
+    # print(ans)
+    if ans <= 36000:
+        it = it * 0.03
+    elif ans > 36000 and ans <= 144000:
+        it = it * 0.10 - 2520
+    elif ans > 144000 and ans <= 300000:
+        it = it * 0.20 - 16920
+    elif ans > 300000 and ans <= 420000:
+        it = it * 0.25 - 31920
+    elif ans > 420000 and ans <= 660000:
+        it = it * 0.30 - 52920
+    elif ans > 660000 and ans <= 960000:
+        it = it * 0.35 - 85920
+    else:
+        it = it * 0.45 - 181920
+
+    l.append(it)
+```
+
+
+
+新添加列数
+
+```python
+df['个人所得税'] = l
+```
+
+存入excel
+
+```python
+df.to_excel('new.xlsx')#将整个dr写入excel
+```
+
+
+
+### 异常
+
+1、**一个try块只能接一个finally块，不能接多个finally块。这是因为finally块用于定义无论是否发生异常都需要执行的代码，它是try-except-finally结构的一部分。**
+
+2、**try块必须与except或finally块一起使用**
+
+#### 捕获全部异常
+
+```python
+# 异常
+# 如果出现异常就将异常进行捕获
+try:
+    1/0
+except:
+    print("出现异常了")
+
+# 捕获所有异常
+try:
+    1/0
+    print(name)
+except Exception as e:
+    print("异常捕获到了")
+```
+
+#### 捕获指定异常
+
+```python
+# 捕获指定异常
+try:
+    1/0
+except ZeroDivisionError as err:
+    print(err)
+
+try:
+    print(name)
+except NameError as err:
+    print(err)
+
+#同时捕获多个异常
+try:
+    print(name)
+    1/0
+except (NameError,ZeroDivisionError) as err:
+    print(err)
+```
+
+#### 异常执行流程
+
+```python
+try:
+    name = "zhangsan"
+    print(name)
+except NameError as err:
+    print(err)
+else:
+    print("正常执行")
+
+try:
+    name = "zhangsan"
+    print(name)
+except NameError as err:
+    print(err)
+else:
+    print("正常执行")
+finally:
+    print("一定会执行的部分")
+```
+
+### raise语句的作用
+
+一般用法
+
+```python
+raise Exception("Error message")
+```
+
+**`raise`关键字用于手动引发异常，可以帮助我们在程序中主动处理错误情况或者重新引发已经捕获的异常。并且引发异常之后不在执行后面的语句**
+
+
+
+### 模块导入
+
+![image-20230627202456182](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230627202456182.png)
+
+#### 模块文件
+
+```python
+def test_a(a,b):
+    print(a+b)
+
+def test_b(a,b):
+    print(a-b)
+
+# 控制只在当前文件位置执行该函数
+# 加上__main__
+# 当在这个文件中执行 name == main 成立
+# 当使用模块进行导入的时候 name ！= main
+if __name__ == '__main__':
+    test_b(1,2)
+```
+
+#### 导入模块文件
+
+```python
+# 模块导入
+import moudle_A as moudle
+# 调用模块里的方法
+moudle.test_a(1,2)
+```
+
+### 包
+
+**如果文件中包含init文件，则这个文件就是包**
+
+#### 导入包
+
+```python
+"""
+演示python包
+"""
+
+# 创建一个包
+# 导入自定义的包中的模块，并使用
+import my_package.my_module1
+import my_package.my_module2
+
+my_package.my_module1.info_print1()
+my_package.my_module2.info_print2()
+```
+
+![image-20230627205021603](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230627205021603.png)
+
+```python
+def info_print1():
+    print("我是模块一")
+```
+
+```python
+def info_print2():
+    print("我是模块二")
+```
+
+
+
+## map方法
+
+### map输入转换
+
+```python
+# 将输入内容进行分割
+# input().split(",") 指定以 “，” 进行分割
+# 使用 map(int,input().split(","))
+input() 函数用于接收用户的输入，返回的是输入的字符串。
+split() 方法将输入的字符串按照空格分割成一个字符串列表。
+map(int, ...) 使用 int 函数将列表中的每个字符串元素转换为整数类型。
+a,b = map(int,(input().split(" ")))
+print(a,b)
+```
+
+### 转成list
+
+```python
+最终的结果是一个包含整数的可迭代对象，可以通过将其转换为列表来获取整数列表。 == > list(map(int,input().split(",")))
+l = list(map(int,(input().split(" "))))
+print(l)
+```
+
+### 使用自定义方法
+
+```python
+map中使用自定义函数 map(fun, ...)
+
+def fun(list):
+    return list ** 2
+
+l = list(map(int,input().split(" ")))
+print(l)
+
+    ans = list(map(fun,l))
+print(ans)
+```
+
+```python
+def fun(x):
+    x = int(x)
+    return x**2
+
+lst = list(map(fun,input().split(" ")))
+
+print(lst)
+```
+
+
+
+### 使用lambda表达式
+
+```python
+map中使用lambda表达式
+map(,(input().split(" ")))
+l = list(map(lambda x : x**2,[1,2,3,4]))
+print(l)
+```
+
+
+
+## 列表推导式
+
+你提供的代码片段 `i for i in range(1, keyCount+1)` 是一个列表推导式，用于生成一个包含从 1 到 `keyCount` 的整数的列表。
+
+具体解释如下：
+
+- `range(1, keyCount+1)` 返回一个从 1 到 `keyCount`（包括 `keyCount`）的整数序列。
+- `i for i in range(1, keyCount+1)` 是一个列表推导式的语法，表示对于 `range(1, keyCount+1)` 中的每个元素 `i`，将其作为列表的一个元素。
+- 最终的结果是一个包含从 1 到 `keyCount` 的整数的列表。
+
+例如，如果 `keyCount` 的值是 5，那么 `i for i in range(1, keyCount+1)` 的结果是 `[1, 2, 3, 4, 5]`。
+
+```python
+keys = [i for i in range(1,5)]
+
+print(keys)
+```
+
+## Python版本二分
+
+```python
+list = [1,2,3,4,5,6,7,8,9,10]
+# 方式1  闭区间
+def fun1():
+    l = 0
+    r = len(list) - 1
+    target = int(input("请输入目标值"))
+    while l <= r:
+        mid = (l + r) // 2
+        if list[mid] < target:
+            l = mid + 1
+        elif list[mid] > target:
+            r = mid - 1
+    if list[mid] == target:
+        return mid
+    else:
+        return -1
+
+# 方式2 左闭右开
+def fun2():
+    l = 0
+    r = len(list)
+    target = int(input("请输入目标值: "))
+    while l < r:
+        mid = (l + r) // 2
+        if list[mid] < target:
+            l = mid + 1
+        else:
+            r = mid
+    return  l if l < len(list) else "error"
+
+# index = fun2()
+# print(index)
+# 方式3 开区间
+def fun3():
+    l = -1
+    r = len(list)
+    target = int(input("请输入目标值: "))
+    while l + 1 < r:
+        mid = (l + r) // 2
+        if list[mid] < target:
+            l = mid
+        else:
+            r = mid
+    return  r if r < len(list) else "error"
+
+index = fun3()
+print(index)
+```
+
+
+
+## Python正则表达式
+
+[正则表达式 – 教程 | 菜鸟教程 (runoob.com)](https://www.runoob.com/regexp/regexp-tutorial.html)
+
+
+
+
+
+## 可视化图像
+
+### json数据和列表数据之间转换
+
+```python
+data = [{"name":"张大山","age":20},{"name":"王大锤","age":25},{"name":"赵晓虎","age":10}]
+
+# 将list 数据转成 json数据
+import json
+# 如果数据中存在汉字 需要将编码进行处理
+json_str = json.dumps(data,ensure_ascii=False)
+
+print(f"json_str数据格式是{type(json_str)}")
+print(json_str)
+
+# 将字典转成 json 数据
+
+data1 = {"name":"张大山","age":20}
+
+json_str1 = json.dumps(data1,ensure_ascii=False)
+
+print(f"json_str类型是{type(json_str1)},{json_str1}")
+
+# 将 json 数据 转换成 dict
+
+dict = json.loads(json_str1)
+print(f"dict的类型是:{type(dict)},{dict}")
+
+# 将 json 数据 转换成 list
+
+list = json.loads(json_str)
+print(f"list的类型是:{type(list)},{list}")
+```
+
+### Pyecharts
+
+```python
+https://05x-docs.pyecharts.org/#/zh-cn/charts_base
+```
+
+#### 入门案例
+
+```python
+from pyecharts.charts import Line
+from pyecharts.options import TitleOpts,LegendOpts,ToolboxOpts,VisualMapOpts
+
+#  调用 Line() 函数 生成 line 执行
+line = Line()
+# 对直线的 进行添加属性
+line.add_xaxis(["中国","美国","英国"])
+line.add_yaxis("GDP",[20,30,40])
+# 设置 全局配置
+line.set_global_opts(
+#     设置标题
+    title_opts = TitleOpts(title="GDP",pos_left="center",pos_bottom="1%"),
+    # 设置标签
+    legend_opts = LegendOpts(is_show=True),
+    # 设置工具栏
+    toolbox_opts = ToolboxOpts(is_show=True),
+    # 设置映射
+    visualmap_opts = VisualMapOpts(is_show=True)
+#
+)
+
+#  将添加的属性 生成图像
+line.render()
+```
+
+
+
+## 面向对象
+
+### 各个方法
+
+```python
+class Student():
+    # 构造方法
+    def __init__(self,name,age):
+        self.name = name
+        self.age = age
+
+    # 重写 tostring 方法
+    def __str__(self):
+        return f"大家好，我叫name:{self.name},今年:{self.age}岁"
+
+    #  比较函数
+    def __lt__(self, other):
+        return self.age < other.age
+    # 小于等于函数
+    def __le__(self, other):
+        return self.age <= other.age
+
+    # 大于函数
+    def __gt__(self, other):
+        return self.age > other.age
+
+stu1 = Student("张三丰",20)
+stu2 = Student("赵敏",25)
+
+print(str(stu1))
+
+print(stu1 < stu2)
+print(stu1 <= stu2)
+print(stu1 > stu2)
+```
+
+### 私有属性定义
+
+```python 
+class Student():
+    # 构造方法
+    def __init__(self,name,age):
+        self.name = name
+        self.age = age
+
+    # 重写 tostring 方法
+    def __str__(self):
+        return f"大家好，我叫name:{self.name},今年:{self.age}岁"
+
+    #  比较函数
+    def __lt__(self, other):
+        return self.age < other.age
+    # 小于等于函数
+    def __le__(self, other):
+        return self.age <= other.age
+
+    # 大于函数
+    def __gt__(self, other):
+        return self.age > other.age
+    # 私有成员方法定义
+    # 在方法名字之前加上两个下划线
+    def __getName(self):
+        print(self.name)
+
+    def getAge(self):
+        print(self.age)
+
+stu1 = Student("张三丰",20)
+
+#  调用私有 成员方法
+stu1.getName()
+stu1.getAge()
+
+```
+
+### 继承
+
+```python
+class Father:
+    name = "zs"
+    def Father_ptint(self):
+        print(self.name)
+
+# 适应 son 继承 father
+class Son(Father):
+    age = "18"
+    def Son_ptint(self):
+        print(self.age)
+
+son = Son()
+son.Father_ptint()
+son.Son_ptint()
+```
+
+### 类型注解
+
+#### 变量类型注解
+
+```python
+# 方式 1
+age:int = 20
+# 方式二
+name = "张三"  # type: str
+```
+
+ <img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230705205610922.png" alt="image-20230705205610922" style="zoom:67%;" />
+
+#### 函数方法类型注解
+
+```python
+# 函数形参类型注解
+def add(x: int, y: int):
+    return x + y
+
+print(add(1,2))
+
+
+# 对返回值 加上类型注解
+def add(x:int, y:int) -> int:
+    return x + y
+
+ans = add(1,2)
+print(ans)
+```
+
+使用Union定义联合注解
+
+```python
+# union
+# 定义联合注解
+from typing import Union
+my_list :list[Union[int,str]] = [1,3,"itheima","itcast"]
+
+def func(data: Union[int, str]) -> Union[int, str]:
+    pass
+
+func()
+```
+
+
+
+### 多态
+
+**执行相同的行为，当时传入不同的对象会出现不同的结果就是多态**
+
+
+
+## MySQL
+
+### 连接数据库
+
+```python
+# 连接数据库
+from pymysql import  Connection
+
+# 连接数据库
+coon = Connection(
+    host="localhost",
+    port=3306,
+    user="Typecoh",
+    password="123456"
+)
+
+# 打印MySQL数据库软件信息 (获取版本信息)
+print(coon.get_server_info())
+# 关闭数据库连接
+coon.close()
+```
+
+![image-20230705231305179](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230705231305179.png)
+
+![image-20230705231309037](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230705231309037.png)
+
+![image-20230705231312832](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230705231312832.png)
+
+![image-20230705231316582](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230705231316582.png)
+
+
+
+
+
+## PySpark
+
+### 构建PySpark对象
+
+```python
+from pyspark import SparkConf,SparkContext
+
+# 创建SparkConf对象
+conf = SparkConf().setMaster("local[*]").setAppName("test_spark_app")
+# 基于SparkConf对象 创建 SparkContext 对象
+sc = SparkContext(conf = conf)
+
+print(sc.version)
+
+sc.stop()
+```
+
+### 将传统数据转成RDD
+
+#### 将python传统数据容器转成RDD
+
+```python
+from pyspark import SparkConf,SparkContext
+
+# 创建SparkConf对象
+conf = SparkConf().setMaster("local[*]").setAppName("test_spark_app")
+# 基于SparkConf对象 创建 SparkContext 对象
+sc = SparkContext(conf = conf)
+
+#  将 传统数据转成 rdd 数据
+
+# 列表
+rdd1 = sc.parallelize([1,2,3,4,5,6])
+# 元组
+rdd2 = sc.parallelize((1,2,3,4,5,6))
+# 字符串
+rdd3 = sc.parallelize("abcdefghijk")
+# 字典
+rdd4 = sc.parallelize({"name":"zhangsan"})
+
+print(rdd1.collect())
+print(rdd2.collect())
+print(rdd3.collect())
+print(rdd4.collect())
+
+sc.stop()
+```
+
+#### 将文件转成RDD
+
+```python
+# 将文件中的数据转成RDD 数据
+RDD = sc.textFile("D/text.txt")
+
+print(RDD.collect())
+```
+
+### 数据计算
+
+#### map方法
+
+```python
+from pyspark import SparkConf,SparkContext
+
+# 注意 这个 OS 的 环境变量设置 位置 需要 提前 ！！！ 
+import os
+os.environ['PYSPARK_PYTHON'] = "E:/大学两年的比赛和项目/Python_大三下/venv/Scripts/python.exe"
+
+# 创建SparkConf对象
+conf = SparkConf().setMaster("local[*]").setAppName("test_spark_app")
+# 基于SparkConf对象 创建 SparkContext 对象
+sc = SparkContext(conf = conf)
+
+def fun(data):
+    return data * 10
+
+rdd1 = sc.parallelize([1,2,3,4,5])
+
+rdd2 = rdd1.map(lambda x : x + 5)
+#
+print(rdd1.collect())
+print(rdd2.collect())
+
+sc.stop()
+```
+
+#### flatMap方法
+
+```python
+from pyspark import SparkConf,SparkContext
+
+# 注意 这个 OS 的 环境变量设置 位置 需要 提前 ！！！
+import os
+os.environ['PYSPARK_PYTHON'] = "E:/大学两年的比赛和项目/Python_大三下/venv/Scripts/python.exe"
+
+# 创建SparkConf对象
+conf = SparkConf().setMaster("local[*]").setAppName("test_spark_app")
+# 基于SparkConf对象 创建 SparkContext 对象
+sc = SparkContext(conf = conf)
+
+def fun(data):
+    return data * 10
+
+rdd1 = sc.parallelize(["hello world","itheima itcast"])
+#  将 二维序列 化成 一位 序列 [[]]
+rdd2 = rdd1.flatMap(lambda x : x.split(" "))
+print(rdd1.collect())
+print(rdd2.collect())
+
+sc.stop()
+```
+
+
+
+## Flask框架
+
+![image-20230723223822815](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230723223822815.png)
+
+
+
+[DIV+CSS模板,CSS模板,网页模板,网站模板下载,后台模板-模板之家 (cssmoban.com)](http://www.cssmoban.com/cssthemes/)
+
+
+
+
+
+
+
+# 爬虫
+
+## 正则说明
+
+|      |      |      |
+| ---- | ---- | ---- |
+|      |      |      |
+|      |      |      |
+|      |      |      |
+|      |      |      |
+|      |      |      |
+|      |      |      |
+|      |      |      |
+|      |      |      |
+|      |      |      |
+
+
+
+## 获取地址
+
+```
+url = "https://movie.douban.com/top250?start="
+```
+
+
+
+## 处理每一个网页
+
+### 1 模拟浏览器头部信息
+
+![image-20230725101602019](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230725101602019.png)
+
+```python
+# 模拟浏览器头部信息，向豆瓣服务器发送信息
+head = {
+    "User-Agent": "Mozilla / 5.0(Windows NT 10.0;Win64;x64) AppleWebKit / 537.36 (KHTML, like Gecko) Chrome / 114.0.0.0 Safari / 537.36 Edg / 114.0.1823.82"
+}
+```
+
+```python
+request = urllib.request.Request(url, headers=head)
+# 获取网页数据
+try:
+    response = urllib.request.urlopen(request)
+    # 读取页面数据
+    html = response.read().decode("utf-8")
+    return html
+except urllib.error.URLError as error:
+    if hasattr(error,"code"):
+        print(error.code)
+    if hasattr(error,"reason"):
+        print(error.reason)
+```
+
+## 获取网页函数
+
+```python
+def askURL(url):
+    # 模拟浏览器头部信息，向豆瓣服务器发送信息
+    head = {
+        "User-Agent": "Mozilla / 5.0(Windows NT 10.0;Win64;x64) AppleWebKit / 537.36 (KHTML, like Gecko) Chrome / 114.0.0.0 Safari / 537.36 Edg / 114.0.1823.82"
+    }
+
+    request = urllib.request.Request(url, headers=head)
+    # 获取网页数据
+    try:
+        response = urllib.request.urlopen(request)
+        # 读取页面数据
+        html = response.read().decode("utf-8")
+        return html
+    except urllib.error.URLError as error:
+        if hasattr(error,"code"):
+            print(error.code)
+        if hasattr(error,"reason"):
+            print(error.reason)
+```
+
+## 对每一个网页进行分析处理
+
+```python
+def soup(html):
+    soup = BeautifulSoup(html, "html.parser")
+    for item in soup.find_all('div', class_="item"):
+        # print(item)
+        data = []
+        item = str(item)
+        # 获取影片详情连接
+        link = re.findall(findLink, item)[0]
+        data.append(link)
+        # 图像信息
+        img = re.findall(findImg, item)[0]
+        data.append(img)
+        # 标签处理
+        titles = re.findall(findTitle, item)
+        if len(titles) == 2:
+            ctitle = titles[0]
+            data.append(ctitle)
+            otitle = titles[1].replace("/", "")
+            data.append(otitle)
+        else:
+            data.append(titles)
+            data.append(" ")  # 留出空位置
+
+        rating = re.findall(findRating, item)[0]
+        # print(rating)
+        data.append(rating)
+
+        judgeNum = re.findall(findJudge, item)[0]
+        data.append(judgeNum)
+
+        inq = re.findall(findInq, item)
+        if len(inq) != 0:
+            inq = inq[0].replace("。", "")
+            data.append(inq)
+        else:
+            data.append(" ")
+
+        bd = re.findall(findBd, item)[0]
+        bd = re.sub('<br(\s+)?/>(\s+)?', " ", bd)
+        bd = re.sub('/', " ", bd)
+        data.append(bd.strip())
+
+        datalist.append(data)
+```
+
+### 查找规则
+
+```python
+####查找规则
+#创建一个全局变量
+findLink = re.compile(r'<a href="(.*?)">')
+#图片
+findImg  = re.compile(r'<img.*src="(.*?)"',re.S) # re.S 忽略换行符
+#影片名
+findTitle = re.compile(r'<span class="title">(.*)</span>')
+#评价分数
+findRating = re.compile(r'<span class="rating_num" property="v:average">(.*)</span>')
+#评价人数
+findJudge = re.compile(r'<span>(\d*)人评价</span>')
+#找到概况
+findInq = re.compile(r'<span class="inq">(.*)</span>')
+#找到相关内容
+findBd = re.compile(r'<p class="">(.*?)</p>',re.S)
+
+```
+
+## 写入Excel表格
+
+```python
+def saveData(datalist,savePath):
+    book = xlwt.Workbook(encoding="utf-8",style_compression=0)  # 创建workbook 对象
+    sheet = book.add_sheet("sheet1",cell_overwrite_ok=True)  # 创建工作表
+    col = ("电影详情链接","图片链接","影片中文名","影片外国名","评分","评价数","概况","相关信息")
+    for i in range(0,8):
+        sheet.write(0,i,col[i])
+    for j in range(0,250):
+        print("第%d条" %(j+1))
+        data = datalist[j]
+        for k in range(0,8):
+            sheet.write(j + 1,k,data[k]) #存入数据
+    book.save(savePath)
+```
+
+
+
+## 总结
+
+```python
+def main():
+    # 1 拿到需要爬取的网络地址
+    url = "https://movie.douban.com/top250?start="
+    # 2 爬取网页
+    dataList = getData(url)
+
+    # 3 存入excel中
+    savePath = "豆瓣电影Top250.xls"
+    saveData(savePath)
+
+if __name__ == '__main__':
+    main()
+    print("获取成功")
+```
+
+
+
+# django
+
+## 安装django

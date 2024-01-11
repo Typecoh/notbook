@@ -1,0 +1,38 @@
+# ElementUI说明
+
+## 实现文字和输入框同行显示
+
+![image-20230425204000432](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230425204000432.png)
+
+### 方式1 el-form 表单
+
+```css
+<el-form model="form">
+    <el-form-item label="公文编号:" label-width="100px">
+    	<el-input placeholder="公文编号"></el-input>
+    </el-form-item>
+</el-form>
+```
+
+### 方式2 使用slot
+
+```css
+<el-input placeholder="请选择" v-model="input1">
+	<template slot="prepend">传票号</template>
+</el-input>
+```
+
+
+
+## 设置输入框的宽度
+
+![image-20230425204703396](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20230425204703396.png)
+
+使用 :span 表示 flex 布局中 flex的 大小
+
+```css
+<el-col :span="14">
+	<el-input v-model="formInline.username" placeholder="姓名"></el-input>
+</el-col>
+```
+

@@ -1,0 +1,3541 @@
+# Andriod开发
+
+## Android studio工具使用
+
+### 乱码
+
+可点击studio状态栏的Help—>Edit Custom VM Options ，操作如下图 结果1和结果2最后都是打开或者生成文件studio64.exe.vmoptions：在文件后面添加 **-Dfile.encoding=UTF-8**
+
+<img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20231117132456456.png" alt="image-20231117132456456" style="zoom:67%;" />
+
+在build.gradle中加入：
+
+```groovy
+tasks.withType(JavaCompile) {
+    options.fork = true
+    options.forkOptions.jvmArgs += ["-Duser.language=en"]
+}
+```
+
+```java
+android {
+    namespace 'com.example.myapplication'
+    compileSdk 33
+
+    defaultConfig {
+        applicationId "com.example.myapplication"
+        minSdk 26
+        targetSdk 33
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    buildFeatures {
+        viewBinding true
+    }
+    sourceSets {
+        main {
+            assets {
+                srcDirs 'src\\main\\assets'
+            }
+        }
+    }
+    tasks.withType(JavaCompile) {
+        options.fork = true
+        options.forkOptions.jvmArgs += ["-Duser.language=en"]
+    }
+}
+```
+
+### SharedPreferences位置查看
+
+运行程序 -> 点击 Device  Explorer -> data -> data 
+
+找到自己的项目
+
+![image-20231117155832170](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20231117155832170.png)
+
+存在shared_prefs
+
+![image-20231117155914429](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20231117155914429.png)
+
+
+
+
+
+<img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20231117133849071.png" alt="image-20231117133849071" style="zoom:67%;" />
+
+### 创建assets文件
+
+切换成project格式
+
+<img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20231117160222059.png" alt="image-20231117160222059" style="zoom:67%;" />
+
+
+
+创建文件
+
+<img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20231117160244226.png" alt="image-20231117160244226" style="zoom:67%;" />
+
+
+
+## 样式设置
+
+### 组件宽度/高度设置
+
+<img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20231024105933344.png" style="zoom:67%;" />
+
+
+
+### 对齐方式
+
+layout_gravity 和 gravity 都是作用在LinearLayout 线性布局上面
+
+#### layout_gravity
+
+它指定了当前视图相对于上级试图的对齐方式
+
+
+
+#### gravity 
+
+它指定了下级视图当对于当前视图的对其方式
+
+ 
+
+### 文字设置
+
+#### 字体加粗
+
+```xml
+<TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:textStyle="bold"
+          android:text="你好，世界">
+</TextView>
+```
+
+#### 字体大小
+
+```xml
+<TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:textSize="100px"
+          android:text="你好，世界">
+</TextView>
+```
+
+#### 字体颜色
+
+```xml
+<TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:color="yourcolor"
+          android:text="你好，世界">
+</TextView>
+```
+
+文字显示
+
+```xml
+<TextView
+       android:maxLines="n" (n=1,2,3...)
+        android:ellipsize="end"
+/>
+```
+
+
+
+### LinearLayout
+
+对齐方式：vertical | horizontal，没有指定的时候，默认是的horizontal 水平方向
+
+#### vertical 
+
+内部视图按照**竖直方向**从上向下排列
+
+```xml
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+   >
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:background="#505C5C"
+        android:layout_weight="1">
+    </Button>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:background="#00ffff"
+        android:layout_weight="1"
+        >
+    </Button>
+</LinearLayout>
+```
+
+#### horizontal
+
+内部视图按照**水平方向**从左向右排列
+
+```xml
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+   >
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:background="#505C5C"
+        android:layout_weight="1">
+    </Button>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:background="#00ffff"
+        android:layout_weight="1"
+        >
+    </Button>
+</LinearLayout>
+```
+
+权重设置
+
+#### layout_weight
+
+这个属性设置在当前layout的下级设置
+
+* layout_width 填 0dp，layout_weight 表示 水平方向的宽度比例
+* layout_height 填 0dp，layout_weight 表示 竖直方向的宽度比例
+
+```xml
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+   >
+
+    <Button
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:background="#505C5C"
+        android:layout_weight="1">
+    </Button>
+    <Button
+        android:layout_height="100dp"
+        android:layout_width="100dp"
+        android:background="#00ffff"
+        android:layout_weight="1"
+        >
+    </Button>
+</LinearLayout>
+```
+
+
+
+### RelativeLayout
+
+### Button中内置图标
+
+在drawable文件夹中btn_sound.xml文件
+
+通过在layer-list标签中创建一个item标签
+
+在item标签中引入图片，以及控制图片大小
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <layer-list>
+            <item
+                android:drawable="@drawable/sound1"
+                android:width="22dp"
+                android:height="22dp">
+            </item>
+        </layer-list>
+    </item>
+</selector>
+```
+
+在你需要的位置的地方进行引入
+
+通过drawableRight指出放置button的位置
+
+```xml
+<Button
+    android:id="@+id/pop_uk"
+    android:layout_width="60dp"
+    android:layout_height="30dp"
+    android:drawableRight="@drawable/btn_sound"
+    android:background="@drawable/btn_pop"
+    android:text="英"
+    android:paddingRight="5dp"
+    >
+</Button>
+```
+
+
+
+
+
+## 布局
+
+### TextView
+
+```
+通过 layout_margin 相当于 html 的 margin
+```
+
+![image-20231024110449765](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20231024110449765.png)
+
+相对布局
+
+![image-20231024112919717](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20231024112919717.png)
+
+![image-20231024112935920](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20231024112935920.png)
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id="@+id/fragment_setting"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="400dp"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    >
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:text="正在学习"
+        android:textColor="@color/black"
+        android:textSize="50px"
+        android:gravity="center"
+        android:layout_margin="10px"
+        />
+
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="换本词书"
+        android:layout_alignParentRight="true"
+        android:layout_margin="10px"
+        android:backgroundTint="@color/orange"
+        >
+    </Button>
+
+</RelativeLayout>
+
+```
+
+![image-20231024131415519](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20231024131415519.png)
+
+![image-20231024131457718](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20231024131457718.png)
+
+
+
+
+
+
+
+### Toast使用
+
+* 在子线程中使用 Toast的使用 需要要加上 prepare 和 loop函数
+* 在那数据的时候子线程加入到了主线程中去的话 只需要 就不需要 prepare 和 loop函数
+
+```java
+//      Looper.prepare();
+        Toast.makeText(getApplicationContext(),"登入成功",Toast.LENGTH_LONG).show();
+//      Looper.loop();
+```
+
+
+
+
+
+### getActivity(）
+
+/**
+返回一个和此fragment绑定的FragmentActivity或者其子类的实例。
+相反，如果此fragment绑定的是一个context的话，可能会返回null。
+因为getActivity()大部分都是在fragment中使用到，而fragment需要依赖于activity，
+所有我们在fragment里头需要做一些动作，比如启动一个activity，
+就需要拿到activity对象才可以启动，而fragment对象是没有startActivity()方法的。
+     */
+AboutFragment中
+
+```java
+Intent intent = new Intent(getActivity(), BookListActivity.class);
+                startActivity(intent);
+```
+
+InitActivity
+
+```java
+startActivity(new Intent(InitActivity.this, MainActivity.class));
+```
+
+
+
+### getSharedPreferences用法
+
+第一个参数getSharedPreferences（第一个参数，第二个参数）;
+
+第一个参数是存储时的名称，第二个参数则是文件的打开方式~
+
+ 两个参数，第一个参数是preferece的名称(比如：MyPref),第二个参数是打开的方式（一般选择private方式）
+
+这样的话，就可以这样调用getSharedPreferences("MyPref",Context.MODE_PRIVATE);得到你想要的。。
+
+
+
+### SharedPreferences中getBoolean()
+
+判断程序是否首次安装,进入指定界面，用到 sharedPreferences 保存一个 boolean isFirstIn,在这里isFirstIn是通过：
+
+isFirstIn = sharedPreferences.getBoolean("isFirstIn", true);
+
+获取，需要说明的是：public abstract float getBoolean(String key, boolean defValue)；
+
+getBoolean()参数:key检索，defValue：存在值就返回该值否则返回defValue
+
+，如果第一次使用getBoolean()通过key检索不到，直接返回 defValue。
+
+### SharedPreferences样例
+
+创建一个sharedPreferences
+
+```java
+// initwords 表示 文件名称
+SharedPreferences sharedPreferences1 = this.getSharedPreferences("initwords", Context.MODE_PRIVATE);
+// 文件中 那个 变量名称 isFirst 
+// 使用 commit 进行 提交
+sharedPreferences1.edit().putBoolean("isFirst", false).commit();
+```
+
+获取sharedPreferences中的数据
+
+```Java、
+// 获取 Word 文件中 Bookid 的值， 如果这个 不存在就默认 是 "50"
+String Bookid = this.getSharedPreferences("Word", Context.MODE_PRIVATE).getString("Bookid","50");
+```
+
+
+
+
+### LayoutInflater.from
+
+将其他的视图加载到当前视图中
+
+```
+ LayoutInflater.from(InitActivity.this).inflate(R.layout.init_pop, null);
+```
+
+### viewBinding在Fragment和Activity中的使用
+
+在build.gradle 文件中加入
+
+```java
+buildFeatures {
+	viewBinding true
+}
+```
+
+在对应的HomeFragment文件中可以将layout中文件和HomeFragment文件进行绑定数据
+
+```java
+public class HomeFragment extends Fragment {
+
+    private FragmentHomeBinding binding;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+}
+```
+
+
+
+
+
+### MainActivity
+
+切换两个Fragment页面
+
+```java
+package com.example.myapplication;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
+import android.os.Bundle;
+import android.view.MenuItem;
+
+import com.example.myapplication.Activity.fragment.AboutFragment;
+import com.example.myapplication.Activity.fragment.HomeFragment;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
+
+    private int LastFragmentIndex = 0;
+
+    private Fragment[] fragments;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        System.out.println("star");
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        initViews();
+    }
+
+    protected void initViews() {
+
+        BottomNavigationView bottomNavigationView = findViewById(R.id.nav_view);
+
+        bottomNavigationView.setOnNavigationItemSelectedListener(this);
+
+        fragments = new Fragment[]{
+                new HomeFragment(),
+                new AboutFragment()};
+
+        /**
+         * 一开始 进入 的那个 页面
+         */
+        getSupportFragmentManager()
+                .beginTransaction()
+                .add(R.id.main_frame,fragments[0])
+                .commit();
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+        item.setChecked(true);
+        if(item.getItemId() == R.id.navigation_home){
+            switchFragment(0);
+        }
+        else if(item.getItemId() == R.id.navigation_user){
+            switchFragment(1);
+        }
+
+        return false;
+    }
+
+    private void switchFragment(int to){
+
+        if(LastFragmentIndex == to){
+            return;
+        }
+
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+
+        if(!fragments[to].isAdded()){
+            fragmentTransaction.add(R.id.main_frame,fragments[to]);
+        }else{
+            fragmentTransaction.show(fragments[to]);
+        }
+
+        fragmentTransaction.hide(fragments[LastFragmentIndex]).commitAllowingStateLoss();
+
+        LastFragmentIndex = to;
+    }
+}
+```
+
+### 修改button格式不起作用解决
+
+<img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20231116223636126.png" alt="image-20231116223636126" style="zoom: 50%;" />
+
+```javascript
+<style name="Theme.MyApplication" parent="Theme.MaterialComponents.DayNight.DarkActionBar.Bridge" />
+```
+
+
+
+
+
+
+
+## HomeFragment主页编写
+
+
+
+### Intent
+
+通过点击之后跳转到另外一个activity
+
+```java
+Intent intent = new Intent(getActivity(), LoginActivy.class);
+startActivity(intent);
+```
+
+### Activity中实现数据绑定
+
+#### 1 开启绑定
+
+在build.gradle中开启绑定
+
+```java
+buildFeatures {
+    viewBinding true
+}
+```
+
+#### 2 生成绑定页面的自定义类
+
+```java
+private ActivityLoginBinding binding;
+```
+
+#### 3 具体实现
+
+1 在onCreate中 指出当前绑定的页面
+
+2   binding = ActivityLoginBinding.inflate(getLayoutInflater()); 对绑定类初始化
+
+3  View view = binding.getRoot(); 获取根节点
+
+4 setContentView(view); 设置根节点做为 当前视图
+
+3，4步骤 是实现数据绑定
+
+```Java
+@Override
+protected void onCreate(@Nullable Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_login);
+    binding = ActivityLoginBinding.inflate(getLayoutInflater());
+    /**
+     * 实现 数据 绑定 作用
+     */
+    View view = binding.getRoot();
+    setContentView(view);
+
+    Operation();
+}
+```
+
+### 实现显示第三方页面
+
+跳转第三方页面使用url解析的方法
+
+```java
+Intent intent = new Intent();
+intent.setAction("android.intent.action.VIEW");
+Uri content_url = Uri.parse("http://m.iyuba.cn/m_login/account_regist.jsp");
+intent.setData(content_url);
+startActivity(intent);
+```
+
+跳转到自定义的页面
+
+```java
+Intent intent = new Intent(getActivity(), LoginActivity.class);
+startActivity(intent);
+```
+
+### 结束本次生周期
+
+```java
+ finish();
+```
+
+
+
+## InitActivity
+
+initActivity中的作用是初始话界面，当进入当打开app是出现是否进入app的选项
+
+设置隐私和同意
+
+#### 1 绑定数据
+
+```java
+@Override
+protected void onCreate(@Nullable Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_init);
+    binding = ActivityInitBinding.inflate(getLayoutInflater());
+    View view = binding.getRoot();
+    setContentView(view);
+    Operation();
+}
+```
+#### 2 判断是不是第一次进入App
+
+```java
+Boolean status = this.getSharedPreferences("file", Context.MODE_PRIVATE)
+    .getBoolean("AGREE", false);
+
+Boolean isFirst = this.getSharedPreferences("init", Context.MODE_PRIVATE)
+    .getBoolean("isFirst", true);
+/**
+* 判断是否点击同意 进入 第一次默认 是不同意 的
+*/
+// 如果 不是 第一次 登入 就直接 运行 计数器
+if(status == true && isFirst == false){
+    run();
+}
+// 如果 是第一次 进入 出现 弹窗
+else{
+    showPrivacy("privacy.txt");
+}
+```
+
+#### 3 定时器定义&&启动
+
+定义一个定时器，给定总时间和每次运行时间
+
+```java
+CountDownTimer countDownTimer = new CountDownTimer(6000, 1000) {
+    @Override
+    public void onTick(long millisUntilFinished) {
+        textView.setText("跳过(" + (millisUntilFinished / 1000) + ")");
+        time5s = millisUntilFinished;
+    }
+
+    @Override
+    public void onFinish() {
+        startActivity(new Intent(InitActivity.this, MainActivity.class));
+        finish();
+    }
+};
+```
+
+定时器运行
+
+```java
+private void run() {
+
+    countDownTimer.start();
+    textView.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            if (countDownTimer != null) {
+                countDownTimer.cancel();
+            }
+            startActivity(new Intent(InitActivity.this, MainActivity.class));
+            finish();
+        }
+    });
+}
+```
+
+#### 4 弹框出现
+
+如果是第一次出现就出现弹框
+
+加载页面出现
+
+```java
+ // 获取 文件 内容
+String str = initAssets(privacyFileName);
+
+final View inflate = LayoutInflater.from(InitActivity.this).inflate(R.layout.init_pop, null);
+
+TextView tv_title = (TextView)inflate.findViewById(R.id.top_title);
+tv_title.setText("隐私政策授权提示");
+// 设置文件内容
+TextView tv_content = (TextView) inflate.findViewById(R.id.top_content);
+tv_content.setText(str);
+```
+
+弹框参数设置
+
+```java
+SpannableText spannableText = new SpannableText(this, (ITextListener) this);
+//设置参数
+spannableText.setParam(content, "《用户协议》", "《隐私政策》", url1, url2);
+//设置目标字体样式
+spannableText.setTargetStyle(R.color.lianjiese, false);
+//设置控件
+spannableText.setTextView(tv_content);
+```
+
+弹框加载
+
+```java
+dialog = new AlertDialog
+        .Builder(InitActivity.this)
+        .setView(inflate)
+        .show();
+```
+
+计算弹框的大小
+
+```java
+// 通过WindowManager获取    窗口获取
+DisplayMetrics dm = new DisplayMetrics();
+getWindowManager().getDefaultDisplay().getMetrics(dm);
+final WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
+params.width = dm.widthPixels * 4 / 5;  //窗口宽高
+params.height = dm.heightPixels * 1 / 2;
+dialog.setCancelable(false);//屏蔽返回键
+dialog.getWindow().setAttributes(params);
+dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+```
+
+实现点击同意或者不同意事件
+
+```java
+disagree = inflate.findViewById(R.id.top_disagree);
+        agree = inflate.findViewById(R.id.top_agree);
+
+        disagree.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                System.exit(0);
+            }
+        });
+
+        agree.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                run();
+                dialog.dismiss(); //关闭
+
+                SharedPreferences sharedPreferences = getSharedPreferences("file", Context.MODE_PRIVATE);
+                sharedPreferences.edit().putBoolean("AGREE", true).commit();
+//                this.getSharedPreferences("file", Context.MODE_PRIVATE).edit()
+//                        .putBoolean("AGREE", true).apply();
+                SharedPreferences sharedPreferences1 = getSharedPreferences("init", Context.MODE_PRIVATE);
+                sharedPreferences1.edit().putBoolean("isFirst", false).commit();
+//                this.getSharedPreferences("init", Context.MODE_PRIVATE).edit()
+//                        .putBoolean("isFirst", false).apply();
+            }
+        });
+```
+
+#### 5 SharedPreferences存入数据
+
+当一次进入的时候，存入记录，以后进入不在出现弹窗
+
+```java
+agree.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View view) {
+
+        run();
+
+        dialog.dismiss(); //关闭
+
+        SharedPreferences sharedPreferences = getSharedPreferences("file", Context.MODE_PRIVATE);
+        sharedPreferences.edit().putBoolean("AGREE", true).commit();
+        //                this.getSharedPreferences("file", Context.MODE_PRIVATE).edit()
+        //                        .putBoolean("AGREE", true).apply();
+        SharedPreferences sharedPreferences1 = getSharedPreferences("init", Context.MODE_PRIVATE);
+        sharedPreferences1.edit().putBoolean("isFirst", false).commit();
+        //                this.getSharedPreferences("init", Context.MODE_PRIVATE).edit()
+        //                        .putBoolean("isFirst", false).apply();
+    }
+});
+```
+
+#### 6 读文件
+
+从assets中读取文件内容加载到弹框中
+
+```java
+private String initAssets(String privacyFileName) {
+
+        String str = content;
+
+        try {
+            // 如果文件存在 使用 getAssets().open(privacyFileName); 打开文件
+            InputStream inputStream = getAssets().open(privacyFileName);
+            str = getString(inputStream);
+        } catch (IOException e1) {
+            // 如果文件不存在 打印 文件不存在
+            e1.printStackTrace();
+            System.out.println(e1);
+        }
+        return str;
+}
+
+public static String getString(InputStream inputStream) {
+    InputStreamReader inputStreamReader = null;
+    try {
+        inputStreamReader = new InputStreamReader(inputStream, "UTF-8");
+    } catch (UnsupportedEncodingException e1) {
+        e1.printStackTrace();
+    }
+    BufferedReader reader = new BufferedReader(inputStreamReader);
+    StringBuffer sb = new StringBuffer("");
+    String line;
+    try {
+        while ((line = reader.readLine()) != null) {
+            sb.append(line);
+            sb.append("\n");
+        }
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+
+    return sb.toString();
+}
+```
+
+#### 7 跳转网页
+
+这个是 ITextListener 实现函数
+
+使用 注意事项
+
+在build.gradle中引入com.github.JohnWa97:SpannableText:1.0.5 依赖
+
+```java
+// 隐私 协议
+implementation 'com.github.JohnWa97:SpannableText:1.0.5'//蓝色可点击用户协议
+```
+
+在settings.gradle中设置 maven { url 'https://jitpack.io' } 否则不起效果
+
+```java
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+        maven { url 'https://jitpack.io' }
+    }
+}
+```
+
+```java
+@Override
+public void onClickText(String url) {
+    //点击隐私协议跳转网页
+    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+    startActivity(intent);
+}
+```
+
+
+
+## 网络请求数据
+
+数据网络请求，使用rxjava2请求数据
+
+创建RetrofitClient实体对象
+
+使用getInstance()方法获取实体对象
+
+```java
+public static RetrofitClient getInstance() {
+    if (mInstance == null) {
+        synchronized (RetrofitClient.class) {
+            if (mInstance == null) {
+                mInstance = new RetrofitClient();
+            }
+        }
+    }
+    return mInstance;
+}
+```
+
+为了节约资源，避免每次连发送请求之前都需要请求连接一次，在刚开始时初始化
+
+```java
+public void init() {
+    //        // 初始化okhttp
+    //        OkHttpClient client = new OkHttpClient.Builder()
+    //                .sslSocketFactory(SSLSocketFactoryUtils.createSSLSocketFactory(), SSLSocketFactoryUtils.createTrustAllManager())
+    //                .build();
+
+    // 初始化Retrofit
+    retrofit = new Retrofit
+        .Builder()
+        //                .client(client)
+        .baseUrl(Constant.API_URL)
+        // 注意使用 变量 进行替代 的时候 不需要 以 斜杠结束
+        // 如果直接 使用 字符串的话 需要 以 / 结尾
+      //.baseUrl("https://ai.iyuba.cn/japanapi/")
+        .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+        .addConverterFactory(GsonConverterFactory.create())
+        .build();
+}
+```
+
+retrofit 通过 new Retrofit.Builder().build() 创建Retrofit实例对象
+
+在这个基础上 添加 
+
+1 baseUrl 设置网络请求地址
+
+2 addConverterFactory(GsonConverterFactory.create()) 数据转换解析
+
+3 addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+
+**是将 RxJava2CallAdapterFactory 添加到 Retrofit 实例中的 Call 适配器工厂中。这样做的目的是为了能够在调用 Retrofit 接口方法时返回一个 RxJava 的 Observable 对象，以便能够使用 RxJava 的功能来处理异步操作、线程切换等。这样就可以结合 Retrofit 和 RxJava 来实现更加灵活和强大的网络请求处理。**
+
+
+
+使用getRequest方法，调用接口
+
+```java
+public static ApiServer getRequest() {
+    if (request == null) {
+        synchronized (ApiServer.class) {
+            request = retrofit.create(ApiServer.class);
+        }
+    }
+    return request;
+}
+```
+
+### 允许访问配置
+
+在 application 加入
+
+```xml
+android:usesCleartextTraffic="true"
+```
+
+```xml
+<uses-permission android:name="android.permission.INTERNET" />
+```
+
+## MVP三成架构
+
+mvp实现一次数据交互图
+
+![image-20231120182317545](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20231120182317545.png)
+
+### model
+
+**功能**：从接口中获取数据，并将获取到的数据给通过回调函数传回给view层
+
+RetrofitClient 是在MainActivity中进行了初始化，创建了实例对象 存储在了Constant类中
+
+在网络异步获取数据时，使用了子线程加载到了主线程上去
+
+ .subscribeOn(Schedulers.newThread()) // 子线程
+ .observeOn(AndroidSchedulers.mainThread()) // 主线程
+
+**其中子线程使用的是subscribeOn，主线程使用的是observeOn**，主线程只能使用observeOn，否则拿数据会出现问题
+
+```java
+package com.example.myapplication.model.login;
+
+import com.example.myapplication.model.Bean.BooksBean;
+import com.example.myapplication.model.Bean.LoginBean;
+import com.example.myapplication.model.RetrofitClient;
+import com.example.myapplication.view.about.LoginContract;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
+
+public class LoginModel implements LoginContract.LoginModel {
+    @Override
+    public Disposable getLogin(int protocol, String username, String password, String sign, String format, LoginContract.CallBackLogin callBackLogin) {
+
+      return   RetrofitClient
+              .getRequest()
+              .getLogin(protocol,username,password,sign,format)
+              .subscribeOn(Schedulers.newThread())
+              .observeOn(AndroidSchedulers.mainThread())
+              .subscribe(new Consumer<LoginBean>() {
+                  @Override
+                  public void accept(LoginBean loginBean) throws Exception {
+                      callBackLogin.successLogin(loginBean);
+                  }
+              }, new Consumer<Throwable>() {
+                  @Override
+                  public void accept(Throwable throwable) throws Exception {
+                      System.out.println(throwable);
+                        callBackLogin.errorLogin((Exception) throwable);
+                  }
+              });
+    }
+}
+```
+
+### view
+
+**功能**：将从model中接收到的数据，显示出来
+
+在LoginContract中定义了三层接口
+
+```java
+package com.example.myapplication.view.about;
+
+import com.example.myapplication.model.BaseModel;
+import com.example.myapplication.model.Bean.LoginBean;
+import com.example.myapplication.presenter.IBasePresenter;
+import com.example.myapplication.view.LoadingView;
+
+import io.reactivex.disposables.Disposable;
+
+public interface LoginContract {
+
+    interface LoginView extends LoadingView {
+        //获取了数据以后从这里修改
+        void getLogin(LoginBean loginBean);
+    }
+
+    interface LoginPresenter extends IBasePresenter<LoginView> {
+        void getLogin(int protocol,String username,String password,String sign,String format);
+    }
+
+    interface LoginModel extends BaseModel {
+
+        Disposable getLogin(int protocol,String username,String password,String sign,String format, CallBackLogin callBackLogin);
+    }
+
+    interface CallBackLogin{
+        //获取了以后修改
+        void successLogin(LoginBean loginBean);
+        void errorLogin(Exception e);
+    }
+}
+```
+
+### presenter
+
+**功能**：调用需要实现的函数
+
+通过Presenter传入参数，执行要调用的参数，将参数传给model层，在Presenter中，调用model的getLogin获取数据，返回给Presenter的回调函数，通过回调函数传给view层，展现出来
+
+```java
+loginPresenter.getLogin(11004, username, pwd, sign, "json");
+```
+
+```java
+package com.example.myapplication.presenter.login;
+
+import com.example.myapplication.model.Bean.LoginBean;
+import com.example.myapplication.model.login.LoginModel;
+import com.example.myapplication.presenter.BasePresenter;
+import com.example.myapplication.view.about.LoginContract;
+import java.net.UnknownHostException;
+import io.reactivex.disposables.Disposable;
+
+public class LoginPresenter extends BasePresenter<LoginContract.LoginView,LoginContract.LoginModel>
+                            implements LoginContract.LoginPresenter {
+    @Override
+    protected LoginContract.LoginModel initModel() {
+        return new LoginModel();
+    }
+
+    @Override
+    public void getLogin(int protocol, String username, String password, String sign, String format) {
+
+        Disposable disposable = model.getLogin(protocol, username, password, sign, format, new LoginContract.CallBackLogin() {
+            @Override
+            public void successLogin(LoginBean loginBean) {
+                view.getLogin(loginBean);
+            }
+
+            @Override
+            public void errorLogin(Exception e) {
+                if (e instanceof UnknownHostException) {
+                    view.toast("请求失败");
+                }
+            }
+        });
+
+        addSubscribe(disposable);
+    }
+}
+```
+
+#### BasePresenter
+
+```java
+package com.example.myapplication.presenter;
+
+import com.example.myapplication.model.BaseModel;
+import com.example.myapplication.view.BaseView;
+
+import java.lang.ref.WeakReference;
+
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+
+public abstract class BasePresenter<V extends BaseView, M extends BaseModel> implements IBasePresenter<V> {
+
+    protected V view;
+    protected M model;
+    protected CompositeDisposable compositeDisposable;
+
+    public BasePresenter() {
+        this.model = initModel();
+    }
+
+    protected abstract M initModel();
+
+    public void attchView(V view) {
+
+        WeakReference<V> viewWeakReference = new WeakReference<>(view);
+        this.view = viewWeakReference.get();
+    }
+    public void detachView() {
+        unSubscribe();
+    }
+
+    public void unSubscribe() {
+
+        if (compositeDisposable != null) {
+            compositeDisposable.clear();
+        }
+    }
+
+    public void addSubscribe(Disposable disposable) {
+
+        if (compositeDisposable == null) {
+            compositeDisposable = new CompositeDisposable();
+        }
+        compositeDisposable.add(disposable);
+    }
+}
+
+```
+
+```java
+package com.example.myapplication.presenter;
+
+import com.example.myapplication.view.BaseView;
+
+import io.reactivex.disposables.Disposable;
+
+
+public interface IBasePresenter<V extends BaseView> {
+
+
+    void attchView(V view);
+
+    void detachView();
+
+    void unSubscribe();
+
+    void addSubscribe(Disposable disposable);
+}
+```
+
+## 加密
+
+MD5加密
+
+```java
+package com.example.myapplication.util;
+
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
+
+public class MD5 {
+    public static String md5(String string) {
+        byte[] hash;
+        try {
+            hash = MessageDigest.getInstance("MD5").digest(string.getBytes("UTF-8"));
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException("Huh, MD5 should be supported?", e);
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException("Huh, UTF-8 should be supported?", e);
+        }
+        StringBuilder hex = new StringBuilder(hash.length * 2);
+        for (byte b : hash) {
+            if ((b & 0xFF) < 0x10) hex.append("0");
+            hex.append(Integer.toHexString(b & 0xFF));
+        }
+        return hex.toString();
+    }
+}
+```
+
+
+
+## Adapter
+
+adapter中布局之间的关系图
+
+![image-20231120184826160](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20231120184826160.png)
+
+
+
+**activity_booklist.xml**
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/booklist_type"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/booklist_subType"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/booklist_bookname"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+</LinearLayout>
+```
+
+**item_type.xml**
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="100dp"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="20dp"
+    android:layout_marginStart="10dp"
+    android:layout_marginEnd="10dp"
+    android:background="@android:color/white"
+    app:cardCornerRadius="10dp">
+
+        <TextView
+            android:id="@+id/type_type"
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:text="我的"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            />
+</LinearLayout>
+```
+
+
+
+使用RecyclerView结合Adapter，结合使用
+
+加入RecyclerView依赖
+
+```java
+//adapter
+implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.49-androidx'
+```
+
+adapter模板
+
+创建typeViewHolder类，将item中的textview/button等内容获取到
+
+```java
+class typeViewHolder extends RecyclerView.ViewHolder {
+
+    TextView textView;
+    public typeViewHolder(@NonNull View itemView) {
+        super(itemView);
+        textView = itemView.findViewById(R.id.type_type);
+    }
+}
+```
+
+通过onCreateViewHolder将视图加载到页面中那个
+
+```java
+@NonNull
+@Override
+public TypeAdapter.typeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    View itemview = LayoutInflater.from(context).inflate(R.layout.item_type,parent,false);
+    return new typeViewHolder(itemview);
+}
+```
+
+通过onBindViewHolder将数据进行绑定
+
+```java
+@SuppressLint("ResourceAsColor")
+@Override
+public void onBindViewHolder(@NonNull TypeAdapter.typeViewHolder holder, @SuppressLint("RecyclerView") int position) {
+    holder.textView.setText(datas.get(position));
+}
+```
+
+通过getItemCount获取个数
+
+```java
+@Override
+public int getItemCount() {
+    return datas.size();
+}
+```
+
+添加点击事件
+
+点击之后需要刷新页面视图，可以通过notifyDataSetChanged方法
+
+**notifyDataSetChanged**方法通过一个外部的方法控制如果适配器的内容改变时需要强制调用getView来刷新每个Item的内容,可以实现动态的刷新列表的功能。
+
+```java
+public interface ClickInterface {
+    void onButtonClick(View view, int position);
+    void onItemClick(View view, int position);
+}
+
+
+public void setClickInterface(ClickInterface clickInterface) {
+    this.clickInterface = clickInterface;
+}
+```
+
+```java
+@SuppressLint("ResourceAsColor")
+@Override
+public void onBindViewHolder(@NonNull TypeAdapter.typeViewHolder holder, @SuppressLint("RecyclerView") int position) {
+    holder.textView.setText(datas.get(position));
+    if(isClicks.get(position)){
+        holder.textView.setTextColor(Color.parseColor("#3535F6"));
+    }
+    else{
+        holder.textView.setTextColor(Color.parseColor("#F18888"));
+    }
+    holder.textView.setOnClickListener(new View.OnClickListener() {
+        @SuppressLint("ResourceAsColor")
+        @Override
+        public void onClick(View view) {
+            if(clickInterface != null){
+                clickInterface.onItemClick(view,position);
+                for(int i = 0; i < isClicks.size();i++){
+                    isClicks.set(i,false);
+                }
+                isClicks.set(position,true);
+                // 加上 才 会起作用
+                notifyDataSetChanged();
+            }
+        }
+    });
+}
+```
+
+
+
+```java
+package com.example.myapplication.adapter;
+
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.graphics.Color;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.myapplication.R;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class TypeAdapter extends RecyclerView.Adapter<TypeAdapter.typeViewHolder> {
+
+    private List<String> datas;
+    private Context context;
+    private ClickInterface clickInterface;
+    private List<Boolean> isClicks = new ArrayList<>();//控件是否被点击,默认为false，如果被点击，改变值，控件根据值改变自身颜色
+    public List<String> getDatas() {
+        return datas;
+    }
+    public void setDatas(List<String> datas) {
+        this.datas = datas;
+    }
+    public Context getContext() {
+        return context;
+    }
+    public void setContext(Context context) {
+        this.context = context;
+    }
+
+    public TypeAdapter(Context context, List<String> typelist) {
+        this.context = context;
+        this.datas = typelist;
+        isClicks.add(true);
+        for(int i = 1; i < this.datas.size(); i++){
+            isClicks.add(false);
+        }
+    }
+
+    //回调接口
+    public interface ClickInterface {
+        void onButtonClick(View view, int position);
+        void onItemClick(View view, int position);
+    }
+
+
+    public void setClickInterface(ClickInterface clickInterface) {
+        this.clickInterface = clickInterface;
+    }
+
+    @NonNull
+    @Override
+    public TypeAdapter.typeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View itemview = LayoutInflater.from(context).inflate(R.layout.item_type,parent,false);
+        return new typeViewHolder(itemview);
+    }
+
+    @SuppressLint("ResourceAsColor")
+    @Override
+    public void onBindViewHolder(@NonNull TypeAdapter.typeViewHolder holder, @SuppressLint("RecyclerView") int position) {
+        holder.textView.setText(datas.get(position));
+        if(isClicks.get(position)){
+            holder.textView.setTextColor(Color.parseColor("#3535F6"));
+        }
+        else{
+            holder.textView.setTextColor(Color.parseColor("#F18888"));
+        }
+        holder.textView.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("ResourceAsColor")
+            @Override
+            public void onClick(View view) {
+                if(clickInterface != null){
+                    clickInterface.onItemClick(view,position);
+                    for(int i = 0; i < isClicks.size();i++){
+                        isClicks.set(i,false);
+                    }
+                    isClicks.set(position,true);
+                    // 加上 才 会起作用
+                    notifyDataSetChanged();
+                }
+            }
+        });
+    }
+    @Override
+    public int getItemCount() {
+        return datas.size();
+    }
+    class typeViewHolder extends RecyclerView.ViewHolder {
+
+        TextView textView;
+        public typeViewHolder(@NonNull View itemView) {
+            super(itemView);
+            textView = itemView.findViewById(R.id.type_type);
+        }
+    }
+}
+
+```
+
+**在adapter中删除item并且显示**
+
+非常简单，通过一下两条代码就能实现
+
+```java
+public NewWordsAdapter(Context context, List<NewWordsBean.DataDTO> data) {
+    this.context = context;
+    this.data = data;
+}
+myfun(){
+    data.remove(position);
+    notifyDataSetChanged();
+}
+```
+
+在Activity调用
+
+创建对应的apater和recyclerView
+
+```java
+private TypeAdapter typeAdapter;
+private RecyclerView TyperecyclerView;
+```
+
+创建initView函数，指定对应的recyclerView
+
+```java
+private void initView() {
+    TyperecyclerView = findViewById(R.id.booklist_type);
+    SubrecyclerView  = findViewById(R.id.booklist_subType);
+}
+```
+
+adapter通过是和Presenter调用函数获取数据一起使用
+
+创建Presenter对象
+
+```java
+private BookPresenter bookPresenter;
+```
+
+创建initData对Presenter实例化对象并且调用函数，获取数据
+
+```java
+private void initData() {
+    bookPresenter = new BookPresenter();
+    bookPresenter.attchView(this);
+    bookPresenter.getBooks();
+}
+```
+
+在Presenter函数获取数据之后，将数据给到Adapter
+
+```java
+ public void getBooks(BooksBean booksBean) 
+```
+
+调用adapter的构造函数，将数据内容传给它
+
+```java
+typeAdapter = new TypeAdapter(this,Typelist);
+```
+
+将adapter传给recyclerView
+
+```java
+TyperecyclerView.setAdapter(typeAdapter);
+```
+
+指定recyclerView的展示方式（水平/竖直），如果没有指定，不会显示数据
+
+```java
+RecyclerView.LayoutManager layoutManager1 = new 				LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
+TyperecyclerView.setLayoutManager(layoutManager1)
+```
+
+实现联动效果
+
+使用点击cyclerView.post创建新的线程，进行实现回调函数
+
+通过会加上一个控件的**显示和隐藏**
+
+一开始是隐藏状态
+
+```xml
+<androidx.recyclerview.widget.RecyclerView
+    android:id="@+id/booklist_subType"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:visibility="gone"
+    app:layout_constraintTop_toTopOf="parent" />
+```
+
+通过点击之后，设置显示状态
+
+```java
+if(position == 0){
+    binding.booklistSubType.setVisibility(View.GONE);
+}
+else{
+    binding.booklistSubType.setVisibility(View.VISIBLE);
+}
+```
+
+
+
+```java
+TyperecyclerView.post(new Runnable() {
+            @Override
+            public void run() {
+                typeAdapter.setClickInterface(new TypeAdapter.ClickInterface() {
+                    @Override
+                    public void onButtonClick(View view, int position) {
+                    }
+
+                    @Override
+                    public void onItemClick(View view, int position) {
+
+                        if(position == 0){
+                            binding.booklistSubType.setVisibility(View.GONE);
+                        }
+
+                        else{
+
+                            binding.booklistSubType.setVisibility(View.VISIBLE);
+
+                            List<BooksBean.DataDTO.TypeListDTO> typeList = booksBean.getData().get(position - 1).getTypeList();
+
+                            subType.clear();
+
+                            subType.add("全部");
+
+                            for(int i = 0; i < typeList.size(); i++){
+                                if(!subType.contains(typeList.get(i).getSubType())){
+                                    subType.add(typeList.get(i).getSubType());
+                                }
+                            }
+                            subTypeAdapter = new SubTypeAdapter(R.layout.item_subtype, subType);
+                            SubrecyclerView.setAdapter(subTypeAdapter);
+                        }
+                    }
+                });
+            }
+        });
+RecyclerView.LayoutManager layoutManager2 = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
+        SubrecyclerView.setLayoutManager(layoutManager2);
+
+```
+
+
+
+将自己选取的那本图书存入到数据库中，每次从数据库中获取数据，并加载是上去 
+
+**在Fragment 中 使用 getActivity().getSharedPreferences，**
+
+**在Activity中使用  this.getSharedPreferences /  class.this.getSharedPreferences**
+
+```java
+String Bookid = this.getSharedPreferences("Bookid", Context.MODE_PRIVATE).getString("Bookid","50");
+
+BooksBean.DataDTO.TypeListDTO typeListDTO = null;
+
+for(int i = 0; i < booksBean.getData().size();i++){
+    for(int j = 0; j < booksBean.getData().get(i).getTypeList().size(); j++){
+        if(Bookid.equals(booksBean.getData().get(i).getTypeList().get(j).getBookid()) ){
+            typeListDTO = booksBean.getData().get(i).getTypeList().get(j);
+        }
+    }
+}
+
+
+Glide.with(context)
+        .load(typeListDTO.getImg())
+        .into(binding.itemBooknameImg);
+
+binding.itemBooknameTitle.setText(typeListDTO.getName());
+binding.itemBooknameDesc.setText(typeListDTO.getDesc());
+binding.itemBooknameWordnum.setText("单词量: " + typeListDTO.getWordsNum());
+```
+
+每次点击图书，将这本书作为自己选择的那本书
+
+```java
+bookNamerecyclerView.post(new Runnable() {
+    @Override
+    public void run() {
+        bookNameAdapter.setClickInterface(new BookNameAdapter.ClickInterface() {
+            @Override
+            public void onButtonClick(View view, int position) {
+
+            }
+
+            @Override
+            public void onItemClick(View view, int position,BooksBean.DataDTO.TypeListDTO typeListDTO) {
+                SharedPreferences sharedPreferencesBookType = getSharedPreferences("Bookid", Context.MODE_PRIVATE);
+                sharedPreferencesBookType.edit().putString("Bookid", typeListDTO.getBookid()).commit();
+            }
+        });
+    }
+});
+```
+
+其中 bookNamerecyclerView.post 和 SubrecyclerView.post是同一级的
+
+在 SubrecyclerView.post 里面也需要加载上 bookNamerecyclerView.post
+
+```java
+bookNamerecyclerView.post(new Runnable() {
+    @Override
+    public void run() {
+        bookNameAdapter.setClickInterface(new BookNameAdapter.ClickInterface() {
+            @Override
+            public void onButtonClick(View view, int position) {
+
+            }
+
+            @Override
+            public void onItemClick(View view, int position,BooksBean.DataDTO.TypeListDTO typeListDTO) {
+                SharedPreferences sharedPreferencesBookType = getSharedPreferences("Bookid", Context.MODE_PRIVATE);
+                sharedPreferencesBookType.edit().putString("Bookid", typeListDTO.getBookid()).commit();
+            }
+        });
+    }
+});
+```
+
+在 BookNameAdapter 中间，使用回调函数，传回去的是当前这本点击的书
+
+```java
+package com.example.myapplication.adapter;
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+import com.bumptech.glide.Glide;
+import com.example.myapplication.R;
+import com.example.myapplication.model.Bean.BooksBean;
+import java.util.List;
+
+public class BookNameAdapter extends RecyclerView.Adapter<BookNameAdapter.booknameViewHolder>{
+    private List<BooksBean.DataDTO.TypeListDTO> data;
+    private Context context;
+    private BookNameAdapter.ClickInterface clickInterface;
+    public BookNameAdapter(Context context, List<BooksBean.DataDTO.TypeListDTO> list) {
+        this.context = context;
+        this.data = list;
+    }
+    //回调接口
+    public interface ClickInterface {
+        void onButtonClick(View view, int position);
+        void onItemClick(View view, int position, BooksBean.DataDTO.TypeListDTO pos);
+    }
+    public void setClickInterface(BookNameAdapter.ClickInterface clickInterface) {
+        this.clickInterface = clickInterface;
+    }
+
+    @NonNull
+    @Override
+    public BookNameAdapter.booknameViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View itemview = LayoutInflater.from(context).inflate(R.layout.item_bookname,parent,false);
+        return new BookNameAdapter.booknameViewHolder(itemview);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull BookNameAdapter.booknameViewHolder holder, @SuppressLint("RecyclerView") int position) {
+
+        BooksBean.DataDTO.TypeListDTO typeListDTO = data.get(position);
+
+        String img = data.get(position).getImg();
+
+        Glide.with(context)
+                .load(img)
+                .into(holder.imageView);
+
+        String name = data.get(position).getName();
+        String desc = data.get(position).getDesc();
+        String wordsNum = data.get(position).getWordsNum();
+        holder.title.setText(name);
+        holder.desc.setText(desc);
+        holder.wordnum.setText("单词量: "  + wordsNum);
+
+        holder.layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(clickInterface != null){
+                    clickInterface.onItemClick(view,position,typeListDTO);
+                }
+            }
+        });
+    }
+    @Override
+    public int getItemCount() {
+        return data.size();
+    }
+    class booknameViewHolder extends RecyclerView.ViewHolder{
+
+        LinearLayout layout;
+        ImageView imageView;
+        TextView title;
+        TextView desc;
+        TextView wordnum;
+        public booknameViewHolder(@NonNull View itemView) {
+            super(itemView);
+            imageView = itemView.findViewById(R.id.bookname_img);
+            title = itemView.findViewById(R.id.bookname_title);
+            desc = itemView.findViewById(R.id.bookname_desc);
+            wordnum = itemView.findViewById(R.id.bookname_wordnum);
+            layout = itemView.findViewById(R.id.bookname_all);
+        }
+    }
+}
+```
+
+## onResume
+
+当结束Intent事件之后，想让页面重新渲染，将数据进行更新，可以使用onResume函数
+
+```java
+@Override
+public void onResume() {
+    super.onResume();
+    // 数据执行回调功能
+    bookPresenter.getBooks();
+
+    if(Constant.uid != null){
+        String sign = MD5.md5("20001" + Constant.uid + "iyubaV2");
+        uidLoginPresenter.getUidLogin("android", "json", "20001", Constant.uid, Constant.uid, 291, sign);
+    }
+}
+```
+
+
+
+WordsAdapter
+**功能**：点击图书页面，进入图书，展示所有单词，点击对应的的单词出现对应的单词，背景改变颜色
+
+```java
+package com.example.myapplication.adapter;
+
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.graphics.Color;
+import android.media.MediaPlayer;
+import android.net.Uri;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.myapplication.Constant;
+import com.example.myapplication.R;
+import com.example.myapplication.model.Bean.AllWordsBean;
+import com.example.myapplication.model.Bean.MyWordsBean;
+import com.example.myapplication.model.SQL.MySQLiteOpenHelp;
+import com.example.myapplication.presenter.book.MyWordPresenter;
+import com.example.myapplication.view.book.MyWordContract;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class WordsAdapter  extends RecyclerView.Adapter<WordsAdapter.wordsViewHolder>
+                            implements MyWordContract.MyWordView {
+    List<AllWordsBean.DataDTO> data;
+    private Context context;
+    private WordsAdapter.ClickInterface clickInterface;
+    private WordsAdapter.PopClickInterface popclickInterface;
+    private List<Boolean> isClicks = new ArrayList<>();//控件是否被点击,默认为false，如果被点击，改变值，控件根据值改变自身颜色
+    private List<Boolean> isCollection = new ArrayList<>();//控件是否被点击,默认为false，如果被点击，改变值，控件根据值改变自身颜色
+    private Boolean isLike = false;
+    private MyWordPresenter myWordPresenter;
+    private MySQLiteOpenHelp mySQLiteOpenHelp;
+    public WordsAdapter(Context context, List<AllWordsBean.DataDTO> list) {
+        this.context = context;
+        this.data = list;
+        for(int i = 0; i < this.data.size(); i++){
+            isClicks.add(false);
+            isCollection.add(false);
+        }
+        mySQLiteOpenHelp = new MySQLiteOpenHelp(context);
+    }
+    @Override
+    public void showLoading(String msg) {
+
+    }
+    @Override
+    public void hideLoading() {
+
+    }
+    @Override
+    public void toast(String msg) {
+
+    }
+    @Override
+    public void getMyWord(MyWordsBean myCollectionWordsBean) {
+        System.out.println(myCollectionWordsBean);
+    }
+    //回调接口
+    public interface ClickInterface {
+        void onButtonClick(View view, int position);
+        void onItemClick(View view, int position);
+    }
+    public interface PopClickInterface {
+        void onButtonClick(View view, int position);
+        void onItemClick(View view, int position, AllWordsBean.DataDTO dataDTO);
+    }
+    public void setClickInterface(WordsAdapter.ClickInterface clickInterface) {
+        this.clickInterface = clickInterface;
+    }
+    public void setPopclickInterface(PopClickInterface popclickInterface) {
+        this.popclickInterface = popclickInterface;
+    }
+    @NonNull
+    @Override
+    public WordsAdapter.wordsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View itemview = LayoutInflater.from(context).inflate(R.layout.item_words,parent,false);
+        return new WordsAdapter.wordsViewHolder(itemview);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull WordsAdapter.wordsViewHolder holder, @SuppressLint("RecyclerView") int position) {
+        holder.word.setText(data.get(position).getWord());
+        holder.usPhonetic.setText("/" + data.get(position).getUsPhonetic() + "/");
+        holder.def.setText(data.get(position).getDef().replace("\n",""));
+
+        myWordPresenter = new MyWordPresenter();
+        myWordPresenter.attchView(this);
+
+        if(isClicks.get(position)){
+            holder.layout.setBackgroundColor(Color.parseColor("#fceee3"));
+            holder.word.setTextColor(Color.parseColor("#f16e3a"));
+            holder.def.setVisibility(View.VISIBLE);
+            holder.usPhonetic.setVisibility(View.VISIBLE);
+            holder.collection.setVisibility(View.VISIBLE);
+            holder.mysetting.setVisibility(View.VISIBLE);
+            String usUsAudio = data.get(position).getUsAudio();
+            MediaPlayer.create(context, Uri.parse(usUsAudio)).start();
+            ShowCollectionState(position,holder);
+        }
+        else{
+            holder.layout.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
+            holder.word.setTextColor(Color.parseColor("#000000"));
+            holder.def.setVisibility(View.GONE);
+            holder.usPhonetic.setVisibility(View.GONE);
+            holder.collection.setVisibility(View.GONE);
+            holder.mysetting.setVisibility(View.GONE);
+        }
+
+        /*
+         *  加入到收藏本中去
+         */
+//        if(isCollection.get(position)){
+//            /***
+//             * 通过数据看查询是否存在？
+//             * 存在 就是 删除
+//             * 不存在 就是 插入
+//             */
+////            String s = mySQLiteOpenHelp.selecttData(data.get(position).getWord());
+////
+////            if(s != null && s.equals(data.get(position).getWord())){
+////                System.out.println("删除");
+////                // 删除 生词
+////                holder.collection.setImageResource(R.drawable.beforemycollect);
+////                myWordPresenter.getMyWord("Iyuba","999999","delete",data.get(position).getWord(),"json");
+//////                myWordPresenter.getMyWord("Iyuba", Constant.uid,"delete",data.get(position).getWord(),"json");
+////            }
+////            else{
+////                System.out.println("加入");
+////                // 加入 生词
+////                holder.collection.setImageResource(R.drawable.aftercollection);
+////                myWordPresenter.getMyWord("Iyuba","999999","insert",data.get(position).getWord(),"json");
+//////                myWordPresenter.getMyWord("Iyuba", Constant.uid,"insert",data.get(position).getWord(),"json");
+////            }
+//        }
+
+        /**
+         * 显示 具体 信息 向上弹窗
+         */
+        holder.mysetting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                popclickInterface.onItemClick(view,position,data.get(position));
+            }
+        });
+
+        /***
+         * 点击收藏
+         */
+
+        holder.collection.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                isCollection.set(position,true);
+                Collection(position,holder);
+            }
+        });
+
+        holder.layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                for(int i = 0; i < isClicks.size();i++){
+                    isClicks.set(i,false);
+                }
+                isClicks.set(position,true);
+                    // 加上 才 会起作用
+                notifyDataSetChanged();
+            }
+        });
+    }
+
+    /***
+     *
+     * @param position
+     * @param holder
+     * 点击 展开 之后 显示 收藏图标状态
+     */
+    private void ShowCollectionState(int position, wordsViewHolder holder) {
+        String s = mySQLiteOpenHelp.selecttData(data.get(position).getWord());
+        System.out.println(s);
+        if(s != null && s.equals(data.get(position).getWord())){
+            holder.collection.setImageResource(R.drawable.aftercollection);
+        }
+
+        else {
+            holder.collection.setImageResource(R.drawable.beforemycollect);
+        }
+    }
+
+    /***
+     *
+     * @param position
+     * @param holder
+     * 查询 点击收藏 按钮 之后 先判断 是否已经 收藏了
+     * 已经收藏 =》 取消收藏
+     * 没有收藏 =》 加入收藏
+     */
+    public void Collection(int position,wordsViewHolder holder){
+
+        String s = mySQLiteOpenHelp.selecttData(data.get(position).getWord());
+        if(s != null && s.equals(data.get(position).getWord())){
+            // 删除 生词
+            int deletetData = mySQLiteOpenHelp.deletetData(data.get(position).getWord());
+            if(deletetData > 0){
+                System.out.println("删除成功");
+            }
+            holder.collection.setImageResource(R.drawable.beforemycollect);
+            myWordPresenter.getMyWord("Iyuba","999999","delete",data.get(position).getWord(),"json");
+//                myWordPresenter.getMyWord("Iyuba", Constant.uid,"delete",data.get(position).getWord(),"json");
+        }
+        else{
+            // 加入 生词
+            long insert = mySQLiteOpenHelp.insertData(data.get(position).getWord());
+            if(insert > 0){
+                System.out.println("加入成功");
+            }
+            holder.collection.setImageResource(R.drawable.aftercollection);
+            myWordPresenter.getMyWord("Iyuba","999999","insert",data.get(position).getWord(),"json");
+//                myWordPresenter.getMyWord("Iyuba", Constant.uid,"insert",data.get(position).getWord(),"json");
+        }
+    }
+
+    @Override
+    public int getItemCount() {
+        return data.size();
+    }
+    class wordsViewHolder extends RecyclerView.ViewHolder{
+        TextView word;
+        TextView usPhonetic;
+        ImageView collection;
+        ImageView mysetting;
+        TextView def;
+        LinearLayout layout;
+        public wordsViewHolder(@NonNull View itemView) {
+            super(itemView);
+            word = itemView.findViewById(R.id.words_word);
+            usPhonetic = itemView.findViewById(R.id.words_usPhonetic);
+            def = itemView.findViewById(R.id.words_def);
+            layout = itemView.findViewById(R.id.linear_word);
+            collection = itemView.findViewById(R.id.words_collection);
+            mysetting = itemView.findViewById(R.id.words_mysetting);
+        }
+    }
+}
+
+```
+
+```java
+package com.example.myapplication.activity;
+
+import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.drawable.BitmapDrawable;
+import android.media.MediaPlayer;
+import android.net.Uri;
+import android.os.Bundle;
+import android.util.AttributeSet;
+import android.view.Gravity;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import com.example.myapplication.Constant;
+import com.example.myapplication.R;
+import com.example.myapplication.adapter.WordsAdapter;
+import com.example.myapplication.databinding.ActivityWordsBinding;
+import com.example.myapplication.model.Bean.AllWordsBean;
+import com.example.myapplication.presenter.book.WordPresenter;
+import com.example.myapplication.view.book.WordContract;
+
+import java.util.List;
+
+public class WordsActivity extends AppCompatActivity implements WordContract.WordView{
+
+    private ActivityWordsBinding binding;
+    private RecyclerView wordsrecyclerView;
+    private WordsAdapter wordsAdapter;
+    private WordPresenter wordPresenter;
+    private Context context;
+    private PopupWindow mPopWindow;
+
+    private LinearLayout linearLayout;
+    private Boolean isLike = false;
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_words);
+        binding = ActivityWordsBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
+        initView();
+        initData();
+    }
+
+    private void initData() {
+        wordPresenter = new WordPresenter();
+        wordPresenter.attchView(this);
+        String Bookid = this.getSharedPreferences("Bookid", Context.MODE_PRIVATE).getString("Bookid","50");
+        wordPresenter.getWord(Integer.parseInt(Constant.uid), Integer.parseInt(Bookid));
+    }
+
+    private void initView() {
+        wordsrecyclerView = findViewById(R.id.words_wordslist);
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull String name, @NonNull Context context, @NonNull AttributeSet attrs) {
+        this.context = context;
+        return super.onCreateView(name, context, attrs);
+    }
+
+    @Override
+    public void showLoading(String msg) {
+    }
+    @Override
+    public void hideLoading() {
+    }
+    @Override
+    public void toast(String msg) {
+    }
+    @Override
+    public void getWord(AllWordsBean allWordsBean) {
+
+        List<AllWordsBean.DataDTO> data = allWordsBean.getData();
+
+        wordsAdapter = new WordsAdapter(this,data);
+        wordsrecyclerView.setAdapter(wordsAdapter);
+
+        wordsrecyclerView.post(new Runnable() {
+
+            @Override
+            public void run() {
+                wordsAdapter.setPopclickInterface(new WordsAdapter.PopClickInterface() {
+                    @Override
+                    public void onButtonClick(View view, int position) {
+                    }
+                    @Override
+                    public void onItemClick(View view, int position, AllWordsBean.DataDTO dataDTO) {
+
+                        View contentView =getLayoutInflater().inflate(R.layout.pop_textsize, null);
+
+                        TextView pop_title = contentView.findViewById(R.id.pop_title);
+                        ImageView pop_collection = contentView.findViewById(R.id.pop_collection);
+                        Button pop_uk = contentView.findViewById(R.id.pop_uk);
+                        TextView pop_ukPhonetic = contentView.findViewById(R.id.pop_ukPhonetic);
+                        Button pop_us = contentView.findViewById(R.id.pop_us);
+                        TextView pop_usPhonetic = contentView.findViewById(R.id.pop_usPhonetic);
+                        TextView pop_def = contentView.findViewById(R.id.pop_def);
+                        TextView pop_original = contentView.findViewById(R.id.pop_original);
+                        TextView pop_prefix = contentView.findViewById(R.id.pop_prefix);
+                        TextView pop_suffix = contentView.findViewById(R.id.pop_suffix);
+
+                        pop_title.setText(dataDTO.getWord());
+
+//                        pop_collection.setImageURI(dataDTO.get());
+
+                        pop_uk.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                MediaPlayer.create(context, Uri.parse(dataDTO.getUkAudio())).start();
+                            }
+                        });
+
+                        pop_ukPhonetic.setText("/" + dataDTO.getUkPhonetic() + "/");
+
+                        pop_us.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                MediaPlayer.create(context, Uri.parse(dataDTO.getUsAudio())).start();
+                            }
+                        });
+
+                        pop_usPhonetic.setText("/" + dataDTO.getUsPhonetic() + "/");
+                        pop_def.setText(dataDTO.getDef());
+
+
+                        mPopWindow = new PopupWindow(contentView,
+                                                     ViewGroup.LayoutParams.MATCH_PARENT,
+                                              2000,
+                                            true);
+                        mPopWindow.setContentView(contentView);
+
+                        mPopWindow.showAtLocation(contentView, Gravity.BOTTOM, 0, 0);
+                        //透明
+                        WindowManager.LayoutParams lp = WordsActivity.this.getWindow().getAttributes();
+                        lp.alpha = 0.5f;
+                        WordsActivity.this.getWindow().setAttributes(lp);
+
+                        mPopWindow.setFocusable(true);// 取得焦点
+                        //注意  要是点击外部空白处弹框消息  那么必须给弹框设置一个背景色  不然是不起作用的
+                        mPopWindow.setBackgroundDrawable(new BitmapDrawable());
+                        //点击外部消失
+
+                        /**
+                         * 控制点击外部 隐藏 弹窗
+                         */
+                        mPopWindow.setTouchInterceptor(new View.OnTouchListener() {
+                            @Override
+                            public boolean onTouch(View view, MotionEvent motionEvent) {
+                                if(motionEvent.getY() > 0){
+                                    return false;
+                                }
+                                else{
+                                    WindowManager.LayoutParams lp = WordsActivity.this.getWindow().getAttributes();
+                                    lp.alpha = 1f;
+                                    WordsActivity.this.getWindow().setAttributes(lp);
+                                    mPopWindow.setOutsideTouchable(true);
+                                    return false;
+                                }
+                            }
+                        });
+                        //设置可以点击
+                        mPopWindow.setTouchable(true);
+                        //进入退出的动画，指定刚才定义的style
+                        mPopWindow.setAnimationStyle(R.style.ipopwindow_anim_style);
+                    }
+                });
+            }
+        });
+
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
+        wordsrecyclerView.setLayoutManager(layoutManager);
+    }
+}
+```
+
+
+
+## SQLlite
+
+### 创建数据库
+
+初始化MySQLiteOpenHelp并调用构造方法对数据库进行创建
+
+* 如果是第一次就会自动创建一个新的数据库
+* 如果不是第一次就保持原来的数据库
+
+```java
+public MySQLiteOpenHelp(Context context) {
+        super(context, DB_NAME, null, version);
+}
+```
+
+### 创建数据表
+
+调用了构造方法之后，如果没有这张表会调用onCreate方法创建这张表
+
+```java
+@Override
+public void onCreate(SQLiteDatabase sqLiteDatabase) {
+    sqLiteDatabase.execSQL(CREATE_TABLE_MYWORDS_SQL);
+}
+```
+
+### 增删改查
+
+```java
+/**
+ *
+ * @param strWord
+ * @return
+ * 插入strWord
+ */
+public long insertData(String strWord){
+
+    ContentValues values = new ContentValues();
+
+    values.put("strWord",strWord);
+
+    return db.insert(TABLE_NAME_MYWORD, null, values);
+}
+
+/**
+ *
+ * @param strWord
+ * @return
+ * 查看strWord
+ */
+@SuppressLint("Range")
+public String selecttData(String strWord){
+
+    String res = null;
+
+    Cursor cursor = db.query(TABLE_NAME_MYWORD, null, "strWord = ?",
+            new String[]{strWord}, null, null, null);
+    //利用游标遍历所有数据对象
+    while(cursor.moveToNext()){
+        res = cursor.getString(cursor.getColumnIndex("strWord"));
+    }
+    cursor.close();
+
+    return res;
+}
+
+/***
+ * @param word
+ * @return
+ * 删除strWord
+ */
+public int deletetData(String word) {
+    return db.delete(TABLE_NAME_MYWORD,"strWord = ?",new String[]{word});
+}
+
+@SuppressLint("Range")
+public List<String> SelectAllWords(){
+    List<String> list = new ArrayList<>();
+    Cursor cursor = db.query(TABLE_NAME_MYWORD,null, null,null
+            , null, null, null);
+    String res = null;
+    while(cursor.moveToNext()){
+        res = cursor.getString(cursor.getColumnIndex("strWord"));
+        list.add(res);
+    }
+    return list;
+}
+```
+
+**demo**
+
+```java
+private MySQLiteOpenHelp mySQLiteOpenHelp;
+
+public NewWordsAdapter(Context context, List<NewWordsBean.DataDTO> data) {
+	mySQLiteOpenHelp = new MySQLiteOpenHelp(context);
+}
+
+fun(){
+	// 执行数据库操作
+	String s = mySQLiteOpenHelp.selecttData(word);
+}
+```
+
+## 琐碎功能
+
+### 音频播放
+
+```java
+MediaPlayer.create(context, Uri.parse(dataDTO.getUkAudio())).start();
+```
+
+### 弹窗功能
+
+```java
+AlertDialog dialog = new AlertDialog
+    .Builder(getContext())
+    .setTitle("注销账号")  //标题
+    .setMessage("你同意吗?")
+    // 注意 这里 不是能同时使用 setPositiveButton / setNegativeButton 要不然 只会出现 一个
+    .setPositiveButton("确定",new DialogInterface.OnClickListener(){})
+    .setNegativeButton("取消", new DialogInterface.OnClickListener(){}).create();
+ // 创建 好了 展示
+dialog.show();
+```
+
+### 进度条设置
+
+使用构造函数传入需要处理的数据和页面view，以及数据库对象
+
+```java
+public ProcessBarUtil(Context context,
+                          AllWordsBean data,
+                          LinearLayout linearbar, LinearLayout lineartext,
+                          ProgressBar progressBar, TextView text,
+                          MyNowReadWordSQL sql){
+        this.context = context;
+        this.data = data;
+        this.linearbar = linearbar;
+        this.lineartext = lineartext;
+        this.progressBar = progressBar;
+        this.text = text;
+        this.totalItems = this.data.getData().size();
+        this.myNowReadWordSQL = sql;
+
+        new InsertDataTask().execute();
+
+    }
+```
+
+#### 使用 InsertDataTask extends AsyncTask<Void, Integer, Void> 实现对 数据加载功能
+
+##### 数据加载前
+
+设置页面显示或隐藏
+
+```java
+@Override
+protected void onPreExecute() {
+    super.onPreExecute();
+    linearbar.setVisibility(View.VISIBLE);
+    lineartext.setVisibility(View.GONE);
+}
+```
+##### 数据加载中
+
+将传入的数据插入到数据库中，并且展示加载条
+
+```java
+    @Override
+    protected Void doInBackground(Void... voids) {
+
+        int clear = myNowReadWordSQL.Clear();
+        System.out.println("clear" + clear);
+
+        try {
+            for (int i = 0; i < totalItems; i++) {
+                insertDataToDatabase(i);
+                // 更新进度条
+                publishProgress((int) ((i / (float) totalItems) * 100));
+            }
+        }catch (Exception e){
+            System.out.println(e);
+        }
+        return null;
+    }
+```
+##### 实时更新加载条进度
+
+```java
+@Override
+protected void onProgressUpdate(Integer... values) {
+    super.onProgressUpdate(values);
+    progressBar.setProgress(values[0]);
+    text.setText("正在下载" + values[0] + "%");
+}
+```
+
+##### 加载完成之后，对页面处理
+
+```java
+@Override
+protected void onPostExecute(Void aVoid) {
+    super.onPostExecute(aVoid);
+    linearbar.setVisibility(View.GONE);
+    lineartext.setVisibility(View.VISIBLE);
+    SharedPreferences sharedPreferences = context.getSharedPreferences("WordPostion", Context.MODE_PRIVATE);
+    sharedPreferences.edit().putInt("WordPostion", 0).commit();
+    ToastUtil.toastShort(context,"修改成功");
+}
+```
+
+
+
+```java
+package cn.aimetaverse.recitewords.util;
+
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.os.AsyncTask;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+
+import cn.aimetaverse.recitewords.model.Bean.AllWordsBean;
+import cn.aimetaverse.recitewords.model.SQL.MyNowReadWordSQL;
+
+public class ProcessBarUtil {
+    private LinearLayout linearbar;
+    private LinearLayout lineartext;
+    private ProgressBar progressBar;
+    private TextView text;
+    private AllWordsBean data;
+    private int totalItems;
+    private Context context;
+
+    private MyNowReadWordSQL myNowReadWordSQL;
+
+    public ProcessBarUtil(Context context,
+                          AllWordsBean data,
+                          LinearLayout linearbar, LinearLayout lineartext,
+                          ProgressBar progressBar, TextView text,
+                          MyNowReadWordSQL sql){
+        this.context = context;
+        this.data = data;
+        this.linearbar = linearbar;
+        this.lineartext = lineartext;
+        this.progressBar = progressBar;
+        this.text = text;
+        this.totalItems = this.data.getData().size();
+        this.myNowReadWordSQL = sql;
+
+        new InsertDataTask().execute();
+
+    }
+
+    private class InsertDataTask extends AsyncTask<Void, Integer, Void> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            linearbar.setVisibility(View.VISIBLE);
+            lineartext.setVisibility(View.GONE);
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+
+            int clear = myNowReadWordSQL.Clear();
+            System.out.println("clear" + clear);
+
+            try {
+                for (int i = 0; i < totalItems; i++) {
+                    insertDataToDatabase(i);
+                    // 更新进度条
+                    publishProgress((int) ((i / (float) totalItems) * 100));
+                }
+            }catch (Exception e){
+                System.out.println(e);
+            }
+            return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            super.onProgressUpdate(values);
+            progressBar.setProgress(values[0]);
+            text.setText("正在下载" + values[0] + "%");
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            linearbar.setVisibility(View.GONE);
+            lineartext.setVisibility(View.VISIBLE);
+
+            SharedPreferences sharedPreferences = context.getSharedPreferences("WordPostion", Context.MODE_PRIVATE);
+            sharedPreferences.edit().putInt("WordPostion", 0).commit();
+            ToastUtil.toastShort(context,"修改成功");
+        }
+    }
+
+    private void insertDataToDatabase(int i) {
+        // 在这里执行插入数据到数据库的操作
+        // 例如：使用SQLiteOpenHelper或Room等数据库操作工具
+        AllWordsBean.DataDTO dataDTO = this.data.getData().get(i);
+        String id = dataDTO.getId();
+        String bookid = dataDTO.getBookid();
+        String word = dataDTO.getWord();
+        String usPhonetic = dataDTO.getUsPhonetic();
+        String usAudio = dataDTO.getUsAudio();
+        String ukPhonetic = dataDTO.getUkPhonetic();
+        String ukAudio = dataDTO.getUkAudio();
+        String def = dataDTO.getDef();
+        myNowReadWordSQL.insertNowReadWord(i,id, bookid, word, usPhonetic, usAudio, ukPhonetic, ukAudio,def);
+    }
+}
+```
+
+#### 页面布局
+
+```xml
+<LinearLayout
+              android:id="@+id/item_booknameLinearBar"
+              android:visibility="gone"
+              android:layout_gravity="center"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="horizontal">
+    <ProgressBar
+                 android:layout_weight="1"
+                 android:layout_gravity="center"
+                 android:id="@+id/item_booknameBar"
+                 style="@style/InnerProgress"
+                 android:layout_width="100dp"
+                 android:layout_height="10dp"
+                 android:max="100"
+                 android:progress="0" />
+    <TextView
+              android:id="@+id/item_booknamebarnum"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:textColor="@color/vipTopColor"
+              android:text="正在下载  0%"></TextView>
+</LinearLayout>
+```
+
+value/styles
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="InnerProgress" parent="android:Widget.ProgressBar.Horizontal">
+        <item name="android:progressDrawable">@drawable/shape_inner_progressbar</item>
+    </style>
+</resources>
+```
+
+drawable/shape_inner_progressbar
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+<item android:id="@android:id/background">
+    <shape>
+        <corners android:radius="8dip"/>
+        <solid android:color="#DEE7E7EA"/>
+    </shape>
+</item>
+
+<item
+    android:id="@android:id/progress"
+    android:bottom=".5dp"
+    android:left=".5dp"
+    android:right=".5dp"
+    android:top=".5dp">
+    <clip>
+        <shape>
+            <corners android:radius="8dip"/>
+            <gradient
+                android:angle="90"
+                android:endColor="#ec702c"
+                android:startColor="#ec702c"/>
+        </shape>
+    </clip>
+</item>
+</layer-list>
+```
+
+### 导航栏设置
+
+#### 头部导航栏
+
+```xml
+<androidx.appcompat.widget.Toolbar
+    android:id="@+id/Top_mynwords"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    app:layout_constraintTop_toTopOf="parent"
+    app:backgroundTint="@color/aiyubackground"
+    android:background="@color/aiyubackground"
+    >
+
+    <TextView
+        android:id="@+id/newwords_back"
+        android:textSize="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:text='&lt;'
+        />
+
+    <TextView
+        android:textSize="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="我的生词"
+        android:textColor="@color/white"
+        android:layout_gravity="center" />
+</androidx.appcompat.widget.Toolbar>
+```
+
+#### 底部导航栏
+
+```xml
+    <!-- 底部导航栏 -->
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/nav_view"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:menu="@menu/bottom_nav_menu"
+        app:backgroundTint="@color/white"
+        />
+```
+
+##### @menu/bottom_nav_menu
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_home"
+        android:enabled="true"
+        android:icon="@drawable/home_select"
+        android:title="@string/buttom_title_home" />
+
+    <item
+        android:id="@+id/navigation_user"
+        android:enabled="true"
+        android:icon="@drawable/about_select"
+        android:title="@string/buttom_title_ming" />
+</menu>
+```
+
+##### 设置选中前后状态不一致
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:drawable="@drawable/homeafter"
+        android:state_checked="true">
+    </item>
+    <item
+        android:drawable="@drawable/homebefore"
+        android:state_checked="false"
+        ></item>
+</selector>
+```
+
+```xml
+// 设置 colorPrimary 属性定义了应用程序的主要颜色，通常用于应用栏的背景色。 比如 底部导航栏切换
+<item name="colorPrimary">@color/aiyubackground</item>
+// colorPrimaryVariant 属性定义了一个更深或更浅的颜色变体，通常用于状态栏的背景色。 比如 顶部颜色
+<item name="colorPrimaryVariant">@color/aiyubackground</item>
+```
+
+##### 取消长按出现弹窗
+
+```java
+/**
+ * 取消 长按 导航栏 不出现汉字
+ */
+BottomNavigationView bottomNavigationView = findViewById(R.id.nav_view);
+View bottombarView = bottomNavigationView.getChildAt(0);
+View navigation_home = bottombarView.findViewById(R.id.navigation_home);
+navigation_home.setOnLongClickListener(v -> true);
+View navigation_user = bottombarView.findViewById(R.id.navigation_user);
+navigation_user.setOnLongClickListener(v -> true);
+```
+
+### Handler
+
+```java
+Handler handler = new Handler();
+// 使用 演示 1000 ms 之后 才执行 handler中进程
+handler.postDelayed(new Runnable() {
+    @Override
+    public void run() {
+        try {
+            binding.studywordDef.setVisibility(View.VISIBLE);
+            binding.studywordAnswer.setText("下一题");
+            binding.studywordView.setBackgroundColor(Color.parseColor("#008000"));
+            binding.studywordChoose.setVisibility(View.GONE);
+            binding.studywordSent.setVisibility(View.VISIBLE);
+            binding.studywordTest.setVisibility(View.VISIBLE);
+            ShowWordInfo(wordInfoBean);
+        }catch (Exception e){
+            System.out.println(e);
+        }
+    }
+},1000);
+```
+
+### 动态获取高度
+
+`ViewTreeObserver` 是用于观察视图树变化的一个类，它允许你注册监听器，在视图树发生变化时接收通知。通过调用 `getViewTreeObserver()` 方法，你可以获取到与特定视图关联的 `ViewTreeObserver` 对象。
+
+
+
+给定一个元素，让他去监听
+
+```java
+ViewTreeObserver vto = binding.studywordUkPhonetic.getViewTreeObserver();
+vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {})
+```
+
+在监听中，我们监听我们需要监听的元素的布局
+
+```java
+// 获取视图的高度
+Layout layout1 = binding.studywordUkPhonetic.getLayout();
+Layout layout2 = binding.studywordUsPhonetic.getLayout();
+```
+
+去除监听防止多次监听
+
+```java
+if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+    binding.studywordUkPhonetic.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+}
+```
+
+拿到我们需要的元素
+
+```java
+try {
+    lineCount1 = layout1.getLineCount();
+}catch (Exception e){
+    System.out.println(e);
+}
+
+try {
+    lineCount2 = layout2.getLineCount();
+}catch (Exception e){
+    System.out.println(e);
+}
+```
+
+做出自己需要修改的布局样式
+
+```java
+if(lineCount1 > 1 || lineCount2 > 1){
+    binding.studywordJudgewidth.setOrientation(LinearLayout.VERTICAL);
+}
+else{
+    binding.studywordJudgewidth.setOrientation(LinearLayout.HORIZONTAL);
+}
+```
+
+**最重要的来了！！！！！**
+
+修改了样式，那下次进来不就是这个样式了吗？所以下次监听之前需要恢复原本的样子
+
+**在这里也就是讲studywordJudgewidthd额样式布局重新设置为LinearLayout.HORIZONTAL（调试了一周的BUG，感谢晓哥）**
+
+```java
+binding.studywordJudgewidth.setOrientation(LinearLayout.HORIZONTAL);
+```
+
+**完成代码**
+
+```java
+/**
+ * 完整的监听展示
+ */
+
+binding.studywordJudgewidth.setOrientation(LinearLayout.HORIZONTAL);
+// 获取视图的 ViewTreeObserver 对象
+ViewTreeObserver vto = binding.studywordUkPhonetic.getViewTreeObserver();
+vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+    @Override
+    public void onGlobalLayout() {
+        // 获取视图的高度
+        Layout layout1 = binding.studywordUkPhonetic.getLayout();
+        Layout layout2 = binding.studywordUsPhonetic.getLayout();
+
+        int lineCount1 = 0;
+        int lineCount2 = 0;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            binding.studywordUkPhonetic.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+        }
+
+        try {
+            lineCount1 = layout1.getLineCount();
+        }catch (Exception e){
+            System.out.println(e);
+        }
+
+        try {
+            lineCount2 = layout2.getLineCount();
+        }catch (Exception e){
+            System.out.println(e);
+        }
+
+        System.out.println(lineCount1 + " " );
+
+        if(lineCount1 > 1 || lineCount2 > 1){
+            binding.studywordJudgewidth.setOrientation(LinearLayout.VERTICAL);
+        }
+        else{
+            binding.studywordJudgewidth.setOrientation(LinearLayout.HORIZONTAL);
+        }
+    }
+});
+```
+
+### 获取item
+
+```java
+// recyclerView.getLayoutManager()，你可以获取到当前 RecyclerView 使用的布局管理器对象。
+// （LayoutManager）强制转换为 LinearLayoutManager 类型
+LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+```
+
+```java
+//findLastVisibleItemPosition() 方法返回最后一个完全可见的项目的位置。如果最后一个可见项目只显示了一部分，则该方法将返回该项目的位置，而不是下一个项目的位置。通常，此方法与分页加载数据或触发无限滚动的逻辑一起使用，以确定何时到达列表的底部并需要加载更多数据。
+// 下标从0开始
+int currentPosition = ((LinearLayoutManager) recyclerView.getLayoutManager()).findLastVisibleItemPosition();
+```
+
+```java
+// 获取一共几个 item
+int totalItemCount = layoutManager.getItemCount();
+```
+
+
+
+```java
+/***
+ * 实现功能是
+ * 1 获取 adapter的item总数
+ * 2 获取当前的item
+ */
+StudyWordSentrecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+    @Override
+    public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+        super.onScrolled(recyclerView, dx, dy);
+        TextView itemstudyword_num = findViewById(R.id.itemstudyword_num);
+        ImageView itemstudyword_tts_mp3 = findViewById(R.id.itemstudyword_tts_mp3);
+        int currentPosition = ((LinearLayoutManager) recyclerView.getLayoutManager()).findLastVisibleItemPosition();
+        LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+        int totalItemCount = layoutManager.getItemCount();
+        itemstudyword_num.setText(currentPosition + 1 + "/" + totalItemCount);
+
+        itemstudyword_tts_mp3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MediaPlayer.create(context, Uri.parse(sentences.get(currentPosition).getTts_mp3())).start();
+            }
+        });
+    }
+});
+```
+
+动态修改item高度
+
+```java
+// 获取当前 Item 的视图对象
+View itemView = holder.itemView;
+itemView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+    @Override
+    public void onGlobalLayout() {
+        // 移除监听，避免重复调用
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            itemView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+        }
+
+        // 计算 Item 的高度，加上一些额外的上下边距
+        int calculatedHeight = itemView.getHeight() + 2 * 30; // marginVertical 是上下边距的值，根据实际情况调整
+
+        // 将计算得到的高度设置给当前 Item 的视图对象
+        ViewGroup.LayoutParams layoutParams = itemView.getLayoutParams();
+        layoutParams.height = calculatedHeight;
+        itemView.setLayoutParams(layoutParams);
+    }
+});
+```
+
+
+
+### 滑动弹窗展示内容
+
+#### 创建弹窗
+
+```java
+mPopWindow = new PopupWindow(this.getCurrentFocus(),ViewGroup.LayoutParams.MATCH_PARENT,1500,true);
+```
+
+#### 设置视图和高宽
+
+```java
+ mPopWindow.setContentView(contentView);
+ mPopWindow.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
+ mPopWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
+```
+
+
+
+```java
+private void Window(View contentView){
+
+    mPopWindow = new PopupWindow(this.getCurrentFocus(),
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            1500,
+            true);
+
+    mPopWindow.setContentView(contentView);
+    mPopWindow.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
+    mPopWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
+
+    //透明
+    WindowManager.LayoutParams lp = WordsActivity.this.getWindow().getAttributes();
+    lp.alpha = 0.5f;
+    WordsActivity.this.getWindow().setAttributes(lp);
+
+    mPopWindow.setFocusable(true);// 取得焦点
+    //注意  要是点击外部空白处弹框消息  那么必须给弹框设置一个背景色  不然是不起作用的
+    // 如果没有设置 则按下返回键没反应
+    mPopWindow.setBackgroundDrawable(new BitmapDrawable());
+
+    // 设置进入动画
+    mPopWindow.setAnimationStyle(R.style.ipopwindow_anim_style);
+
+    // 显示 PopupWindow
+    View rootView = findViewById(android.R.id.content);
+    mPopWindow.showAtLocation(rootView, Gravity.BOTTOM, 0, 0);
+
+    /**
+     * 控制点击外部 隐藏 弹窗
+     */
+    mPopWindow.setTouchInterceptor(new View.OnTouchListener() {
+        @Override
+        public boolean onTouch(View view, MotionEvent motionEvent) {
+            if(motionEvent.getY() > 0){
+                return false;
+            }
+            else{
+                WindowManager.LayoutParams lp = WordsActivity.this.getWindow().getAttributes();
+                lp.alpha = 1f;
+                WordsActivity.this.getWindow().setAttributes(lp);
+                mPopWindow.setOutsideTouchable(true);
+                return false;
+            }
+        }
+    });
+    //设置可以点击
+    mPopWindow.setTouchable(true);
+    //进入退出的动画，指定刚才定义的style
+    mPopWindow.setAnimationStyle(R.style.ipopwindow_anim_style);
+}
+```
+
+设置弹窗消失的时候屏幕的样式
+
+通过设置监听DismissListener进行设置，修改样式
+
+```java
+mPopWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+    @Override
+    public void onDismiss() {
+        WindowManager.LayoutParams lp = WordsActivity.this.getWindow().getAttributes();
+        lp.alpha = 1f; // 设置透明度为1（不透明）
+        WordsActivity.this.getWindow().setAttributes(lp);
+        mPopWindow.setOutsideTouchable(true);
+    }
+});
+```
+
+
+
+### 音频设置
+
+设置点击多次音频的时候，不会同时播放多次，防止造成回音
+
+首先设置全局变量，点击播放之后，判断这个**唯一播放源**是否在播放，
+
+* 如果在播放就停止
+* 如果没有播放就开始播放
+
+```java
+private MediaPlayer mediaPlayer; // 全局变量
+binding.studywordUk.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View view) {
+        String usUsAudio = dataDTO.getUkAudio();
+        if (mediaPlayer != null && mediaPlayer.isPlaying()) {
+            mediaPlayer.stop();
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
+        mediaPlayer = MediaPlayer.create(context,Uri.parse(usUsAudio));
+        mediaPlayer.start();
+    }
+});
+```
+
+### homefrangment中设置background
+
+```java
+if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+    layout1.setBackground(getResources().getDrawable(R.drawable.home_pop_border1));
+}
+if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+    layout2.setBackground(getResources().getDrawable(R.drawable.home_pop_border2));
+}
+```
+
+
+
+## 线程
+
+<img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20231207104449238.png" alt="image-20231207104449238" style="zoom:67%;" />
+
+
+
+Android中的多线程主要是为了操作一些耗时的工作，防止其将主程序进行阻塞，与Java一样两种方式：
+
+1、继承Thread
+
+ 2、实现Runnable接。
+
+但是Android与Java的多线程有一点区别是**Android中的更新UI必须在主线程中进行**，否则抛出异常，因为Android的UI是线程不安全的。
+
+**进程和线程**：
+
+**进程之间是无法共享数据的，每一个进程是一个软件**
+
+**线程之间是共享同一个进程间的数据的**
+
+**并发和并行**
+
+并发：同一时刻有**多个指令**在**单个CPU**上**交替**执行
+
+<img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20231207104843327.png" alt="image-20231207104843327" style="zoom:33%;" />
+
+并行：同一时刻有**多个指令**在**多个CPU**上**同时**执行
+
+<img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20231207104907528.png" alt="image-20231207104907528" style="zoom:67%;" />
+
+
+
+**<img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20231207104936014.png" alt="image-20231207104936014" style="zoom: 50%;" />**
+
+### Runnable
+
+ Runable源码，可以看到中只有run方法。下面的例子中的Runable在主线程执行修改UI的代码，并且“OK”的执行是在输出10个“runable”后，所以分析得到**Runable只是一个接口**并没有开启线程，依旧是运行在UI线程中。
+
+### Thread
+
+创建一个新线程
+
+```java
+public class MyThread extends Thread{
+    @Override
+    public void run() {
+        for(int i = 0; i < 1000 ; i++){
+            System.out.println(getName() + " " + i);
+        }
+    }
+
+    public static void main(String[] args) throws InterruptedException {
+		// 创建 一个 线程 实体对象
+        MyThread task1 = new MyThread();
+        MyThread task2 = new MyThread();
+
+        task1.setName("task1");
+        task2.setName("task2");
+		// 启动一个线程
+        task1.start();
+        task2.start();
+    }
+}
+```
+
+在执行两个线程的时候，两个线程是交替执行的，会进行抢占资源
+
+#### join函数
+
+在Thread中加入**join**函数，目的是让主线程阻塞，当task1启动之后，知道task1任务执行完成之后，才会去执行task2任务
+
+```java
+public class MyThread extends Thread{
+
+
+    @Override
+    public void run() {
+
+        for(int i = 0; i < 1000 ; i++){
+            System.out.println(getName() + " " + i);
+        }
+    }
+
+    public static void main(String[] args) throws InterruptedException {
+
+        MyThread task1 = new MyThread();
+        MyThread task2 = new MyThread();
+
+        task1.setName("task1");
+        task2.setName("task2");
+
+        task1.start();
+        task1.join();
+        task2.start();
+        task2.join();
+    }
+}
+```
+
+
+
+### Handler
+
+在Android中，**Handler.post(Runnable runnable)**方法是用来将一个**Runnable对象投递到Handler所在的线程（通常是主线程）**中执行。**当post方法被调用后，runnable中的run()方法会在Handler所在的线程中被执行**，而不是在当前线程中执行。
+**执行完run()方法后，runnable对象并不会一直进行下去，而是会被回收**。
+
+如果你希望runnable对象能够**重复执行**，
+
+可以使用**Handler.postDelayed(Runnable r,long delayMillis)**方法，它可以延迟一定时间（单位为毫秒）后再次执行runnable中的run()方法。
+需要注意的是，如果在runnable对象中存在一些耗时操作（例如网络请求、IO操作等），那么在Handler所在的线程中执行时可能会导致主线程卡顿。因此，在将耗时操作放入Runnable中时，应该考虑使用异步任务（AsyncTask）或者其他方式来执行，以避免阻塞主线程。
+
+```java
+// 创建 Handler 对象 这个 handler 在 主线程中执行
+Handler handler = new Handler();
+
+// 创建 一个 Runnable 对象， 在Runnable对象中 完成执行 操作
+Runnable runnable = new Runnable() {
+    @Override
+    public void run() {
+        // 禁止 点击 事件
+        binding.registerGetcaptcha.setEnabled(false);
+        if(count > 0){
+            count--;
+            binding.registerGetcaptcha.setText(count + "秒");
+            // 为什么 还要加入 handler.postDelayed(this,1000);
+            // 是因为 {执行完run()方法后，runnable对象并不会一直进行下去，而是会被回收。}
+            // 执行问一次 会被 回收，因此需要 多次调用
+            handler.postDelayed(this,1000);
+        }
+        else{
+            count = 60;
+            binding.registerGetcaptcha.setText("重新获取");
+            binding.registerGetcaptcha.setEnabled(true);
+        }
+    }
+};
+//在这里 将 上面创建的runnable通过post加载到主线程中
+// 为什么要加载到主线程中呢？ ！！！ 因为 runnable中的run方法 是在 修改 UI界面
+// 上面有介绍 {Android中的更新UI必须在主线程中进行，否则抛出异常，因为Android的UI是线程不安全的。}
+// 这个地方可以有 handler.postDelayed(runnable,1000); 
+// 也可以用 handler.post(runnable); 只是一个 时间问题
+handler.postDelayed(runnable,1000);
+```
+
+
+
+### Fragment数据刷新
+
+从另外一个事件到Fragment中，或者从当前Fragment到另外一个事件中，数据可能需要改变，此时使用
+
+onHiddenChanged生命周期，如果当 隐藏 就取消 某些事件，如果展示就刷新某些事件
+
+```java
+@Override
+public void onHiddenChanged(boolean hidden) {
+    super.onHiddenChanged(hidden);
+    if (!hidden) {
+
+        /**
+         * 判断 是否 登入
+         */
+
+        String useruid = getActivity().getSharedPreferences("useruid", 	                   Context.MODE_PRIVATE).getString("useruid","0");
+
+        if(useruid.equals("0")){
+            binding.homeLogin.setText("未登录，请先登录");
+            Glide.with(requireActivity()).load(R.drawable.aboutfragmentavatar).into(binding.myPhoto);
+        }
+        else{
+            binding.homeLogin.setText("爱背单词");
+            Glide.with(requireActivity()).load(Constant.userimgUrl).into(binding.myPhoto);
+        }
+    } else {
+
+    }
+}
+```
+
+
+
+
+
+## 登入
+
+### 普通登入
+
+主要功能分为这几块：
+
+* 登入
+* 忘记密码
+* 跳转注册
+
+登入的时候，获取账号和密码，使用getLogin函数进行登入，登入完成之后，将用户uid和照片存起来
+
+```java
+public void getLogin(LoginBean loginBean) {
+
+        String result = loginBean.getResult();
+
+        if(result.equals("101")){
+            // 登入成功
+            Toast.makeText(LoginActivity.this, "登陆成功!", Toast.LENGTH_LONG).show();
+
+            Constant.uid = String.valueOf(loginBean.getUid());
+
+            Constant.userimgUrl = "http://api.iyuba.com.cn/v2/api.iyuba?protocol=10005&uid=" + Constant.uid + "&size=big";
+
+            SharedPreferences userInfo = getSharedPreferences("useruid", MODE_PRIVATE);
+            SharedPreferences.Editor usereditor = userInfo.edit();
+            usereditor.putString("useruid", Constant.uid); // 写入int型数据
+            usereditor.commit();
+
+
+            SharedPreferences imageUrl = getSharedPreferences("imageUrl", MODE_PRIVATE);
+            SharedPreferences.Editor imageUrleditor = imageUrl.edit();// 获取Editor
+            imageUrleditor.putString("imageUrl", Constant.userimgUrl);
+            imageUrleditor.commit();
+
+            //获取得到得信息
+            String sign = MD5.md5("20001" + Constant.uid + "iyubaV2");
+            uidLoginPresenter.getUidLogin("android", "json", "20001", Constant.uid, Constant.uid, 291, sign);
+
+        }
+        else{
+            Toast.makeText(LoginActivity.this, "登陆失败,用户名或密码错误.", Toast.LENGTH_LONG).show();
+            // 清空用户名和密码文本框
+//            binding.loginUsername.setText("");
+            binding.loginPassword.setText("");
+            //让用户名文本框获取焦点
+            binding.loginUsername.requestFocus();
+        }
+    }
+```
+
+这是初步登入，在初步登入完成之后，我们进一步使用uid进行再次登入，获取更多信息
+
+在这里我们需要将这个用户的 生词、打卡记录、复习单词等等信息记录下来
+
+```java
+    @Override
+    public void getUidLogin(UidBean uidBean) {
+
+        newWordsPresenter.getNewWords(Constant.uid,"1","10","json");
+
+        Constant.vipStatus = Integer.parseInt(uidBean.getVipStatus());
+
+        Constant.money = uidBean.getMoney() * 0.01;//钱包
+
+        Constant.mobile = uidBean.getMobile();
+
+        Constant.username = uidBean.getUsername();
+
+        Constant.aiyubi = uidBean.getAmount();//爱语币
+
+        long timeStamp = uidBean.getExpireTime() * 1000L;//转化成长整型
+        //要转成后的时间的格式
+        android.icu.text.SimpleDateFormat simpleDateFormat = null;
+        simpleDateFormat = new android.icu.text.SimpleDateFormat("yyyy-MM-dd");
+        // 时间戳转换成时间
+        String vipDate = null;
+        vipDate = simpleDateFormat.format(new Date(timeStamp));
+
+        Constant.vipDate = vipDate;//vip时间
+
+        /**
+         *  将数据库 更新
+         */
+
+        initMyWords();
+
+        String uid = Constant.uid;
+        String appId = "293";
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH) + 1;
+        String time = year + "" + month;
+        shareInfoPresenter.getShareInfo(uid,appId,time);
+
+        finish();
+    }
+```
+
+在普通登入中主要是以调用接口为主
+
+### 快速登入
+
+在快速登入的时候,首先做一些配置
+
+```xml
+MobSDK {
+    appKey "38eede920369a"
+    appSecret "b292160356d542d2269bec8efdbe8c94"
+    SecVerify {}
+    SMSSDK {}
+}
+```
+
+在初始化页面做一下预登录操作
+
+```java
+SecVerify.preVerify(new OperationCallback<Void>() {
+    @Override
+    public void onComplete(Void data) {
+        //TODO处理成功的结果
+        Constant.SecVerify = "true";
+    }
+    @Override
+    public void onFailure(VerifyException e) {
+        //TODO处理失败的结果
+        Constant.SecVerify = "false";
+    }
+});
+
+```
+
+
+
+
+
+## 使用git上传代码
+
+![image-20231227135037858](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20231227135037858.png)
+
+使用在**分支refresh2**上进行开发，上传的时候上传的时候切换到**refresh3**
+
+比如说：
+
+**master分支是基础分支，想在maste分支上进行开发代码，添加了A功能，添加完成之后，想继续在master分支上开发新的功能**
+
+**可以将master以refreshA上传保存，使用checkout切换回master分支上，在使用master分支继续开发**
+
+
+
+
+
+
+
+
+
+
+
+
+
+# 开发文档
+
+1 首次进入app之后选择图书，
+
+2 在BookListActivity中实现 书籍之间的切换
+
+3 在同一个数据库中创建多张表，新创的表因该是在update中进行更新，表与表之间的标识符就是bookid
+
+4 
+
+
+
+![image-20231229142844161](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20231229142844161.png)
+
+
+
+![image-20231229190714769](C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20231229190714769.png)
